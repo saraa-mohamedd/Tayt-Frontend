@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/screens/home_screen/home_screen.dart';
-import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
+import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
 
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
@@ -11,7 +11,7 @@ class NavigationController extends GetxController {
   final screens = [
     HomeScreen(),
     Container(color: const Color.fromRGBO(33, 150, 243, 1)),
-    BodyMeshScreen(),
+    BodyScreen(),
     Container(color: Colors.yellow),
   ];
 }

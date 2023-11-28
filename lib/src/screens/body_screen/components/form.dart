@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
+import 'package:tayt_app/src/screens/body_mesh_screen/components/mesh_render.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/models/body_measurements.dart';
 
 class MeasurementTextField extends StatelessWidget {
   const MeasurementTextField({
@@ -17,7 +22,7 @@ class MeasurementTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 2),
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -40,12 +45,12 @@ class MeasurementTextField extends StatelessWidget {
           hintText: hintText,
           hintStyle: const TextStyle(
               color: Color.fromARGB(255, 215, 182, 34),
-              fontSize: 15,
+              fontSize: 14,
               fontFamily: 'Helvetica Neue'),
           labelText: labelText,
           labelStyle: const TextStyle(
               color: Color.fromARGB(220, 255, 255, 255),
-              fontSize: 15,
+              fontSize: 17,
               fontFamily: 'Helvetica Neue',
               letterSpacing: -0.1),
         ),
@@ -68,10 +73,8 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
   final weightController = TextEditingController();
   final hipsController = TextEditingController();
   final chestController = TextEditingController();
-  final inseamController = TextEditingController();
-  final thighController = TextEditingController();
   final waistController = TextEditingController();
-  bool _isFemale = true;
+  String gender = "female";
 
   @override
   void dispose() {
@@ -79,8 +82,6 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
     weightController.dispose();
     hipsController.dispose();
     chestController.dispose();
-    inseamController.dispose();
-    thighController.dispose();
     waistController.dispose();
 
     super.dispose();
@@ -92,7 +93,7 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
       children: [
         Center(
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.55,
+            height: MediaQuery.of(context).size.height * 0.45,
             width: MediaQuery.of(context).size.width * 0.95,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -133,7 +134,7 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                 labels: ['Female', 'Male'],
                 radiusStyle: true,
                 onToggle: (index) {
-                  _isFemale = index == 0;
+                  gender = index == 0 ? "female" : "male";
                   // print('switched to: $index');
                 },
                 // curve: Curves.linear,
@@ -172,53 +173,40 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
             controller: chestController,
           ),
           MeasurementTextField(
-            labelText: 'Inseam',
-            hintText: 'in cm',
-            controller: inseamController,
-          ),
-          MeasurementTextField(
-            labelText: 'Thigh',
-            hintText: 'in cm',
-            controller: thighController,
-          ),
-          MeasurementTextField(
               labelText: 'Waist',
               hintText: 'in cm',
               controller: waistController),
           Padding(
             padding: const EdgeInsets.only(
-              top: 17.0,
+              top: 10.0,
             ),
             child: ElevatedButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: ((context) {
-                      return AlertDialog(
-                        title: const Text('Measurements Submitted'),
-                        content: Text(heightController.text +
-                            '\n' +
-                            weightController.text +
-                            '\n' +
-                            hipsController.text +
-                            '\n' +
-                            chestController.text +
-                            '\n' +
-                            inseamController.text +
-                            '\n' +
-                            thighController.text +
-                            '\n' +
-                            _isFemale.toString()),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    }));
+                Measurements m = Measurements(
+                    gender: gender,
+                    height: double.parse(heightController.text),
+                    weight: double.parse(weightController.text),
+                    chest: double.parse(chestController.text),
+                    waist: double.parse(waistController.text),
+                    hips: double.parse(hipsController.text));
+
+                Provider.of<MeasurementsProvider>(context, listen: false)
+                    .renderUsingMeasurements(m);
+
+                heightController.clear();
+                weightController.clear();
+                hipsController.clear();
+                chestController.clear();
+                waistController.clear();
+                // print('Navigating to BodyMeshScreen');
+                // Navigator.pushNamed(context, BodyMeshScreen.routeName);
+                //ensure navbar shows in next screen
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => BodyMeshScreen(),
+                //   ),
+                // );
               },
               child: Text(
                 'Submit',

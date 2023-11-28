@@ -48,12 +48,13 @@ class _BodyState extends State<Body> {
             child: Center(
                 child: Container(
               width: MediaQuery.of(context).size.width * 0.95,
-              child: MeasurementsForm(),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xff4056a1),
-                borderRadius: const BorderRadius.only(
-                  // topRight: const Radius.circular(40.0),
-                  bottomLeft: const Radius.circular(40.0),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(40.0),
+                  bottomLeft: Radius.circular(40.0),
+                  topLeft: Radius.circular(40.0),
+                  bottomRight: Radius.circular(40.0),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -63,6 +64,7 @@ class _BodyState extends State<Body> {
                   ),
                 ],
               ),
+              child: MeasurementsForm(),
             ))),
         Center(
           child: Padding(
@@ -70,10 +72,10 @@ class _BodyState extends State<Body> {
             child: Text(
               'OR',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    color: Colors.black,
-                    fontSize: 19,
-                    fontFamily: 'Poppins',
-                  ),
+                  color: Colors.black,
+                  fontSize: 19,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600),
             ),
           ),
         ),

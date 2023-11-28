@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/components/body.dart';
+import 'package:tayt_app/src/widgets/nav_bar.dart';
 
 class BodyMeshScreen extends StatelessWidget {
-  static String routeName = '/body-screen';
+  static String routeName = '/body-mesh-screen';
   const BodyMeshScreen({Key? key}) : super(key: key);
 
   @override
@@ -43,6 +44,7 @@ class BodyMeshScreen extends StatelessWidget {
           child: Container(
               decoration: BoxDecoration(color: Color(0xff4056a1)),
               child: Body())),
+      // bottomNavigationBar: BottomNavBar(), // Use BottomNavBar here
     );
   }
 }

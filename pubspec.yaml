@@ -12,12 +12,15 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   get_it: ^7.2.0
-  provider: ^6.0.2
+  provider: ^6.1.1
   font_awesome_flutter: ^10.6.0
   toggle_switch: ^1.4.0
   animate_gradient: ^0.0.2+1
   image_picker: ^1.0.4
   get: ^4.6.6
+  http: ^1.1.2
+  path_provider: ^2.1.1
+  persistent_bottom_nav_bar: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +38,7 @@ flutter:
   assets:
     - assets/fonts/
     - assets/images/
+    - assets/meshes/
 
   fonts:
     - family: "Noto Sans"
