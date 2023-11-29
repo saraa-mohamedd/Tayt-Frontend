@@ -4,13 +4,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/screens/home_screen/home_screen.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
+import 'package:tayt_app/src/screens/clothing_screen/clothing_screen.dart';
 
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
     HomeScreen(),
-    Container(color: const Color.fromRGBO(33, 150, 243, 1)),
+    ClothingScreen(),
     BodyMeshScreen(),
     Container(color: Colors.yellow),
   ];

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tayt_app/routes/routes.dart';
-import 'package:tayt_app/service/navigation_service.dart';
+// import 'package:tayt_app/service/navigation_service.dart';
 import 'package:tayt_app/src/screens/splash_screen/splash_screen.dart';
-import 'package:tayt_app/provider/getit.dart';
+// import 'package:tayt_app/provider/getit.dart';
 
 void main() {
-  setupLocator();
+  // setupLocator();
   runApp(const MyApp());
 }
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tayt',
-      navigatorKey: getIt<NavigationService>().navigatorKey,
+      // navigatorKey: getIt<NavigationService>().navigatorKey,
       theme: ThemeData(
         fontFamily: 'Poppins',
         textSelectionTheme: const TextSelectionThemeData(

@@ -3,11 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tayt_app/src/screens/home_screen/components/body.dart';
+import 'package:tayt_app/src/screens/clothing_screen/components/body.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeScreen extends StatelessWidget {
-  static String routeName = '/home-screen';
-  const HomeScreen({Key? key}) : super(key: key);
+class ClothingScreen extends StatelessWidget {
+  static String routeName = '/clothing-screen';
+  const ClothingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class HomeScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           toolbarHeight: 60,
           title: Text(
-            'Tayt',
+            'Clothing',
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.displayLarge!.copyWith(
                 textBaseline: TextBaseline.alphabetic,
@@ -30,7 +31,20 @@ class HomeScreen extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              icon: FaIcon(FontAwesomeIcons.barsStaggered),
+              icon: FaIcon(FontAwesomeIcons.circleQuestion),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: FaIcon(FontAwesomeIcons.heart),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/wardrobe-outline.svg',
+                width: 26,
+                height: 26,
+                color: Colors.black,
+              ),
               onPressed: () {},
             )
           ]),
