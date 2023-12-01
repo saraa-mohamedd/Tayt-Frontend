@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/screens/home_screen/components/body.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = '/home-screen';
@@ -23,14 +24,15 @@ class HomeScreen extends StatelessWidget {
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.displayLarge!.copyWith(
                 textBaseline: TextBaseline.alphabetic,
-                color: Colors.black.withOpacity(0.9),
+                color: AppColors.primaryColor,
                 fontSize: 36,
                 fontWeight: FontWeight.values[7],
                 letterSpacing: -0.7),
           ),
           actions: [
             IconButton(
-              icon: FaIcon(FontAwesomeIcons.barsStaggered),
+              icon: FaIcon(FontAwesomeIcons.barsStaggered,
+                  color: AppColors.primaryColor),
               onPressed: () {},
             )
           ]),

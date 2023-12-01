@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/screens/body_screen/components/form.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 import 'dart:io';
 
 class Body extends StatefulWidget {
@@ -34,6 +35,7 @@ class _BodyState extends State<Body> {
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: Colors.black,
                     fontFamily: 'Helvetica Neue',
+                    // letterSpacing: 0,
                     fontSize: 16,
                     height: 1.2
                     // letterSpacing: -0.1,
@@ -50,7 +52,7 @@ class _BodyState extends State<Body> {
               width: MediaQuery.of(context).size.width * 0.95,
               child: MeasurementsForm(),
               decoration: BoxDecoration(
-                color: Color(0xff4056a1),
+                color: AppColors.primaryColor,
                 borderRadius: const BorderRadius.only(
                   // topRight: const Radius.circular(40.0),
                   bottomLeft: const Radius.circular(40.0),
@@ -90,8 +92,8 @@ class _BodyState extends State<Body> {
                 color: Colors.white,
               ),
               style: ElevatedButton.styleFrom(
-                elevation: 10,
-                backgroundColor: const Color(0xff4056a1),
+                elevation: 0,
+                backgroundColor: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(70.0),
                 ),

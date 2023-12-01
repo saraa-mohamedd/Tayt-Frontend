@@ -37,6 +37,9 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ))),
+        SizedBox(
+          height: 20,
+        ),
         Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 20.0),
@@ -44,7 +47,7 @@ class _BodyState extends State<Body> {
               'Doesn\'t seem right? ',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: Colors.white,
-                    fontSize: 19,
+                    fontSize: 17,
                     fontFamily: 'Helvetica Neue',
                     fontWeight: FontWeight.w400,
                   ),
@@ -53,7 +56,7 @@ class _BodyState extends State<Body> {
         ),
         Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 17.0, bottom: 30),
+            padding: const EdgeInsets.only(top: 10.0, bottom: 30),
             child: ElevatedButton.icon(
               onPressed: () {
                 Navigator.pushNamed(context, HomeScreen.routeName);
@@ -63,8 +66,8 @@ class _BodyState extends State<Body> {
                 color: Colors.black,
               ),
               style: ElevatedButton.styleFrom(
-                elevation: 10,
-                backgroundColor: const Color(0xffecd06f),
+                elevation: 2,
+                backgroundColor: Color.fromARGB(255, 241, 226, 191),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(70.0),
                 ),

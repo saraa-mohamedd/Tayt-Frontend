@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/services.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 
 class MeasurementTextField extends StatelessWidget {
   const MeasurementTextField({
@@ -36,10 +37,10 @@ class MeasurementTextField extends StatelessWidget {
           contentPadding: const EdgeInsets.only(left: 3.0, right: 20.0),
           enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
-                  width: 1, color: Color.fromARGB(255, 153, 148, 117))),
+                  width: 1, color: Color.fromARGB(143, 228, 215, 185))),
           hintText: hintText,
           hintStyle: const TextStyle(
-              color: Color.fromARGB(255, 215, 182, 34),
+              color: Color.fromARGB(255, 243, 220, 166),
               fontSize: 15,
               fontFamily: 'Helvetica Neue'),
           labelText: labelText,
@@ -120,12 +121,17 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                 minWidth: 170,
                 cornerRadius: 70.0,
                 activeBgColors: [
-                  const [Color(0xffecd06f)],
-                  const [Color(0xffecd06f)]
+                  // const [Color.fromARGB(255, 144, 170, 159) Color(0xfff4d58d)],
+                  // const [Color.fromARGB(255, 144, 170, 159) Color(0xfff4d58d)]
+                  const [AppColors.secondaryColor],
+                  const [AppColors.secondaryColor]
                 ],
-                inactiveBgColor: Colors.grey[500],
+                inactiveBgColor: Colors.grey[400],
                 initialLabelIndex: 0,
-                borderColor: [Colors.grey, Colors.grey],
+                borderColor: [
+                  const Color.fromARGB(255, 192, 192, 192),
+                  Color.fromARGB(255, 192, 192, 192)
+                ],
                 borderWidth: 1.0,
                 totalSwitches: 2,
                 animate: true,
@@ -139,12 +145,12 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                 // curve: Curves.linear,
                 customTextStyles: const [
                   TextStyle(
-                      color: Color(0xff4056a1),
+                      color: Colors.black87,
                       fontSize: 15,
                       fontFamily: 'Helvetica Neue',
                       letterSpacing: -0.1),
                   TextStyle(
-                      color: Color(0xff4056a1),
+                      color: Colors.black87,
                       fontSize: 15,
                       fontFamily: 'Helvetica Neue',
                       letterSpacing: -0.1),
@@ -223,13 +229,14 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
               child: Text(
                 'Submit',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: Color(0xff4056a1),
+                      color: Colors.black87,
                       fontSize: 15,
                       fontFamily: 'Helvetica Neue',
                     ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xffecd06f),
+                // backgroundColor: Color.fromARGB(255, 144, 170, 159),
+                backgroundColor: AppColors.secondaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(70.0),
                 ),

@@ -20,6 +20,7 @@ dependencies:
   get: ^4.6.6
   carousel_slider: ^4.2.1
   flutter_svg: ^2.0.9
+  easy_search_bar: ^2.5.0
 
 dev_dependencies:
   flutter_test:
@@ -40,12 +41,32 @@ flutter:
     - assets/icons/
 
   fonts:
-    - family: "Noto Sans"
+    - family: "DM Sans"
       fonts:
-        - asset: "assets/fonts/NotoSans-Bold.ttf"
+        - asset: "assets/fonts/DMSans-Black.ttf"
           style: "normal"
-        - asset: "assets/fonts/NotoSans-Regular.ttf"
+          weight: 900
+        - asset: "assets/fonts/DMSans-Bold.ttf"
           style: "normal"
+          weight: 700
+        - asset: "assets/fonts/DMSans-ExtraBold.ttf"
+          style: "normal"
+          weight: 800
+        - asset: "assets/fonts/DMSans-ExtraLight.ttf"
+          style: "normal"
+          weight: 200
+        - asset: "assets/fonts/DMSans-Light.ttf"
+          style: "normal"
+          weight: 300
+        - asset: "assets/fonts/DMSans-Medium.ttf"
+          style: "normal"
+          weight: 500
+        - asset: "assets/fonts/DMSans-Regular.ttf"
+          style: "normal"
+          weight: 400
+        - asset: "assets/fonts/DMSans-SemiBold.ttf"
+          style: "italic"
+          weight: 600
     - family: "Poppins"
       fonts:
         - asset: "assets/fonts/Poppins-Thin.ttf"
@@ -69,18 +90,6 @@ flutter:
         - asset: "assets/fonts/Poppins-SemiBold.ttf"
           style: "normal"
           weight: 600
-    - family: ABeeZee
-      fonts:
-        - asset: assets/fonts/ABeeZee-Italic.ttf
-          style: italic
-        - asset: assets/fonts/ABeeZee-Regular.ttf
-          style: normal
-    - family: Lexend
-      fonts:
-        - asset: assets/fonts/Lexend-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Lexend-ExtraLight.ttf
-          weight: 200
     - family: "GT Haptik"
       fonts:
         - asset: assets/fonts/GTHaptik-Regular.ttf
