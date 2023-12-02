@@ -13,6 +13,7 @@ class CustomCarousel extends StatelessWidget {
     this.height,
     this.viewportFraction = 0.95,
     this.hasIndicator = true,
+    this.infscroll = true,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class CustomCarousel extends StatelessWidget {
   final double viewportFraction;
   final double? width, height;
   final List<String> banners;
+  final bool? infscroll;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class CustomCarousel extends StatelessWidget {
             viewportFraction: viewportFraction,
             onPageChanged: (index, _) => controller.updateIndex(index),
             height: height,
-            enableInfiniteScroll: false,
+            enableInfiniteScroll: infscroll!,
             padEnds: false,
           ),
         ),

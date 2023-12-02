@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/screens/home_screen/home_screen.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
+import 'package:tayt_app/src/screens/user_screen/user_screen.dart';
 import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
 import 'package:tayt_app/src/screens/clothing_screen/clothing_screen.dart';
 
@@ -14,7 +15,7 @@ class NavigationController extends GetxController {
     HomeScreen(),
     ClothingScreen(),
     BodyScreen(),
-    Container(color: Colors.yellow),
+    UserScreen(),
   ];
 }
 

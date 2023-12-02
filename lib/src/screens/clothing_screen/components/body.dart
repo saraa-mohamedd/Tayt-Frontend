@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/deps/colors.dart';
-import 'package:tayt_app/src/screens/clothing_screen/components/tab_view.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart';
 
 class Body extends StatelessWidget {
@@ -32,6 +31,14 @@ class Body extends StatelessWidget {
                     indicatorColor: AppColors.primaryColor,
                     labelColor: AppColors.primaryColor,
                     unselectedLabelColor: Colors.black,
+                    splashFactory: NoSplash.splashFactory,
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        return states.contains(MaterialState.focused)
+                            ? AppColors.secondaryColor
+                            : AppColors.secondaryColor;
+                      },
+                    ),
                     // overlayColor: AppColors.secondaryColor.withOpacity(0.2),
                   ),
                 ),
@@ -46,18 +53,69 @@ class Body extends StatelessWidget {
                       // width: 20,
                       color: AppColors.secondaryColor,
                       child: Center(
-                        child: Text(
-                          'Coming Soon!\n[single garments based on search prompt]',
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(children: [
+                            TextSpan(
+                              text: 'Coming Soon!\n',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 24,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                            TextSpan(
+                              text: '[single garments based on search prompt]',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 16,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
+                          ]),
                         ),
                       ),
                     ),
-
                     // second tab bar viiew widget
                     Container(
                       color: AppColors.secondaryColor,
                       child: Center(
-                        child: Text(
-                          'Coming Soon!\n[Entire outfits based on search prompt]',
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(children: [
+                            TextSpan(
+                              text: 'Coming Soon!\n',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 24,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                            TextSpan(
+                              text: '[entire outfits based on search prompt]',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 16,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
+                          ]),
                         ),
                       ),
                     ),
@@ -66,20 +124,6 @@ class Body extends StatelessWidget {
               ),
             ],
           ),
-          // ClothingTabs(),
-          // TabBar(
-          //   controller: tabController,
-          //   tabs: [
-          //     Tab(
-          //       text: 'Garments',
-          //     ),
-          //     Tab(
-          //       text: 'Outfits',
-          //     ),
-          //   ],
-          //   labelColor: Colors.black,
-          // ),
-          // ClothingTabs()
         ));
   }
 }

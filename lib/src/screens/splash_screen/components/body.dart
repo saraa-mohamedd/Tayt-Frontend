@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
 
 class Body extends StatelessWidget {
@@ -25,11 +26,11 @@ class Body extends StatelessWidget {
           vertical: 40,
         ),
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/splash_screen_bg.jpg'),
-            fit: BoxFit.cover,
-          ),
-          // color: Color.fromARGB(255, 100, 72, 92),
+          // image: DecorationImage(
+          //   image: AssetImage('assets/images/splash_screen_bg.jpg'),
+          //   fit: BoxFit.cover,
+          // ),
+          color: AppColors.secondaryColor,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -45,7 +46,7 @@ class Body extends StatelessWidget {
             Text(
               'Tayt',
               style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                    color: Colors.white,
+                    color: AppColors.primaryColor,
                     fontSize: 90,
                     fontWeight: FontWeight.bold,
                   ),
@@ -55,7 +56,7 @@ class Body extends StatelessWidget {
               child: Text(
                 'Ready to revolutionize your\nshopping experience?',
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      color: const Color(0xFFBDBDBD),
+                      color: AppColors.primaryColor.withOpacity(0.8),
                       fontFamily: 'Helvetica Neue',
                     ),
               ),

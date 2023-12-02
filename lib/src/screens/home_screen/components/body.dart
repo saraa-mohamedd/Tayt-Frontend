@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/home_screen/components/carousel.dart';
 
 class Body extends StatelessWidget {
@@ -24,62 +25,71 @@ class Body extends StatelessWidget {
             Text(
               'Trending Themes',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    color: Colors.black,
-                    fontSize: 22,
+                    color: AppColors.primaryColor,
+                    fontSize: 20,
                     fontFamily: 'Helvetica Neue',
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             CustomCarousel(
               banners: [
-                'assets/images/splash_screen_bg.jpg',
-                'assets/images/splash_screen_bg.jpg',
-                'assets/images/splash_screen_bg.jpg'
+                'assets/images/secondarycolor_swatch.png',
+                'assets/images/secondarycolor_swatch.png',
+                'assets/images/secondarycolor_swatch.png',
+                'assets/images/secondarycolor_swatch.png',
               ],
-              width: 370,
+              width: 348,
               height: 200,
+              viewportFraction: 0.95,
             ),
             const SizedBox(
               height: 20,
             ),
             const Text('Trending Products',
                 style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 20,
                     fontFamily: 'Helvetica Neue',
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black)),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor)),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             CustomCarousel(
                 banners: [
-                  'assets/images/splash_screen_bg.jpg',
-                  'assets/images/splash_screen_bg.jpg',
-                  'assets/images/splash_screen_bg.jpg'
+                  'assets/images/secondarycolor_swatch.png',
+                  'assets/images/secondarycolor_swatch.png',
+                  'assets/images/secondarycolor_swatch.png',
                 ],
-                height: 120,
+                height: 130,
                 width: 150,
                 hasIndicator: false,
-                viewportFraction: 0.45),
+                viewportFraction: 0.42,
+                infscroll: false),
             SizedBox(
               height: 15,
             ),
             Text('Recommended For You',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: Colors.black,
-                      fontSize: 22,
+                      color: AppColors.primaryColor,
+                      fontSize: 20,
                       fontFamily: 'Helvetica Neue',
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     )),
-            SizedBox(height: 20),
-            CustomCarousel(banners: [
-              'assets/images/splash_screen_bg.jpg',
-              'assets/images/splash_screen_bg.jpg',
-              'assets/images/splash_screen_bg.jpg'
-            ]),
+            const SizedBox(height: 10),
+            CustomCarousel(
+              banners: [
+                'assets/images/secondarycolor_swatch.png',
+                'assets/images/secondarycolor_swatch.png',
+                'assets/images/secondarycolor_swatch.png',
+              ],
+              width: 150,
+              height: 130,
+              infscroll: true,
+              viewportFraction: 0.42,
+            ),
           ],
         ));
   }
