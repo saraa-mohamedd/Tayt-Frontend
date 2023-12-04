@@ -40,10 +40,10 @@ class Body extends StatelessWidget {
           ],
         ),
         const Padding(
-          padding: EdgeInsets.only(left: 25.0, top: 20, right: 20, bottom: 15),
+          padding: EdgeInsets.only(left: 25.0, top: 20, right: 20, bottom: 12),
           child: Text(
             'Welcome back!',
-            style: TextStyle(fontSize: 18, fontFamily: 'Helvetica Neue'),
+            style: TextStyle(fontSize: 20, fontFamily: 'Helvetica Neue'),
           ),
         ),
         Padding(

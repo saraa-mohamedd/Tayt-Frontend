@@ -31,10 +31,6 @@ class Body extends StatelessWidget {
           vertical: 40,
         ),
         decoration: const BoxDecoration(
-          // image: DecorationImage(
-          //   image: AssetImage('assets/images/splash_screen_bg.jpg'),
-          //   fit: BoxFit.cover,
-          // ),
           color: AppColors.secondaryColor,
         ),
         child: Column(
@@ -45,7 +41,6 @@ class Body extends StatelessWidget {
               height: 200,
             ),
             Material(
-              // child: Image.asset('assets/images/splash_img.png'),
               color: Colors.transparent,
             ),
             Text(

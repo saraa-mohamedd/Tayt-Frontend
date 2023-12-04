@@ -112,9 +112,9 @@ class _BodyState extends State<Body> {
             ),
           ),
         ),
-        _selectedImage == null
-            ? Text('No image selected.')
-            : Image.file(_selectedImage!),
+        // _selectedImage == null
+        //     ? Text('No image selected.')
+        //     : Image.file(_selectedImage!),
       ],
     );
   }

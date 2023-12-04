@@ -31,9 +31,9 @@ class MeasurementTextField extends StatelessWidget {
           FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
         ],
         style: const TextStyle(
-          color: Color.fromARGB(255, 215, 192, 87),
-          fontSize: 15,
-        ),
+            color: Color.fromARGB(255, 238, 227, 180),
+            fontSize: 18,
+            fontFamily: 'Helvetica Neue'),
         decoration: InputDecoration(
           fillColor: Colors.white.withOpacity(0),
           filled: true,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
-import 'package:tayt_app/src/screens/body_mesh_screen/components/mesh_render.dart';
 import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
 // impoer 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
 

@@ -40,7 +40,7 @@ class _MeshRenderState extends State<MeshRender> {
           //scene.light.diffuse.setFrom(Vector3(2, 0, 2));
           scene.textureBlendMode = BlendMode.modulate;
           // on below line setting camera for zoom.
-          scene.camera.zoom = 9;
+          scene.camera.zoom = 9.5;
         },
       ),
     );
