@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
-import 'package:tayt_app/src/screens/body_mesh_screen/components/mesh_render.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -25,12 +26,12 @@ class MeasurementTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 2),
       child: TextField(
         controller: controller,
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
         ],
-        style: TextStyle(
-          color: Color.fromARGB(255, 215, 182, 34),
+        style: const TextStyle(
+          color: Color.fromARGB(255, 215, 192, 87),
           fontSize: 15,
         ),
         decoration: InputDecoration(
@@ -44,7 +45,7 @@ class MeasurementTextField extends StatelessWidget {
                   width: 1, color: Color.fromARGB(255, 153, 148, 117))),
           hintText: hintText,
           hintStyle: const TextStyle(
-              color: Color.fromARGB(255, 215, 182, 34),
+              color: Color.fromARGB(255, 243, 220, 166),
               fontSize: 14,
               fontFamily: 'Helvetica Neue'),
           labelText: labelText,
@@ -120,9 +121,9 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
             child: ToggleSwitch(
                 minWidth: 170,
                 cornerRadius: 70.0,
-                activeBgColors: [
-                  const [Color(0xffecd06f)],
-                  const [Color(0xffecd06f)]
+                activeBgColors: const [
+                  [AppColors.secondaryColor],
+                  [AppColors.secondaryColor]
                 ],
                 inactiveBgColor: Colors.grey[500],
                 initialLabelIndex: 0,
@@ -131,21 +132,21 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                 totalSwitches: 2,
                 animate: true,
                 animationDuration: 100,
-                labels: ['Female', 'Male'],
+                labels: const ['Female', 'Male'],
                 radiusStyle: true,
                 onToggle: (index) {
                   gender = index == 0 ? "female" : "male";
-                  // print('switched to: $index');
+                  print('switched to: $gender');
                 },
                 // curve: Curves.linear,
                 customTextStyles: const [
                   TextStyle(
-                      color: Color(0xff4056a1),
+                      color: Colors.black87,
                       fontSize: 15,
                       fontFamily: 'Helvetica Neue',
                       letterSpacing: -0.1),
                   TextStyle(
-                      color: Color(0xff4056a1),
+                      color: Colors.black87,
                       fontSize: 15,
                       fontFamily: 'Helvetica Neue',
                       letterSpacing: -0.1),
@@ -182,6 +183,23 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
             ),
             child: ElevatedButton(
               onPressed: () {
+                if (heightController.text.isEmpty ||
+                    weightController.text.isEmpty ||
+                    hipsController.text.isEmpty ||
+                    chestController.text.isEmpty ||
+                    waistController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: AppColors.secondaryColor,
+                      content: Text(
+                        'Please fill all fields',
+                        style: TextStyle(color: AppColors.primaryColor),
+                      ),
+                    ),
+                  );
+                  return;
+                }
+
                 Measurements m = Measurements(
                     gender: gender,
                     height: double.parse(heightController.text),
@@ -199,7 +217,14 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                 chestController.clear();
                 waistController.clear();
                 // print('Navigating to BodyMeshScreen');
-                // Navigator.pushNamed(context, BodyMeshScreen.routeName);
+                //Navigator.pushNamed(context, BodyMeshScreen.routeName);
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: BodyMeshScreen(),
+                  withNavBar: true, // OPTIONAL VALUE. True by default.
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+
                 //ensure navbar shows in next screen
                 // Navigator.push(
                 //   context,
@@ -211,13 +236,13 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
               child: Text(
                 'Submit',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: Color(0xff4056a1),
+                      color: Colors.black87,
                       fontSize: 15,
                       fontFamily: 'Helvetica Neue',
                     ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xffecd06f),
+                backgroundColor: AppColors.secondaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(70.0),
                 ),

@@ -3,6 +3,7 @@ import 'package:tayt_app/routes/routes.dart';
 import 'package:tayt_app/service/navigation_service.dart';
 import 'package:tayt_app/src/screens/splash_screen/splash_screen.dart';
 import 'package:tayt_app/provider/getit.dart';
+import 'package:tayt_app/src/widgets/nav_bar.dart';
 
 void main() {
   setupLocator();
@@ -12,7 +13,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Poppins',
         textSelectionTheme: const TextSelectionThemeData(
-          // Set Up for TextFields
           cursorColor: Colors.grey,
           selectionColor: Colors.blueGrey,
         ),
@@ -30,7 +29,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: routes,
-      home: const SplashScreen(),
+      // Replace SplashScreen() with BottomNavBar()
+      home: SplashScreen(),
     );
   }
 }

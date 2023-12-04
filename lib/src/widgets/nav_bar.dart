@@ -1,70 +1,96 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-import 'package:get/get.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:tayt_app/src/screens/home_screen/home_screen.dart';
-import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:tayt_app/src/deps/colors.dart';
+import 'package:tayt_app/src/screens/user_screen/user_screen.dart';
+import '../screens/splash_screen/components/body.dart';
+import '../screens/body_mesh_screen/body_mesh_screen.dart';
+import '../screens/clothing_screen/clothing_screen.dart';
+import '../screens/home_screen/home_screen.dart';
+import '../screens/body_screen/body_screen.dart';
+import '../screens/body_mesh_screen/components/body_mesh.dart';
 
-class NavigationController extends GetxController {
-  final Rx<int> selectedIndex = 0.obs;
-
-  final screens = [
-    HomeScreen(),
-    Container(color: const Color.fromRGBO(33, 150, 243, 1)),
-    BodyScreen(),
-    Container(color: Colors.yellow),
-  ];
+class BottomNavBar extends StatefulWidget {
+  @override
+  _MyBottomNavBarAppState createState() => _MyBottomNavBarAppState();
 }
 
-class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
-  static String routeName = '/nav-bar-screen';
+class _MyBottomNavBarAppState extends State<BottomNavBar> {
+  PersistentTabController _controller =
+      PersistentTabController(initialIndex: 0);
+
+  List<PersistentBottomNavBarItem> _navBarItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Container(
+          padding: EdgeInsets.symmetric(vertical: 0),
+          child: Icon(
+            Icons.home,
+            size: 30,
+          ),
+        ),
+        title: "Home",
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.black,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Container(
+          padding: EdgeInsets.symmetric(vertical: 0),
+          child: Icon(Icons.shopping_bag, size: 30),
+        ),
+        title: ("Clothing"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.black,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Container(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: FaIcon(FontAwesomeIcons.personRays, size: 23),
+        ),
+        title: ("My Body"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.black,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Container(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: FaIcon(FontAwesomeIcons.solidUser, size: 23),
+        ),
+        title: ("Profile"),
+        activeColorPrimary: AppColors.primaryColor,
+        inactiveColorPrimary: Colors.black,
+      ),
+    ];
+  }
+
+  List<Widget> _screens() {
+    // Replace these with your own screen widgets
+    return [HomeScreen(), ClothingScreen(), BodyScreen(), UserScreen()];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController());
-
     return Scaffold(
-      bottomNavigationBar: Obx(
-        () => NavigationBar(
-          indicatorColor: Color.fromARGB(122, 236, 209, 111),
-          height: 60,
-          elevation: 0,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          selectedIndex: controller.selectedIndex.value,
-          shadowColor: Colors.black.withOpacity(0.5),
-          onDestinationSelected: (index) => {
-            controller.selectedIndex.value = index,
-            print(controller.selectedIndex.value)
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home, size: 30),
-              label: 'Home',
-            ),
-            NavigationDestination(
-                icon: Icon(
-                  Icons.shopping_bag,
-                  size: 30,
-                ),
-                label: 'Clothing'),
-            NavigationDestination(
-              icon: FaIcon(
-                FontAwesomeIcons.personRays,
-                size: 25,
-              ),
-              label: 'My Body',
-            ),
-            NavigationDestination(
-              icon: FaIcon(FontAwesomeIcons.solidUser),
-              label: 'Profile',
-            ),
-          ],
-        ),
-      ),
-      body: Obx(
-        () => controller.screens[controller.selectedIndex.value],
-      ),
+      body: PersistentTabView(context,
+          navBarHeight: 52,
+          decoration: NavBarDecoration(
+            colorBehindNavBar: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          itemAnimationProperties: ItemAnimationProperties(
+            duration: Duration(milliseconds: 150),
+            curve: Curves.elasticIn,
+          ),
+          controller: _controller,
+          screens: _screens(),
+          items: _navBarItems(),
+          navBarStyle: NavBarStyle.style12,
+          screenTransitionAnimation: ScreenTransitionAnimation(
+            animateTabTransition: true,
+            curve: Curves.ease,
+            duration: Duration(milliseconds: 200),
+          )),
     );
   }
 }

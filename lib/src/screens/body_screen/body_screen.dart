@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_screen/components/body.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/mesh_renderer.dart';
@@ -35,7 +36,7 @@ class BodyScreen extends StatelessWidget {
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.displayLarge!.copyWith(
                     textBaseline: TextBaseline.alphabetic,
-                    color: Colors.black.withOpacity(0.9),
+                    color: AppColors.primaryColor,
                     fontSize: 36,
                     fontWeight: FontWeight.values[7],
                     letterSpacing: -0.7,
