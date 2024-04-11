@@ -1,129 +1,142 @@
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart';
+import 'clothing_details_page.dart'; // Import the ClothingDetailsPage
 
-class Body extends StatelessWidget {
-  Body({super.key});
+class Body extends StatefulWidget {
+  Body({Key? key}) : super(key: key);
 
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   final _searchController = TextEditingController();
+  int _currentPage = 0;
+  final _pageSize = 10; // Number of items per page
+  final _clothingItems =
+      List.generate(100, (index) => 'Clothing ${index + 1}');
+
+  List<String> _getCurrentPageItems() {
+    final startIndex = _currentPage * _pageSize;
+    final endIndex = (startIndex + _pageSize) < _clothingItems.length
+        ? (startIndex + _pageSize)
+        : _clothingItems.length;
+    return _clothingItems.sublist(startIndex, endIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<String> currentPageItems = _getCurrentPageItems();
+
     return Padding(
-        padding: const EdgeInsets.only(left: 8.0, top: 8),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            children: [
-              ClothingSearchBar(searchController: _searchController),
-              SizedBox(
-                height: 50,
-                child: AppBar(
-                  bottom: TabBar(
-                    tabs: [
-                      Tab(
-                        child: Text('Garments'),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 20),
+          ClothingSearchBar(searchController: _searchController),
+          SizedBox(height: 20),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+                //childAspectRatio: 0.9, // Adjust this value to control the size of the grid items
+              ),
+              itemCount: currentPageItems.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to ClothingDetailsPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ClothingDetailsPage(
+                          imagePath:
+                              'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
+                          name: 'Clothing ${_currentPage * _pageSize + index + 1}',
+                          description:
+                              'Description of the clothing item ${_currentPage * _pageSize + index + 1}',
+                        ),
                       ),
-                      Tab(
-                        child: Text('Outfits'),
-                      ),
-                    ],
-                    indicatorColor: AppColors.primaryColor,
-                    labelColor: AppColors.primaryColor,
-                    unselectedLabelColor: Colors.black,
-                    splashFactory: NoSplash.splashFactory,
-                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
-                        return states.contains(MaterialState.focused)
-                            ? AppColors.secondaryColor
-                            : AppColors.secondaryColor;
-                      },
+                    );
+                  },
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    // overlayColor: AppColors.secondaryColor.withOpacity(0.2),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image.asset(
+                        'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
+                        fit: BoxFit.cover,
+                        errorBuilder:
+                            (context, error, stackTrace) {
+                          return Container();
+                        },
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    // first tab bar view widget
-                    // SingleChildScrollView(
-                    Container(
-                      // height: ,
-                      // width: 20,
-                      color: AppColors.secondaryColor,
-                      child: Center(
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(children: [
-                            TextSpan(
-                              text: 'Coming Soon!\n',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 24,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            TextSpan(
-                              text: '[single garments based on search prompt]',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 16,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                          ]),
-                        ),
-                      ),
-                    ),
-                    // second tab bar viiew widget
-                    Container(
-                      color: AppColors.secondaryColor,
-                      child: Center(
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(children: [
-                            TextSpan(
-                              text: 'Coming Soon!\n',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 24,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            TextSpan(
-                              text: '[entire outfits based on search prompt]',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 16,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                          ]),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
-        ));
+          SizedBox(height: 0),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15.0),
+                topRight: Radius.circular(15.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back,
+                      color: AppColors.primaryColor),
+                  onPressed: _currentPage == 0
+                      ? null
+                      : () {
+                          setState(() {
+                            _currentPage--;
+                          });
+                        },
+                ),
+                Text('Page ${_currentPage + 1}',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryColor)),
+                IconButton(
+                  icon: Icon(Icons.arrow_forward,
+                      color: AppColors.primaryColor),
+                  onPressed: (_currentPage + 1) *
+                              _pageSize >=
+                          _clothingItems.length
+                      ? null
+                      : () {
+                          setState(() {
+                            _currentPage++;
+                          });
+                        },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }

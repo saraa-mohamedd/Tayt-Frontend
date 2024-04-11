@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart'; 
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:tayt_app/src/screens/signup_screen/signup_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -19,24 +21,23 @@ class Body extends StatelessWidget {
               fit: BoxFit.fill,
             ),
             Positioned(
-                bottom: 20,
-                left: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sign In',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .copyWith(
-                              color: AppColors.secondaryColor,
-                              fontSize: 64,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w600),
-                    )
-                  ],
-                )),
+              bottom: 20,
+              left: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Sign In',
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                      color: AppColors.secondaryColor,
+                      fontSize: 64,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
         const Padding(
@@ -55,22 +56,23 @@ class Body extends StatelessWidget {
               fontFamily: 'Helvetica Neue',
             ),
             decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2,
-                      color: Color.fromARGB(255, 243, 220, 166),
-                      style: BorderStyle.solid,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(40))),
-                contentPadding: const EdgeInsets.only(left: 25.0, right: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(70.0),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 2,
+                  color: Color.fromARGB(255, 243, 220, 166),
+                  style: BorderStyle.solid,
                 ),
-                hintText: 'Email',
-                suffixIcon: const Icon(
-                  Icons.email,
-                  color: Colors.black,
-                )),
+                borderRadius: BorderRadius.all(Radius.circular(40))),
+              contentPadding: const EdgeInsets.only(left: 25.0, right: 20.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(70.0),
+              ),
+              hintText: 'Email',
+              suffixIcon: const Icon(
+                Icons.email,
+                color: Colors.black,
+              ),
+            ),
           ),
         ),
         SizedBox(height: 20),
@@ -85,12 +87,12 @@ class Body extends StatelessWidget {
             obscureText: true,
             decoration: InputDecoration(
               focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    width: 2,
-                    color: Color.fromARGB(255, 243, 220, 166),
-                    style: BorderStyle.solid,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(40))),
+                borderSide: BorderSide(
+                  width: 2,
+                  color: Color.fromARGB(255, 243, 220, 166),
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(40))),
               contentPadding: const EdgeInsets.only(left: 25.0, right: 20.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(70.0),
@@ -113,8 +115,7 @@ class Body extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) =>
-                        BottomNavBar(), // Replace with your desired screen
+                    builder: (context) => BottomNavBar(), // Replace with your desired screen
                   ),
                 );
               },
@@ -131,18 +132,49 @@ class Body extends StatelessWidget {
               child: Text(
                 'Submit',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: AppColors.primaryColor,
-                      fontSize: 15,
-                      fontFamily: 'Helvetica Neue',
-                    ),
+                  color: AppColors.primaryColor,
+                  fontSize: 15,
+                  fontFamily: 'Helvetica Neue',
+                ),
               ),
             ),
           ),
         ),
         SizedBox(height: 30),
-        Column(children: [
-          Center(child: Text('Don\'t have an account yet?')),
-        ]),
+        Column(
+          children: [
+            Center(
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontFamily: 'Helvetica Neue',
+                    fontSize: 15,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Don't have an account yet? ",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "Create one",
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SignupScreen(), // Navigate to the sign-up page
+                          ));
+                        },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
