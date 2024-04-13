@@ -14,8 +14,7 @@ class _BodyState extends State<Body> {
   final _searchController = TextEditingController();
   int _currentPage = 0;
   final _pageSize = 10; // Number of items per page
-  final _clothingItems =
-      List.generate(100, (index) => 'Clothing ${index + 1}');
+  final _clothingItems = List.generate(100, (index) => 'Clothing ${index + 1}');
 
   List<String> _getCurrentPageItems() {
     final startIndex = _currentPage * _pageSize;
@@ -30,7 +29,7 @@ class _BodyState extends State<Body> {
     final List<String> currentPageItems = _getCurrentPageItems();
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -39,8 +38,7 @@ class _BodyState extends State<Body> {
           SizedBox(height: 20),
           Expanded(
             child: GridView.builder(
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
@@ -57,7 +55,8 @@ class _BodyState extends State<Body> {
                         builder: (context) => ClothingDetailsPage(
                           imagePath:
                               'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
-                          name: 'Clothing ${_currentPage * _pageSize + index + 1}',
+                          name:
+                              'Clothing ${_currentPage * _pageSize + index + 1}',
                           description:
                               'Description of the clothing item ${_currentPage * _pageSize + index + 1}',
                         ),
@@ -69,16 +68,58 @@ class _BodyState extends State<Body> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: Image.asset(
-                        'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
-                        fit: BoxFit.cover,
-                        errorBuilder:
-                            (context, error, stackTrace) {
-                          return Container();
-                        },
-                      ),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image.asset(
+                            'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container();
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryColor.withOpacity(
+                                  0.7), // Semi-transparent background for text
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(15.0),
+                                bottomRight: Radius.circular(15.0),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Clothing ${_currentPage * _pageSize + index + 1}',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                Text(
+                                  'Store/Brand Name',
+                                  style: TextStyle(
+                                    color:
+                                        AppColors.primaryColor.withOpacity(0.7),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -98,8 +139,7 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back,
-                      color: AppColors.primaryColor),
+                  icon: Icon(Icons.arrow_back, color: AppColors.primaryColor),
                   onPressed: _currentPage == 0
                       ? null
                       : () {
@@ -114,17 +154,16 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.bold,
                         color: AppColors.primaryColor)),
                 IconButton(
-                  icon: Icon(Icons.arrow_forward,
-                      color: AppColors.primaryColor),
-                  onPressed: (_currentPage + 1) *
-                              _pageSize >=
-                          _clothingItems.length
-                      ? null
-                      : () {
-                          setState(() {
-                            _currentPage++;
-                          });
-                        },
+                  icon:
+                      Icon(Icons.arrow_forward, color: AppColors.primaryColor),
+                  onPressed:
+                      (_currentPage + 1) * _pageSize >= _clothingItems.length
+                          ? null
+                          : () {
+                              setState(() {
+                                _currentPage++;
+                              });
+                            },
                 ),
               ],
             ),

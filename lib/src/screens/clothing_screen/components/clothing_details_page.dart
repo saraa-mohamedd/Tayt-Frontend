@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/colors.dart';
+import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
@@ -11,12 +12,17 @@ class ClothingDetailsPage extends StatelessWidget {
   final String description;
   final String storeName = 'Store and Brand Name';
   final String storeUrl = 'https://www.amazon.com/';
-  // array of image paths
-  final List<String> recommendations = [
-    'assets/images/secondarycolor_swatch.png',
-    'assets/images/secondarycolor_swatch.png',
-    'assets/images/secondarycolor_swatch.png',
-    'assets/images/secondarycolor_swatch.png',
+
+  // array of recommendations in the form of (imagePath, name, description) (can add more fields later if needed)
+  final List<Tuple3<String, String, String>> recommendations = [
+    Tuple3<String, String, String>(
+        'assets/images/clothing/front2.jpeg', 'Clothing 2', 'Description 2'),
+    Tuple3<String, String, String>(
+        'assets/images/clothing/front22.jpeg', 'Clothing 22', 'Description 22'),
+    Tuple3<String, String, String>(
+        'assets/images/clothing/front3.jpeg', 'Clothing 3', 'Description 3'),
+    Tuple3<String, String, String>(
+        'assets/images/clothing/front13.jpeg', 'Clothing 13', 'Description 13'),
   ];
 
   ClothingDetailsPage({
@@ -29,8 +35,11 @@ class ClothingDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shadowColor: Colors.black.withOpacity(0.6),
+        surfaceTintColor: Color(0xfffaf9f6),
         title: Text(
           'Clothing Details',
+          textAlign: TextAlign.start,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.primaryColor,
@@ -157,10 +166,14 @@ class ClothingDetailsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   CustomCarousel(
-                    banners: recommendations,
+                    banners: [],
                     width: 200,
                     height: 200,
                     viewportFraction: 0.55,
+                    hasIndicator: false,
+                    infscroll: false,
+                    linkedImages: recommendations,
+                    linked: true,
                   ),
                 ],
               ),

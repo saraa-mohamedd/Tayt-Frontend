@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:tayt_app/controllers/carousel_controllers.dart';
 import 'package:tayt_app/src/deps/carousel_counter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
+import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
+import 'package:tuple/tuple.dart';
 
 class CustomCarousel extends StatelessWidget {
   const CustomCarousel({
@@ -14,6 +16,8 @@ class CustomCarousel extends StatelessWidget {
     this.viewportFraction = 0.95,
     this.hasIndicator = true,
     this.infscroll = true,
+    this.linkedImages = const [],
+    this.linked = false,
     super.key,
   });
 
@@ -21,7 +25,9 @@ class CustomCarousel extends StatelessWidget {
   final double viewportFraction;
   final double? width, height;
   final List<String> banners;
+  final List<Tuple3<String, String, String>> linkedImages;
   final bool? infscroll;
+  final bool linked;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +35,37 @@ class CustomCarousel extends StatelessWidget {
     return Column(
       children: [
         CarouselSlider(
-          items: banners
-              .map((url) => CarouselImage(
-                  imageUrl: url,
-                  width: width,
-                  height: height,
-                  backgroundColor: Colors.black12))
-              .toList(),
+          items: linked
+              ? linkedImages
+                  .map((url) => CarouselImage(
+                        imageUrl: url.item1,
+                        width: width,
+                        height: height,
+                        backgroundColor:
+                            AppColors.secondaryColor.withOpacity(0.5),
+                        onPressed: () {
+                          // Navigate to ClothingDetailsPage
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ClothingDetailsPage(
+                                imagePath: url.item1,
+                                name: url.item2,
+                                description: url.item3,
+                              ),
+                            ),
+                          );
+                        },
+                      ))
+                  .toList()
+              : banners
+                  .map((url) => CarouselImage(
+                      imageUrl: url,
+                      width: width,
+                      height: height,
+                      backgroundColor:
+                          AppColors.secondaryColor.withOpacity(0.5)))
+                  .toList(),
           options: CarouselOptions(
             viewportFraction: viewportFraction,
             onPageChanged: (index, _) => controller.updateIndex(index),
@@ -94,7 +124,7 @@ class CarouselImage extends StatelessWidget {
       child: Container(
           width: width,
           height: 20,
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: backgroundColor,

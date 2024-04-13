@@ -11,6 +11,7 @@ import '../screens/clothing_screen/clothing_screen.dart';
 import '../screens/home_screen/home_screen.dart';
 import '../screens/body_screen/body_screen.dart';
 import '../screens/body_mesh_screen/components/body_mesh.dart';
+import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override
@@ -73,7 +74,8 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
 
   List<Widget> _screens() {
     // Replace these with your own screen widgets
-    return [HomeScreen(), ClothingScreen(), BodyScreen(), UserScreen()];
+    // return [HomeScreen(), ClothingScreen(), BodyScreen(), UserScreen()];
+    return [HomeScreen(), ClothingScreen(), TryOnScreen(), UserScreen()];
   }
 
   @override
