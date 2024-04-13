@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:tayt_app/config/size_config.dart';
 import 'package:tayt_app/controllers/carousel_controllers.dart';
-import 'package:tayt_app/src/screens/home_screen/components/carousel_counter.dart';
+import 'package:tayt_app/src/deps/carousel_counter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 
 class CustomCarousel extends StatelessWidget {

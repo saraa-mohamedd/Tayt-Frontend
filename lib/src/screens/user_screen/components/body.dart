@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
-import 'package:tayt_app/src/screens/home_screen/components/carousel.dart';
+import 'package:tayt_app/src/deps/carousel.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
