@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart'; 
+import 'package:flutter/gestures.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
 import 'package:tayt_app/src/screens/signup_screen/signup_screen.dart';
@@ -29,11 +29,11 @@ class Body extends StatelessWidget {
                   Text(
                     'Sign In',
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      color: AppColors.secondaryColor,
-                      fontSize: 64,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: AppColors.secondaryColor,
+                          fontSize: 64,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                        ),
                   )
                 ],
               ),
@@ -57,12 +57,12 @@ class Body extends StatelessWidget {
             ),
             decoration: InputDecoration(
               focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 2,
-                  color: Color.fromARGB(255, 243, 220, 166),
-                  style: BorderStyle.solid,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40))),
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: Color.fromARGB(255, 243, 220, 166),
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(40))),
               contentPadding: const EdgeInsets.only(left: 25.0, right: 20.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(70.0),
@@ -87,12 +87,12 @@ class Body extends StatelessWidget {
             obscureText: true,
             decoration: InputDecoration(
               focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 2,
-                  color: Color.fromARGB(255, 243, 220, 166),
-                  style: BorderStyle.solid,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40))),
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: Color.fromARGB(255, 243, 220, 166),
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(40))),
               contentPadding: const EdgeInsets.only(left: 25.0, right: 20.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(70.0),
@@ -115,7 +115,8 @@ class Body extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => BottomNavBar(), // Replace with your desired screen
+                    builder: (context) =>
+                        BottomNavBar(), // Replace with your desired screen
                   ),
                 );
               },
@@ -132,10 +133,10 @@ class Body extends StatelessWidget {
               child: Text(
                 'Submit',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: AppColors.primaryColor,
-                  fontSize: 15,
-                  fontFamily: 'Helvetica Neue',
-                ),
+                      color: AppColors.primaryColor,
+                      fontSize: 15,
+                      fontFamily: 'Helvetica Neue',
+                    ),
               ),
             ),
           ),
@@ -160,12 +161,14 @@ class Body extends StatelessWidget {
                     TextSpan(
                       text: "Create one",
                       style: TextStyle(
-                        color: AppColors.primaryColor,
-                      ),
+                          color: AppColors.primaryColor,
+                          decoration: TextDecoration.underline),
+                      // add underline to the text
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SignupScreen(), // Navigate to the sign-up page
+                            builder: (context) =>
+                                SignupScreen(), // Navigate to the sign-up page
                           ));
                         },
                     ),

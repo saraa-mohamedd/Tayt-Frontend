@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/body.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayt_app/src/deps/colors.dart';
+import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 
 class ClothingScreen extends StatelessWidget {
   static String routeName = '/clothing-screen';
@@ -48,7 +49,12 @@ class ClothingScreen extends StatelessWidget {
                 height: 26,
                 color: AppColors.primaryColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TryOnScreen()),
+                );
+              },
             )
           ]),
       body: Body(),
