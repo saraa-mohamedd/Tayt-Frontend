@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/outfits_screen/components/outfit_card.dart';
@@ -22,7 +24,7 @@ class _BodyState extends State<Body> {
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 10),
             child: Text(
-              'Ready to enter your changing room?\n\n Manage your outfits below, and \nchoose one to try on!',
+              'Manage your outfits below, and \nchoose one to try on!',
               style: Theme.of(context).textTheme.titleSmall!.copyWith(
                   color: Colors.black,
                   fontFamily: 'Helvetica Neue',
@@ -46,7 +48,9 @@ class _BodyState extends State<Body> {
                             'assets/images/clothing/front${24 - index - 5}.jpeg',
                             'Clothing ${24 - index - 5}',
                             'Description ${24 - index - 5}')),
-                    numItems: 2);
+                    numItems:
+                        // ranodm number of items
+                        Random().nextInt(2) + 1);
               },
             ),
           ),
