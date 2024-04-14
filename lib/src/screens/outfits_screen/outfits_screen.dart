@@ -3,15 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tayt_app/src/screens/clothing_screen/components/body.dart';
+import 'package:tayt_app/src/screens/outfits_screen/components/body.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayt_app/src/deps/colors.dart';
-import 'package:tayt_app/src/screens/outfits_screen/outfits_screen.dart';
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 
-class ClothingScreen extends StatelessWidget {
+class OutfitsScreen extends StatelessWidget {
   static String routeName = '/clothing-screen';
-  ClothingScreen({Key? key}) : super(key: key);
+  OutfitsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class ClothingScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           toolbarHeight: 60,
           title: Text(
-            'Clothing',
+            'My Outfits',
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.displayLarge!.copyWith(
                 textBaseline: TextBaseline.alphabetic,
@@ -38,25 +37,25 @@ class ClothingScreen extends StatelessWidget {
                   color: AppColors.primaryColor),
               onPressed: () {},
             ),
-            IconButton(
-              icon:
-                  FaIcon(FontAwesomeIcons.heart, color: AppColors.primaryColor),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/wardrobe-outline.svg',
-                width: 26,
-                height: 26,
-                color: AppColors.primaryColor,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OutfitsScreen()),
-                );
-              },
-            )
+            // IconButton(
+            //   icon:
+            //       FaIcon(FontAwesomeIcons.heart, color: AppColors.primaryColor),
+            //   onPressed: () {},
+            // ),
+            // IconButton(
+            //   icon: SvgPicture.asset(
+            //     'assets/icons/wardrobe-outline.svg',
+            //     width: 26,
+            //     height: 26,
+            //     color: AppColors.primaryColor,
+            //   ),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => TryOnScreen()),
+            //     );
+            //   },
+            // )
           ]),
       body: Body(),
     );
