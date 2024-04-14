@@ -3,9 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
 import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
-// impoer 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
-
-import 'package:tayt_app/src/screens/home_screen/home_screen.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);

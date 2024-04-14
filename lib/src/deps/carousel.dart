@@ -18,6 +18,7 @@ class CustomCarousel extends StatelessWidget {
     this.infscroll = true,
     this.linkedImages = const [],
     this.linked = false,
+    this.bgColor = AppColors.secondaryColor,
     super.key,
   });
 
@@ -28,6 +29,7 @@ class CustomCarousel extends StatelessWidget {
   final List<Tuple3<String, String, String>> linkedImages;
   final bool? infscroll;
   final bool linked;
+  final Color bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,7 @@ class CustomCarousel extends StatelessWidget {
                         imageUrl: url.item1,
                         width: width,
                         height: height,
-                        backgroundColor:
-                            AppColors.secondaryColor.withOpacity(0.5),
+                        backgroundColor: bgColor.withOpacity(0.5),
                         onPressed: () {
                           // Navigate to ClothingDetailsPage
                           Navigator.push(

@@ -174,6 +174,7 @@ class ClothingDetailsPage extends StatelessWidget {
                     infscroll: false,
                     linkedImages: recommendations,
                     linked: true,
+                    bgColor: AppColors.secondaryColor,
                   ),
                 ],
               ),

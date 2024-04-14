@@ -68,6 +68,7 @@ class _BodyState extends State<Body> {
                 color: AppColors.primaryColor,
               ),
               onPressed: () {
+                // call api to get rating of the outfit
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -105,8 +106,6 @@ class _BodyState extends State<Body> {
                     );
                   },
                 );
-                // call api to get rating of the outfit
-                // create popup with rating
               },
             ),
           ),
@@ -125,17 +124,21 @@ class _BodyState extends State<Body> {
           ),
         ),
         SizedBox(
-          height: 20,
+          height: 10,
         ),
-        CustomCarousel(
-          banners: [],
-          width: 200,
-          height: 200,
-          viewportFraction: 0.55,
-          hasIndicator: false,
-          infscroll: false,
-          linkedImages: recommendations,
-          linked: true,
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CustomCarousel(
+            banners: [],
+            width: 200,
+            height: 200,
+            viewportFraction: 0.55,
+            hasIndicator: false,
+            infscroll: false,
+            linkedImages: recommendations,
+            linked: true,
+            bgColor: AppColors.primaryColor,
+          ),
         ),
         Center(
           child: Padding(
