@@ -40,34 +40,34 @@ class _BodyState extends State<Body> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: LinearProgressIndicator(
-                        value: (_currentPageIndex) / 4,
-                        backgroundColor: Colors.white,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      '${((_currentPageIndex + 0) / 4 * 100).toInt()}%',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              //   decoration: BoxDecoration(
+              //     color: AppColors.secondaryColor.withOpacity(0.9),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: Row(
+              //     children: [
+              //       // Expanded(
+              //       //   child: LinearProgressIndicator(
+              //       //     value: (_currentPageIndex) / 4,
+              //       //     backgroundColor: Colors.white,
+              //       //     valueColor: AlwaysStoppedAnimation<Color>(
+              //       //       AppColors.primaryColor,
+              //       //     ),
+              //       //   ),
+              //       // ),
+              //       SizedBox(width: 10),
+              //       Text(
+              //         '${((_currentPageIndex + 0) / 4 * 100).toInt()}%',
+              //         style: TextStyle(
+              //           color: Colors.white,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               SizedBox(height: 40),
               Container(
                 padding: EdgeInsets.all(20),
@@ -95,7 +95,7 @@ class _BodyState extends State<Body> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'To generate your 3D body, we need some additional information. Please answer the following questions.',
+                      'To generate your 3D body, we need some information about you. Please take a few minutes to complete the survey.',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.grey[800],

@@ -61,16 +61,19 @@ class _BodyState extends State<Body> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  // Expanded(
-                  //   child: ListView.builder(
-                  //     itemCount: widget._clothingItems.length,
-                  //     itemBuilder: (context, index) {
-                  //       final item = widget._clothingItems[index];
-                  //       return OutfitCard(
-                  //           outfit: Tuple2(0, [item]), numItems: 1);
-                  //     },
-                  //   ),
-                  // ),
+                  // icon
+                  Expanded(
+                    child: Center(
+                      child: Transform.rotate(
+                        angle: pi / 4,
+                        child: Icon(
+                          Icons.add_circle,
+                          size: 150,
+                          color: AppColors.secondaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
                 ]),
     );
   }
