@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tuple/tuple.dart';
@@ -6,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
 
-class ClothingDetailsPage extends StatelessWidget {
+class ClothingDetailsPage extends StatefulWidget {
   final String imagePath;
   final String name;
   final String description;
@@ -30,9 +32,40 @@ class ClothingDetailsPage extends StatelessWidget {
     required this.name,
     required this.description,
   });
+  @override
+  _ClothingDetailsPageState createState() => _ClothingDetailsPageState();
+}
+
+class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
+  bool isOutfitsToggled = false;
+
+  void toggleOutfitsVisibility() {
+    setState(() {
+      isOutfitsToggled = !isOutfitsToggled;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    String imagePath = widget.imagePath;
+    String name = widget.name;
+    String description = widget.description;
+    String storeName = widget.storeName;
+    String storeUrl = widget.storeUrl;
+
+    OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
+    List<Tuple2<int, List<OutfitItem>>> available_outfits =
+        outfitProvider.getIncompleteOutfits();
+    List<Tuple3<String, String, String>> recommendations =
+        widget.recommendations;
+
+    void getOutfits() {
+      // change state to display all available outfits
+      setState(() {
+        available_outfits = outfitProvider.getIncompleteOutfits();
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.black.withOpacity(0.6),
@@ -128,7 +161,10 @@ class ClothingDetailsPage extends StatelessWidget {
                       height: 45,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Add your onPressed logic here
+                          // display all available outfits
+                          getOutfits();
+                          toggleOutfitsVisibility();
+                          // render row of outfit cards
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
@@ -143,7 +179,7 @@ class ClothingDetailsPage extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'Try Me',
+                          'Add to Outfit',
                           style: TextStyle(
                               color: AppColors
                                   .primaryColor, // Set the desired text color here
@@ -152,6 +188,130 @@ class ClothingDetailsPage extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ),
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                    height: isOutfitsToggled
+                        ? 250
+                        : 0, // Set height based on visibility
+                    padding: isOutfitsToggled
+                        ? EdgeInsets.symmetric(vertical: 20)
+                        : EdgeInsets.zero,
+                    child: isOutfitsToggled
+                        ? Container(
+                            // color: AppColors.primaryColor,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: AppColors.primaryColor,
+                            ),
+                            child: ListView.builder(
+                              itemCount: available_outfits.length + 1,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return index < available_outfits.length
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          toggleOutfitsVisibility();
+                                          outfitProvider.addToOutfit(
+                                              available_outfits[index].item1,
+                                              OutfitItem(
+                                                  imagePath: imagePath,
+                                                  name: name,
+                                                  description: description));
+                                          // Add your onTap logic here
+                                        },
+                                        child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 8.0),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    // Optionally, you can add other decorations like a border or shadow here
+                                                  ),
+                                                  width: 150,
+                                                  height: 200,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    child: Image.asset(
+                                                      available_outfits[index]
+                                                          .item2[0]
+                                                          .imagePath,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 200,
+                                                width: 150,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                  color: Colors.grey
+                                                      .withOpacity(
+                                                          0.5), // Grey overlay
+                                                ), // Grey overlay
+                                              ),
+                                              Icon(
+                                                Icons.add,
+                                                size: 40,
+                                                color: Colors
+                                                    .white, // Plus sign icon
+                                              ),
+                                            ]),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          toggleOutfitsVisibility();
+                                          outfitProvider.createOutfit(
+                                              OutfitItem(
+                                                  imagePath: imagePath,
+                                                  name: name,
+                                                  description: description));
+                                          // Add your onTap logic here
+                                        },
+                                        child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Container(
+                                                  height: 200,
+                                                  width: 150,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    color: Colors.grey
+                                                        .withOpacity(
+                                                            0.5), // Grey overlay
+                                                  ), // Grey overlay
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.add_circle_outline,
+                                                size: 40,
+                                                color: Colors
+                                                    .white, // Plus sign icon
+                                              ),
+                                            ]),
+                                      );
+                              },
+                            ),
+                          )
+                        : SizedBox
+                            .shrink(), // Hide the ListView when not visible
                   ),
                   SizedBox(height: 20),
                   Padding(

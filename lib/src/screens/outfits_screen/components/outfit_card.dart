@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tuple/tuple.dart';
 
-class OutfitCard extends StatelessWidget {
-  final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
-      outfitItems;
+class OutfitCard extends StatefulWidget {
+  final Tuple2<int, List<OutfitItem>> outfit;
+  // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
+  //     outfitItems;
   final int numItems;
 
   const OutfitCard({
     Key? key,
-    required this.outfitItems,
+    required this.outfit,
     required this.numItems,
   }) : super(key: key);
 
   @override
+  _OutfitCardState createState() => _OutfitCardState();
+}
+
+class _OutfitCardState extends State<OutfitCard> {
+  @override
   Widget build(BuildContext context) {
+    OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
     return Card(
       elevation: 4,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -37,25 +47,42 @@ class OutfitCard extends StatelessWidget {
                       color: AppColors.secondaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ClothingDetailsPage(
-                            imagePath: outfitItems.item1.item1,
-                            name: outfitItems.item1.item2,
-                            description: outfitItems.item1.item3,
+                    child: Stack(children: [
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ClothingDetailsPage(
+                              imagePath: widget.outfit.item2[0].imagePath,
+                              name: widget.outfit.item2[0].name,
+                              description: widget.outfit.item2[0].description,
+                            ),
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            widget.outfit.item2[0].imagePath,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          outfitItems.item1.item1,
-                          fit: BoxFit.cover,
+                      Positioned(
+                        top: 5,
+                        right: 5,
+                        child: GestureDetector(
+                          onTap: () {
+                            outfitProvider.removeFromOutfit(
+                                widget.outfit.item1, 0);
+                          },
+                          child: Icon(
+                            FontAwesomeIcons.trashAlt,
+                            color: Color.fromARGB(255, 150, 45, 45),
+                            size: 16,
+                          ),
                         ),
                       ),
-                    )),
+                    ])),
                 Container(
                   height: 170,
                   width: 120,
@@ -64,30 +91,45 @@ class OutfitCard extends StatelessWidget {
                     color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: numItems == 2
-                      ? GestureDetector(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClothingDetailsPage(
-                                imagePath: outfitItems.item2.item1,
-                                name: outfitItems.item2.item2,
-                                description: outfitItems.item2.item3,
+                  child: widget.numItems == 2
+                      ? Stack(children: [
+                          GestureDetector(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ClothingDetailsPage(
+                                  imagePath: widget.outfit.item2[1].imagePath,
+                                  name: widget.outfit.item2[1].name,
+                                  description:
+                                      widget.outfit.item2[1].description,
+                                ),
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                widget.outfit.item2[1].imagePath,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              outfitItems.item2.item1,
-                              fit: BoxFit.cover,
+                          Positioned(
+                            top: 5,
+                            right: 5,
+                            child: GestureDetector(
+                              onTap: () {
+                                outfitProvider.removeFromOutfit(
+                                    widget.outfit.item1, 1);
+                              },
+                              child: Icon(
+                                FontAwesomeIcons.trashAlt,
+                                color: Color.fromARGB(255, 150, 45, 45),
+                                size: 16,
+                              ),
                             ),
                           ),
-                        )
-                      :
-                      // add a dashed border container with a plus icon
-                      // to indicate that there are more images
-                      Container(
+                        ])
+                      : Container(
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: AppColors.primaryColor,
@@ -120,24 +162,12 @@ class OutfitCard extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => TryOnScreen(
-                                outfitItems: outfitItems,
-                                numItems: numItems,
+                                outfitItems: widget.outfit,
+                                numItems: widget.numItems,
                               )),
                     );
                   },
                 ),
-                // ElevatedButton(
-                //   style: ButtonStyle(
-                //       backgroundColor: MaterialStateProperty.all(Colors.blue),
-                //       fixedSize: MaterialStateProperty.all(Size(50, 50))),
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(builder: (context) => TryOnScreen()),
-                //     );
-                //   },
-                //   child: Text('Add to Cart'),
-                // ),
               ],
             ),
           ],

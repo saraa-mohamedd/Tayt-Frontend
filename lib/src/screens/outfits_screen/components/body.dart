@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/outfits_screen/components/outfit_card.dart';
 import 'package:tuple/tuple.dart';
+import '../../../../provider/outfit_provider.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
+    OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: Column(
@@ -35,26 +38,14 @@ class _BodyState extends State<Body> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 5,
+              itemCount: outfitProvider.outfits.length,
               itemBuilder: (context, index) {
-                return OutfitCard(
-                    outfitItems: Tuple2<Tuple3<String, String, String>,
-                            Tuple3<String, String, String>>(
-                        Tuple3<String, String, String>(
-                            'assets/images/clothing/front${index + 1}.jpeg',
-                            'Clothing ${index + 1}',
-                            'Description ${index + 1}'),
-                        Tuple3<String, String, String>(
-                            'assets/images/clothing/front${24 - index - 5}.jpeg',
-                            'Clothing ${24 - index - 5}',
-                            'Description ${24 - index - 5}')),
-                    numItems:
-                        // ranodm number of items
-                        Random().nextInt(2) + 1);
+                final outfit = outfitProvider.outfits[index];
+                final numItems = outfit.item2.length;
+                return OutfitCard(outfit: outfit, numItems: numItems);
               },
             ),
           ),
-          SizedBox(height: 0),
         ],
       ),
     );

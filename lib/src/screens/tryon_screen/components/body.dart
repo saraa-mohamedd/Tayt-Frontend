@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
 import 'package:tuple/tuple.dart';
 import 'package:ionicons/ionicons.dart';
 
 class Body extends StatefulWidget {
-  final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
-      outfitItems;
+  // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
+  //     outfitItems;
+  final Tuple2<int, List<OutfitItem>> outfit;
   final int numItems;
 
   const Body({
     Key? key,
-    required this.outfitItems,
+    required this.outfit,
     required this.numItems,
   }) : super(key: key);
 
@@ -27,8 +29,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
-        outfitItems = widget.outfitItems;
+    Tuple2<int, List<OutfitItem>> outfit = widget.outfit;
     int numItems = widget.numItems;
 
     return Column(
@@ -138,11 +139,14 @@ class _BodyState extends State<Body> {
               infscroll: false,
               linkedImages: numItems == 1
                   ? [
-                      outfitItems.item1,
+                      Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name,
+                          outfit.item2[0].description),
                     ]
                   : [
-                      outfitItems.item1,
-                      outfitItems.item2,
+                      Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name,
+                          outfit.item2[0].description),
+                      Tuple3(outfit.item2[1].imagePath, outfit.item2[1].name,
+                          outfit.item2[1].description),
                     ],
               linked: true,
               bgColor: AppColors.primaryColor,

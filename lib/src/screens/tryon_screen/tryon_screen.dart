@@ -3,14 +3,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/screens/tryon_screen/components/body.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tuple/tuple.dart';
 
 class TryOnScreen extends StatelessWidget {
   static String routeName = '/tryon-screen';
-  final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
-      outfitItems;
+  final Tuple2<int, List<OutfitItem>> outfitItems;
+  // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
+  //     outfitItems;
   final int numItems;
 
   const TryOnScreen({
@@ -54,7 +56,7 @@ class TryOnScreen extends StatelessWidget {
           child: Container(
               decoration: BoxDecoration(color: AppColors.secondaryColor),
               child: Body(
-                outfitItems: outfitItems,
+                outfit: outfitItems,
                 numItems: numItems,
               ))),
     );

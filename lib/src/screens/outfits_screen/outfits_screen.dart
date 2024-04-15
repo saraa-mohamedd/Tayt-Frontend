@@ -37,25 +37,6 @@ class OutfitsScreen extends StatelessWidget {
                   color: AppColors.primaryColor),
               onPressed: () {},
             ),
-            // IconButton(
-            //   icon:
-            //       FaIcon(FontAwesomeIcons.heart, color: AppColors.primaryColor),
-            //   onPressed: () {},
-            // ),
-            // IconButton(
-            //   icon: SvgPicture.asset(
-            //     'assets/icons/wardrobe-outline.svg',
-            //     width: 26,
-            //     height: 26,
-            //     color: AppColors.primaryColor,
-            //   ),
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => TryOnScreen()),
-            //     );
-            //   },
-            // )
           ]),
       body: Body(),
     );
