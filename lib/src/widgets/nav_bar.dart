@@ -74,8 +74,8 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
 
   List<Widget> _screens() {
     // Replace these with your own screen widgets
-    // return [HomeScreen(), ClothingScreen(), BodyScreen(), UserScreen()];
-    return [HomeScreen(), ClothingScreen(), TryOnScreen(), UserScreen()];
+    return [HomeScreen(), ClothingScreen(), BodyScreen(), UserScreen()];
+    // return [HomeScreen(), ClothingScreen(), TryOnScreen(), UserScreen()];
   }
 
   @override

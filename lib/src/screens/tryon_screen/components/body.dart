@@ -4,32 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
 import 'package:tuple/tuple.dart';
 import 'package:ionicons/ionicons.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
+  //     outfitItems;
+  final Tuple2<int, List<OutfitItem>> outfit;
+  final int numItems;
+
+  const Body({
+    Key? key,
+    required this.outfit,
+    required this.numItems,
+  }) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
-  final List<Tuple3<String, String, String>> recommendations = [
-    Tuple3<String, String, String>(
-        'assets/images/clothing/front2.jpeg', 'Clothing 2', 'Description 2'),
-    Tuple3<String, String, String>(
-        'assets/images/clothing/front22.jpeg', 'Clothing 22', 'Description 22'),
-    Tuple3<String, String, String>(
-        'assets/images/clothing/front3.jpeg', 'Clothing 3', 'Description 3'),
-    Tuple3<String, String, String>(
-        'assets/images/clothing/front13.jpeg', 'Clothing 13', 'Description 13'),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    Tuple2<int, List<OutfitItem>> outfit = widget.outfit;
+    int numItems = widget.numItems;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,19 +129,28 @@ class _BodyState extends State<Body> {
           height: 10,
         ),
         Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: CustomCarousel(
-            banners: [],
-            width: 200,
-            height: 200,
-            viewportFraction: 0.55,
-            hasIndicator: false,
-            infscroll: false,
-            linkedImages: recommendations,
-            linked: true,
-            bgColor: AppColors.primaryColor,
-          ),
-        ),
+            padding: const EdgeInsets.all(16.0),
+            child: CustomCarousel(
+              banners: [],
+              width: 200,
+              height: 200,
+              viewportFraction: 0.55,
+              hasIndicator: false,
+              infscroll: false,
+              linkedImages: numItems == 1
+                  ? [
+                      Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name,
+                          outfit.item2[0].description),
+                    ]
+                  : [
+                      Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name,
+                          outfit.item2[0].description),
+                      Tuple3(outfit.item2[1].imagePath, outfit.item2[1].name,
+                          outfit.item2[1].description),
+                    ],
+              linked: true,
+              bgColor: AppColors.primaryColor,
+            )),
         Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0, bottom: 30),
