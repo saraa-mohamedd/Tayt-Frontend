@@ -15,22 +15,22 @@ class OutfitItem {
 
 class OutfitProvider extends ChangeNotifier {
   List<Tuple2<int, List<OutfitItem>>> outfits = [
-    Tuple2(1, [
-      OutfitItem(
-          imagePath: 'assets/images/clothing/front1.jpeg',
-          name: 'Clothing 1',
-          description: 'Description 1'),
-      OutfitItem(
-          imagePath: 'assets/images/clothing/front17.jpeg',
-          name: 'Clothing 17',
-          description: 'Description 17')
-    ]),
-    Tuple2(2, [
-      OutfitItem(
-          imagePath: 'assets/images/clothing/front24.jpeg',
-          name: 'Clothing 24',
-          description: 'Description 24')
-    ])
+    // Tuple2(1, [
+    //   OutfitItem(
+    //       imagePath: 'assets/images/clothing/front1.jpeg',
+    //       name: 'Clothing 1',
+    //       description: 'Description 1'),
+    //   OutfitItem(
+    //       imagePath: 'assets/images/clothing/front17.jpeg',
+    //       name: 'Clothing 17',
+    //       description: 'Description 17')
+    // ]),
+    // Tuple2(2, [
+    //   OutfitItem(
+    //       imagePath: 'assets/images/clothing/front24.jpeg',
+    //       name: 'Clothing 24',
+    //       description: 'Description 24')
+    // ])
   ];
 
   void addToOutfit(int index, OutfitItem item) {

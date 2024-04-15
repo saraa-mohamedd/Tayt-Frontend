@@ -22,7 +22,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     'Are you male or female?',
     'What is your weight?',
     'What is your height?',
-    'Would you rather upload your image or insert three more body measurements?',
+    'Upload an image below, or click \'Next\' to skip and insert three more body measurements instead',
     'What is the circumference of your chest?',
     'What is the circumference of your hips?',
     'What is the circumference of your waist?',
@@ -73,7 +73,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
                             color: AppColors.secondaryColor.withOpacity(0.9),
                             borderRadius: BorderRadius.circular(10),
@@ -108,7 +109,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                               // Set the current question index
                               currentQuestionIndex = index;
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -122,12 +124,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                     ],
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(20.0),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               questions[index],
@@ -138,101 +142,61 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                               ),
                                             ),
                                             SizedBox(height: 10),
-                                            index == 0
+                                            // Display different UI for the third question
+                                            index == 2
                                                 ? Column(
                                                     children: [
-                                                      Row(
-                                                        children: [
-                                                          Radio<String>(
-                                                            value: 'male',
-                                                            groupValue: _gender,
-                                                            onChanged: (String? value) {
-                                                              setState(() {
-                                                                _gender = value;
-                                                                answers[index] = _gender!;
-                                                              });
-                                                            },
-                                                          ),
-                                                          Text(
-                                                            'Male',
-                                                            style: TextStyle(color: Colors.black),
-                                                          ),
-                                                        ],
+                                                      UploadPictureWidget(
+                                                        onImageSelected: (File image) {
+                                                          setState(() {
+                                                            answers[index] = image.path;
+                                                          });
+                                                        },
                                                       ),
+                                                      SizedBox(height: 10),
                                                       Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
-                                                          Radio<String>(
-                                                            value: 'female',
-                                                            groupValue: _gender,
-                                                            onChanged: (String? value) {
-                                                              setState(() {
-                                                                _gender = value;
-                                                                answers[index] = _gender!;
-                                                              });
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              // If an image is uploaded, go to the home screen
+                                                              Navigator.of(context).push(
+                                                                MaterialPageRoute(
+                                                                  builder: (context) => Body(),
+                                                                ),
+                                                              );
                                                             },
-                                                          ),
-                                                          Text(
-                                                            'Female',
-                                                            style: TextStyle(color: Colors.black),
+                                                            child: Text(
+                                                              'Skip',
+                                                              style: TextStyle(color: Colors.white),
+                                                            ),
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: AppColors.primaryColor,
+                                                              elevation: 0,
+                                                              // Increase width
+                                                              minimumSize: Size(180, 40),
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
                                                     ],
                                                   )
-                                                : index == 3
-                                                    ? Column(
-                                                        children: [
-                                                          UploadPictureWidget(
-                                                            onImageSelected: (File image) {
-                                                              setState(() {
-                                                                answers[index] = image.path;
-                                                              });
-                                                            },
-                                                          ),
-                                                          SizedBox(height: 10),
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            children: [
-                                                              ElevatedButton(
-                                                                onPressed: () {
-                                                                  // If an image is uploaded, go to the home screen
-                                                                  Navigator.of(context).push(
-                                                                    MaterialPageRoute(
-                                                                      builder: (context) => Body(),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                                child: Text(
-                                                                  'Skip',
-                                                                  style: TextStyle(color: Colors.white),
-                                                                ),
-                                                                style: ElevatedButton.styleFrom(
-                                                                  backgroundColor: AppColors.primaryColor,
-                                                                  elevation: 0,
-                                                                  // Increase width
-                                                                  minimumSize: Size(180, 40),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : TextField(
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            answers[index] = value;
-                                                          });
-                                                        },
-                                                        decoration: InputDecoration(
-                                                          hintText: 'Enter your answer',
-                                                          filled: true,
-                                                          fillColor: Colors.grey[200],
-                                                          border: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(8),
-                                                            borderSide: BorderSide.none,
-                                                          ),
-                                                        ),
+                                                : TextField(
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        answers[index] = value;
+                                                      });
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      hintText: 'Enter your answer',
+                                                      filled: true,
+                                                      fillColor: Colors.grey[200],
+                                                      border: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        borderSide: BorderSide.none,
                                                       ),
+                                                    ),
+                                                  ),
                                           ],
                                         ),
                                       ),
@@ -255,7 +219,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the next page or complete the survey
-                      if (_currentPageIndex < questions.length - 1 && answers[3] == '') {
+                      if (_currentPageIndex < questions.length - 1 && answers[2]=='') {
                         _pageController.nextPage(
                           duration: Duration(milliseconds: 500),
                           curve: Curves.ease,
@@ -274,14 +238,17 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                         horizontal: 20,
                         vertical: 8,
                       ),
-                      backgroundColor: AppColors.secondaryColor.withOpacity(0.9),
+                      backgroundColor:
+                          AppColors.secondaryColor.withOpacity(0.9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                       shadowColor: Colors.black.withOpacity(0.5),
                     ),
                     child: Text(
-                      _currentPageIndex < questions.length - 1 ? 'Next' : 'Complete',
+                      _currentPageIndex < questions.length - 1
+                          ? 'Next'
+                          : 'Complete',
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontSize: 20,
