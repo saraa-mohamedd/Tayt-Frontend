@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
-import 'package:tayt_app/src/screens/home_screen/components/carousel.dart';
+import 'package:tayt_app/src/deps/carousel.dart';
+import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -65,7 +66,19 @@ class Body extends StatelessWidget {
                 height: 40,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  try {
+                    print("Navigating to BodyMeshScreen...");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BodyMeshScreen(),
+                      ),
+                    );
+                  } catch (e) {
+                    print("Error navigating to BodyMeshScreen: $e");
+                  }
+                },
                 child: Container(
                   width: 300,
                   height: 50,
@@ -90,7 +103,7 @@ class Body extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          'Edit Profile',
+                          'Edit My Body',
                           style: Theme.of(context)
                               .textTheme
                               .headlineMedium!
@@ -106,7 +119,6 @@ class Body extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(
                 height: 10,
               ),
@@ -203,7 +215,7 @@ class Body extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 30, left: 016.0),
+          padding: const EdgeInsets.only(top: 30, left: 16.0),
           child: const Text('Recently Viewed',
               style: TextStyle(
                   fontSize: 20,

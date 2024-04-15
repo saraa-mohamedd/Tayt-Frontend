@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:tayt_app/src/screens/signup_screen/signup_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -19,24 +21,23 @@ class Body extends StatelessWidget {
               fit: BoxFit.fill,
             ),
             Positioned(
-                bottom: 20,
-                left: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sign In',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .copyWith(
-                              color: AppColors.secondaryColor,
-                              fontSize: 64,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w600),
-                    )
-                  ],
-                )),
+              bottom: 20,
+              left: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Sign In',
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                          color: AppColors.secondaryColor,
+                          fontSize: 64,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                        ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
         const Padding(
@@ -55,22 +56,23 @@ class Body extends StatelessWidget {
               fontFamily: 'Helvetica Neue',
             ),
             decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2,
-                      color: Color.fromARGB(255, 243, 220, 166),
-                      style: BorderStyle.solid,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(40))),
-                contentPadding: const EdgeInsets.only(left: 25.0, right: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(70.0),
-                ),
-                hintText: 'Email',
-                suffixIcon: const Icon(
-                  Icons.email,
-                  color: Colors.black,
-                )),
+              focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: Color.fromARGB(255, 243, 220, 166),
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(40))),
+              contentPadding: const EdgeInsets.only(left: 25.0, right: 20.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(70.0),
+              ),
+              hintText: 'Email',
+              suffixIcon: const Icon(
+                Icons.email,
+                color: Colors.black,
+              ),
+            ),
           ),
         ),
         SizedBox(height: 20),
@@ -140,9 +142,42 @@ class Body extends StatelessWidget {
           ),
         ),
         SizedBox(height: 30),
-        Column(children: [
-          Center(child: Text('Don\'t have an account yet?')),
-        ]),
+        Column(
+          children: [
+            Center(
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontFamily: 'Helvetica Neue',
+                    fontSize: 15,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Don't have an account yet? ",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "Create one",
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          decoration: TextDecoration.underline),
+                      // add underline to the text
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                SignupScreen(), // Navigate to the sign-up page
+                          ));
+                        },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
 import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
-// impoer 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
-
-import 'package:tayt_app/src/screens/home_screen/home_screen.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -74,7 +72,7 @@ class _BodyState extends State<Body> {
               ),
               style: ElevatedButton.styleFrom(
                 elevation: 2,
-                backgroundColor: Color.fromARGB(255, 241, 226, 191),
+                backgroundColor: AppColors.secondaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(70.0),
                 ),
