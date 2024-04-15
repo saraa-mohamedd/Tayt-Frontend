@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart';
@@ -32,6 +34,8 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     final List<String> currentPageItems = _getCurrentPageItems();
 
+    FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: Column(
@@ -57,14 +61,6 @@ class _BodyState extends State<Body> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ClothingDetailsPage(
-                          // imagePath:
-                          //     'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
-                          // name:
-                          //     'Clothing ${_currentPage * _pageSize + index + 1}',
-                          // description:
-                          //     'Description of the clothing item ${_currentPage * _pageSize + index + 1}',
-
-                          // Pass the clothing item details to the ClothingDetailsPage
                           clothingItem: all_clothingitems[
                               _currentPage * _pageSize + index],
                         ),
@@ -131,7 +127,8 @@ class _BodyState extends State<Body> {
                           top: 0,
                           right: 8,
                           child: IconButton(
-                            icon: _isHeartFilledList[index]
+                            icon: favesProvider.isFavorite(all_clothingitems[
+                                    _currentPage * _pageSize + index])
                                 ? FaIcon(
                                     FontAwesomeIcons.solidHeart,
                                     color: AppColors.primaryColor,
@@ -142,8 +139,11 @@ class _BodyState extends State<Body> {
                                   ),
                             onPressed: () {
                               setState(() {
-                                _isHeartFilledList[index] = !_isHeartFilledList[
-                                    index]; // Toggle the filled state of the heart icon
+                                favesProvider.toggleFavorite(all_clothingitems[
+                                    _currentPage * _pageSize + index]);
+
+                                // _isHeartFilledList[index] = !_isHeartFilledList[
+                                //     index]; // Toggle the filled state of the heart icon
                               });
                             },
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/routes/routes.dart';
 import 'package:tayt_app/service/navigation_service.dart';
@@ -18,7 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => OutfitProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => OutfitProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider())
+      ],
       // create: (_) => OutfitProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

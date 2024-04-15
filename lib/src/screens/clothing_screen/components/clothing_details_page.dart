@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
@@ -11,26 +12,9 @@ import 'package:tayt_app/src/deps/carousel.dart';
 
 class ClothingDetailsPage extends StatefulWidget {
   final ClothingItem clothingItem;
-  // final String imagePath;
-  // final String name;
-  // final String description;
   final String storeName = 'Store and Brand Name';
   final String storeUrl = 'https://www.amazon.com/';
 
-  // array of recommendations in the form of (imagePath, name, description) (can add more fields later if needed)
-  // final List<Tuple3<String, String, String>> recommendations = [
-  //   Tuple3<String, String, String>(
-  //       'assets/images/clothing/front2.jpeg', 'Clothing 2', 'Description 2'),
-  //   Tuple3<String, String, String>(
-  //       'assets/images/clothing/front22.jpeg', 'Clothing 22', 'Description 22'),
-  //   Tuple3<String, String, String>(
-  //       'assets/images/clothing/front3.jpeg', 'Clothing 3', 'Description 3'),
-  //   Tuple3<String, String, String>(
-  //       'assets/images/clothing/front13.jpeg', 'Clothing 13', 'Description 13'),
-  // ];
-
-  // final List<ClothingItem> recommendations = []
-  // // random recommendations from all_clothingitems
   final List<ClothingItem> recommendations = [
     all_clothingitems[1],
     all_clothingitems[2],
@@ -39,9 +23,6 @@ class ClothingDetailsPage extends StatefulWidget {
   ];
   ClothingDetailsPage({
     required this.clothingItem,
-    // required this.imagePath,
-    // required this.name,
-    // required this.description,
   });
   @override
   _ClothingDetailsPageState createState() => _ClothingDetailsPageState();
@@ -49,7 +30,6 @@ class ClothingDetailsPage extends StatefulWidget {
 
 class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
   bool isOutfitsToggled = false;
-  bool isFavorite = false;
 
   void toggleOutfitsVisibility() {
     setState(() {
@@ -65,14 +45,17 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
     String storeName = widget.storeName;
     String storeUrl = widget.storeUrl;
 
+    FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
+    bool isFavorite = favesProvider.isFavorite(widget.clothingItem);
+
     OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
-    List<Outfit> available_outfits =
+    List<Outfit> availableOutfits =
         outfitProvider.getIncompleteOutfits(widget.clothingItem);
 
     void getOutfits() {
       // change state to display all available outfits
       setState(() {
-        available_outfits =
+        availableOutfits =
             outfitProvider.getIncompleteOutfits(widget.clothingItem);
       });
     }
@@ -207,6 +190,12 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                         onTap: () {
                           setState(() {
                             isFavorite = !isFavorite;
+                            if (isFavorite) {
+                              favesProvider.addToFavorites(widget.clothingItem);
+                            } else {
+                              favesProvider
+                                  .removeFromFavorites(widget.clothingItem);
+                            }
                           });
                         },
                         child: Icon(
@@ -236,15 +225,15 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                               color: AppColors.primaryColor,
                             ),
                             child: ListView.builder(
-                              itemCount: available_outfits.length + 1,
+                              itemCount: availableOutfits.length + 1,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                return index < available_outfits.length
+                                return index < availableOutfits.length
                                     ? GestureDetector(
                                         onTap: () {
                                           toggleOutfitsVisibility();
                                           outfitProvider.addToOutfit(
-                                              available_outfits[index].id,
+                                              availableOutfits[index].id,
                                               widget.clothingItem);
                                           // Add your onTap logic here
                                         },
@@ -268,7 +257,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                                                         BorderRadius.circular(
                                                             15.0),
                                                     child: Image.asset(
-                                                      available_outfits[index]
+                                                      availableOutfits[index]
                                                           .items[0]
                                                           .imagePath,
                                                       fit: BoxFit.cover,
