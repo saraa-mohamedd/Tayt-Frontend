@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/survey_screen/survey_info_screen.dart';
@@ -140,20 +141,53 @@ class SignUpPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 30),
+        // Column(
+        //   children: [
+        //     Center(child: Text('Already have an account?')),
+        //     Center(
+        //       child: TextButton(
+        //         onPressed: () {
+        //           // Navigate to the sign-in page
+        //         },
+        //         child: Text(
+        //           'Sign In',
+        //           style: TextStyle(
+        //             color: AppColors.primaryColor,
+        //             fontFamily: 'Helvetica Neue',
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
         Column(
           children: [
-            Center(child: Text('Already have an account?')),
             Center(
-              child: TextButton(
-                onPressed: () {
-                  // Navigate to the sign-in page
-                },
-                child: Text(
-                  'Sign In',
+              child: RichText(
+                text: TextSpan(
                   style: TextStyle(
-                    color: AppColors.primaryColor,
                     fontFamily: 'Helvetica Neue',
+                    fontSize: 15,
                   ),
+                  children: [
+                    TextSpan(
+                      text: "Already have an account? ",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "Sign In",
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          decoration: TextDecoration.underline),
+                      // add underline to the text
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.of(context).pop();
+                        },
+                    ),
+                  ],
                 ),
               ),
             ),
