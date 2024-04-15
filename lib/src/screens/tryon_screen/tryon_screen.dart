@@ -10,14 +10,14 @@ import 'package:tuple/tuple.dart';
 
 class TryOnScreen extends StatelessWidget {
   static String routeName = '/tryon-screen';
-  final Tuple2<int, List<OutfitItem>> outfitItems;
+  final Outfit outfit;
   // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
   //     outfitItems;
   final int numItems;
 
   const TryOnScreen({
     Key? key,
-    required this.outfitItems,
+    required this.outfit,
     required this.numItems,
   }) : super(key: key);
 
@@ -56,7 +56,7 @@ class TryOnScreen extends StatelessWidget {
           child: Container(
               decoration: BoxDecoration(color: AppColors.secondaryColor),
               child: Body(
-                outfit: outfitItems,
+                outfit: outfit,
                 numItems: numItems,
               ))),
     );

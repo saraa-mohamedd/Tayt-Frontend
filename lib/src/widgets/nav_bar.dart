@@ -77,24 +77,25 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
   List<Widget> _screens() {
     // Replace these with your own screen widgets
     return [
-      HomeScreen(), 
+      HomeScreen(),
       ClothingScreen(),
       TryOnScreen(
-        outfitItems: Tuple2<int, List<OutfitItem>>(2, [
-          OutfitItem(
-            imagePath: "assets/images/clothing/front1.jpeg",
-            name: "Shirt",
-            description: "Description yo"
-          ),
-          OutfitItem(
-            imagePath: "assets/images/clothing/front11.jpeg",
-            name: "Pants",
-            description: "Description yo"
-          ),
-        ]), 
-        numItems: 2, 
-      ), 
-      UserScreen()];
+        outfit: Outfit(id: 2, items: [
+          ClothingItem(
+              imagePath: 'assets/images/clothing/front24.jpeg',
+              name: 'Clothing 24',
+              description: 'Description 24',
+              type: ClothingType.dress),
+          ClothingItem(
+              imagePath: 'assets/images/clothing/front25.jpeg',
+              name: 'Clothing 25',
+              description: 'Description 25',
+              type: ClothingType.dress)
+        ]),
+        numItems: 2,
+      ),
+      UserScreen()
+    ];
   }
 
   @override

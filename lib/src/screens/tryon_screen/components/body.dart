@@ -11,7 +11,7 @@ import 'package:ionicons/ionicons.dart';
 class Body extends StatefulWidget {
   // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
   //     outfitItems;
-  final Tuple2<int, List<OutfitItem>> outfit;
+  final Outfit outfit;
   final int numItems;
 
   const Body({
@@ -27,20 +27,29 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    Tuple2<int, List<OutfitItem>> outfit = widget.outfit;
+    Outfit outfit = widget.outfit;
     int numItems = widget.numItems;
 
-    List<Tuple3<String, String, String>> linkedImages = [];
-    if (outfit.item2.isNotEmpty) {
-      linkedImages = numItems == 1
-        ? [
-            Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name, outfit.item2[0].description),
-          ]
-        : [
-            Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name, outfit.item2[0].description),
-            Tuple3(outfit.item2[1].imagePath, outfit.item2[1].name, outfit.item2[1].description),
-          ];
+    List<ClothingItem> linkedItems = [];
+    if (outfit.items.isNotEmpty) {
+      linkedItems = numItems == 1
+          ? [outfit.items[0]]
+          : [outfit.items[0], outfit.items[1]];
     }
+    // List<Tuple3<String, String, String>> linkedImages = [];
+    // if (outfit.items.isNotEmpty) {
+    //   linkedImages = numItems == 1
+    //       ? [
+    //           Tuple3(outfit.items[0].imagePath, outfit.items[0].name,
+    //               outfit.items[0].description),
+    //         ]
+    //       : [
+    //           Tuple3(outfit.items[0].imagePath, outfit.items[0].name,
+    //               outfit.items[0].description),
+    //           Tuple3(outfit.items[1].imagePath, outfit.items[1].name,
+    //               outfit.items[1].description),
+    //         ];
+    // }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -147,7 +156,7 @@ class _BodyState extends State<Body> {
               viewportFraction: 0.55,
               hasIndicator: false,
               infscroll: false,
-              linkedImages: linkedImages,
+              linkedImages: linkedItems,
               linked: true,
               bgColor: AppColors.primaryColor,
             )),

@@ -42,7 +42,7 @@ class _BodyState extends State<Body> {
                       itemCount: outfitProvider.outfits.length,
                       itemBuilder: (context, index) {
                         final outfit = outfitProvider.outfits[index];
-                        final numItems = outfit.item2.length;
+                        final numItems = outfit.items.length;
                         return OutfitCard(outfit: outfit, numItems: numItems);
                       },
                     ),

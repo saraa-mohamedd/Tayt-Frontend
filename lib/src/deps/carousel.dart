@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:tayt_app/config/size_config.dart';
 import 'package:tayt_app/controllers/carousel_controllers.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/carousel_counter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
@@ -26,7 +27,7 @@ class CustomCarousel extends StatelessWidget {
   final double viewportFraction;
   final double? width, height;
   final List<String> banners;
-  final List<Tuple3<String, String, String>> linkedImages;
+  final List<ClothingItem> linkedImages;
   final bool? infscroll;
   final bool linked;
   final Color bgColor;
@@ -39,8 +40,8 @@ class CustomCarousel extends StatelessWidget {
         CarouselSlider(
           items: linked
               ? linkedImages
-                  .map((url) => CarouselImage(
-                        imageUrl: url.item1,
+                  .map((item) => CarouselImage(
+                        imageUrl: item.imagePath,
                         width: width,
                         height: height,
                         backgroundColor: bgColor.withOpacity(0.5),
@@ -50,9 +51,10 @@ class CustomCarousel extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ClothingDetailsPage(
-                                imagePath: url.item1,
-                                name: url.item2,
-                                description: url.item3,
+                                // imagePath: url.item1,
+                                // name: url.item2,
+                                // description: url.item3,
+                                clothingItem: item,
                               ),
                             ),
                           );

@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tuple/tuple.dart';
 
 class OutfitCard extends StatefulWidget {
-  final Tuple2<int, List<OutfitItem>> outfit;
+  final Outfit outfit;
   // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
   //     outfitItems;
   final int numItems;
@@ -53,16 +53,17 @@ class _OutfitCardState extends State<OutfitCard> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ClothingDetailsPage(
-                              imagePath: widget.outfit.item2[0].imagePath,
-                              name: widget.outfit.item2[0].name,
-                              description: widget.outfit.item2[0].description,
+                              // imagePath: widget.outfit.items[0].imagePath,
+                              // name: widget.outfit.items[0].name,
+                              // description: widget.outfit.items[0].description,
+                              clothingItem: widget.outfit.items[0],
                             ),
                           ),
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
-                            widget.outfit.item2[0].imagePath,
+                            widget.outfit.items[0].imagePath,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -73,7 +74,7 @@ class _OutfitCardState extends State<OutfitCard> {
                         child: GestureDetector(
                           onTap: () {
                             outfitProvider.removeFromOutfit(
-                                widget.outfit.item1, 0);
+                                widget.outfit.id, 0);
                           },
                           child: Icon(
                             FontAwesomeIcons.trashAlt,
@@ -98,17 +99,18 @@ class _OutfitCardState extends State<OutfitCard> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ClothingDetailsPage(
-                                  imagePath: widget.outfit.item2[1].imagePath,
-                                  name: widget.outfit.item2[1].name,
-                                  description:
-                                      widget.outfit.item2[1].description,
+                                  clothingItem: widget.outfit.items[1],
+                                  // imagePath: widget.outfit.items[1].imagePath,
+                                  // name: widget.outfit.items[1].name,
+                                  // description:
+                                  //     widget.outfit.items[1].description,
                                 ),
                               ),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
-                                widget.outfit.item2[1].imagePath,
+                                widget.outfit.items[1].imagePath,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -119,7 +121,7 @@ class _OutfitCardState extends State<OutfitCard> {
                             child: GestureDetector(
                               onTap: () {
                                 outfitProvider.removeFromOutfit(
-                                    widget.outfit.item1, 1);
+                                    widget.outfit.id, 1);
                               },
                               child: Icon(
                                 FontAwesomeIcons.trashAlt,
@@ -162,7 +164,7 @@ class _OutfitCardState extends State<OutfitCard> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => TryOnScreen(
-                                outfitItems: widget.outfit,
+                                outfit: widget.outfit,
                                 numItems: widget.numItems,
                               )),
                     );

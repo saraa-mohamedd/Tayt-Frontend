@@ -1,72 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
-class OutfitItem {
+enum ClothingType { top, bottom, dress }
+
+class ClothingItem {
   final String imagePath;
   final String name;
   final String description;
+  final bool isLiked;
+  final ClothingType type;
 
-  OutfitItem({
+  ClothingItem({
     required this.imagePath,
     required this.name,
     required this.description,
+    this.isLiked = false,
+    required this.type,
   });
 }
 
-class OutfitProvider extends ChangeNotifier {
-  List<Tuple2<int, List<OutfitItem>>> outfits = [
-    // Tuple2(1, [
-    //   OutfitItem(
-    //       imagePath: 'assets/images/clothing/front1.jpeg',
-    //       name: 'Clothing 1',
-    //       description: 'Description 1'),
-    //   OutfitItem(
-    //       imagePath: 'assets/images/clothing/front17.jpeg',
-    //       name: 'Clothing 17',
-    //       description: 'Description 17')
-    // ]),
-    // Tuple2(2, [
-    //   OutfitItem(
-    //       imagePath: 'assets/images/clothing/front24.jpeg',
-    //       name: 'Clothing 24',
-    //       description: 'Description 24')
-    // ])
-  ];
+class Outfit {
+  final List<ClothingItem> items;
+  final int id;
 
-  void addToOutfit(int index, OutfitItem item) {
-    if (outfits.any((outfit) => outfit.item1 == index)) {
+  Outfit({required this.items, required this.id});
+}
+
+class OutfitProvider extends ChangeNotifier {
+  List<Outfit> outfits = [];
+
+  void addToOutfit(int index, ClothingItem item) {
+    if (outfits.any((outfit) => outfit.id == index)) {
       outfits = outfits.map((outfit) {
-        if (outfit.item1 == index) {
-          outfit.item2.add(item);
+        if (outfit.id == index) {
+          outfit.items.add(item);
         }
         return outfit;
       }).toList();
     } else {
-      outfits.add(Tuple2(index, [item]));
+      outfits.add(Outfit(items: [], id: index));
     }
 
     notifyListeners();
   }
 
-  void createOutfit(OutfitItem item) {
-    outfits.add(Tuple2(outfits.length + 1, [item]));
+  void createOutfit(ClothingItem item) {
+    outfits.add(Outfit(items: [item], id: outfits.length + 1));
     notifyListeners();
   }
 
   void removeFromOutfit(int index, int itemIndex) {
-    Tuple2<int, List<OutfitItem>> outfit =
-        outfits.firstWhere((outfit) => outfit.item1 == index);
-    outfit.item2.removeAt(itemIndex);
+    Outfit outfit = outfits.firstWhere((outfit) => outfit.id == index);
+    outfit.items.removeAt(itemIndex);
 
-    if (outfit.item2.isEmpty) {
-      outfits.removeWhere((outfit) => outfit.item1 == index);
+    if (outfit.items.isEmpty) {
+      outfits.removeWhere((outfit) => outfit.id == index);
       notifyListeners();
       return;
     }
 
     // replace the outfit with the updated outfit
     outfits = outfits.map((outfit) {
-      if (outfit.item1 == index) {
+      if (outfit.id == index) {
         return outfit;
       }
       return outfit;
@@ -74,11 +69,139 @@ class OutfitProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Tuple2<int, List<OutfitItem>>> getOutfits() {
+  List<Outfit> getOutfits() {
     return outfits;
   }
 
-  List<Tuple2<int, List<OutfitItem>>> getIncompleteOutfits() {
-    return outfits.where((outfit) => outfit.item2.length < 2).toList();
+  List<Outfit> getIncompleteOutfits(ClothingItem clothingitem) {
+    return outfits
+        .where((outfit) =>
+            outfit.items.length < 2 &&
+            outfit.items[0].type != ClothingType.dress &&
+            outfit.items[0].type != clothingitem.type)
+        .toList();
   }
 }
+
+final all_clothingitems = [
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front1.jpeg',
+      name: 'Clothing 1',
+      description: 'Description 1',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front2.jpeg',
+      name: 'Clothing 2',
+      description: 'Description 2',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front3.jpeg',
+      name: 'Clothing 3',
+      description: 'Description 3',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front4.jpeg',
+      name: 'Clothing 4',
+      description: 'Description 4',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front5.jpeg',
+      name: 'Clothing 5',
+      description: 'Description 5',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front6.jpeg',
+      name: 'Clothing 6',
+      description: 'Description 6',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front7.jpeg',
+      name: 'Clothing 7',
+      description: 'Description 7',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front8.jpeg',
+      name: 'Clothing 8',
+      description: 'Description 8',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front9.jpeg',
+      name: 'Clothing 9',
+      description: 'Description 9',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front10.jpeg',
+      name: 'Clothing 10',
+      description: 'Description 10',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front11.jpeg',
+      name: 'Clothing 11',
+      description: 'Description 11',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front12.jpeg',
+      name: 'Clothing 12',
+      description: 'Description 12',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front13.jpeg',
+      name: 'Clothing 13',
+      description: 'Description 13',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front14.jpeg',
+      name: 'Clothing 14',
+      description: 'Description 14',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front15.jpeg',
+      name: 'Clothing 15',
+      description: 'Description 15',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front16.jpeg',
+      name: 'Clothing 16',
+      description: 'Description 16',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front17.jpeg',
+      name: 'Clothing 17',
+      description: 'Description 17',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front18.jpeg',
+      name: 'Clothing 18',
+      description: 'Description 18',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front19.jpeg',
+      name: 'Clothing 19',
+      description: 'Description 19',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front20.jpeg',
+      name: 'Clothing 20',
+      description: 'Description 20',
+      type: ClothingType.bottom),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front21.jpeg',
+      name: 'Clothing 21',
+      description: 'Description 21',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front22.jpeg',
+      name: 'Clothing 22',
+      description: 'Description 22',
+      type: ClothingType.top),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front23.jpeg',
+      name: 'Clothing 23',
+      description: 'Description 23',
+      type: ClothingType.dress),
+  ClothingItem(
+      imagePath: 'assets/images/clothing/front24.jpeg',
+      name: 'Clothing 24',
+      description: 'Description 24',
+      type: ClothingType.dress),
+];

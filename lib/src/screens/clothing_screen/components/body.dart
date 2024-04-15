@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart';
 import 'clothing_details_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 
 class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
@@ -17,7 +17,8 @@ class _BodyState extends State<Body> {
   int _currentPage = 0;
   final _pageSize = 10; // Number of items per page
   final _clothingItems = List.generate(100, (index) => 'Clothing ${index + 1}');
-  List<bool> _isHeartFilledList = List.filled(100, false); // List to track the filled state of each heart
+  List<bool> _isHeartFilledList =
+      List.filled(100, false); // List to track the filled state of each heart
 
   List<String> _getCurrentPageItems() {
     final startIndex = _currentPage * _pageSize;
@@ -56,12 +57,16 @@ class _BodyState extends State<Body> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ClothingDetailsPage(
-                          imagePath:
-                              'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
-                          name:
-                              'Clothing ${_currentPage * _pageSize + index + 1}',
-                          description:
-                              'Description of the clothing item ${_currentPage * _pageSize + index + 1}',
+                          // imagePath:
+                          //     'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
+                          // name:
+                          //     'Clothing ${_currentPage * _pageSize + index + 1}',
+                          // description:
+                          //     'Description of the clothing item ${_currentPage * _pageSize + index + 1}',
+
+                          // Pass the clothing item details to the ClothingDetailsPage
+                          clothingItem: all_clothingitems[
+                              _currentPage * _pageSize + index],
                         ),
                       ),
                     );
@@ -137,8 +142,8 @@ class _BodyState extends State<Body> {
                                   ),
                             onPressed: () {
                               setState(() {
-                                _isHeartFilledList[index] =
-                                    !_isHeartFilledList[index]; // Toggle the filled state of the heart icon
+                                _isHeartFilledList[index] = !_isHeartFilledList[
+                                    index]; // Toggle the filled state of the heart icon
                               });
                             },
                           ),
@@ -178,8 +183,8 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.bold,
                         color: AppColors.primaryColor)),
                 IconButton(
-                  icon: Icon(Icons.arrow_forward,
-                      color: AppColors.primaryColor),
+                  icon:
+                      Icon(Icons.arrow_forward, color: AppColors.primaryColor),
                   onPressed:
                       (_currentPage + 1) * _pageSize >= _clothingItems.length
                           ? null
