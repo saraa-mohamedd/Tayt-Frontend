@@ -84,13 +84,31 @@ class _FinalScreenState extends State<FinalScreen> {
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         'Account Created!',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Image.asset(
+                          'assets/icons/checkmark.png',
+                          width: 140,
+                          height: 140,
+                          //padding underneath
+                        ),
+                      ),
+                      Text(
+                        'You can now view and edit your 3D body from the profile page.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
                           color: Colors.grey[800],
                         ),
                       ),

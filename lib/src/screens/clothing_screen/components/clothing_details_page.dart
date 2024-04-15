@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tuple/tuple.dart';
@@ -6,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
 
-class ClothingDetailsPage extends StatelessWidget {
+class ClothingDetailsPage extends StatefulWidget {
   final String imagePath;
   final String name;
   final String description;
@@ -30,6 +31,13 @@ class ClothingDetailsPage extends StatelessWidget {
     required this.name,
     required this.description,
   });
+
+  @override
+  _ClothingDetailsPageState createState() => _ClothingDetailsPageState();
+}
+
+class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +70,7 @@ class ClothingDetailsPage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
                 image: DecorationImage(
-                  image: AssetImage(imagePath),
+                  image: AssetImage(widget.imagePath),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -76,7 +84,7 @@ class ClothingDetailsPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      name,
+                      widget.name,
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -116,17 +124,16 @@ class ClothingDetailsPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      description,
+                      widget.description,
                       style: TextStyle(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(height: 20),
-                  FractionallySizedBox(
-                    widthFactor: 0.95,
-                    child: SizedBox(
-                      height: 45,
-                      child: ElevatedButton(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
                         onPressed: () {
                           // Add your onPressed logic here
                         },
@@ -142,16 +149,36 @@ class ClothingDetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: Text(
-                          'Try Me',
-                          style: TextStyle(
-                              color: AppColors
-                                  .primaryColor, // Set the desired text color here
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                        child: SizedBox(
+                          //make width percentage
+                          width: MediaQuery.of(context).size.width * 0.64,
+                          child: Text(
+                            'Try Me',
+                            style: TextStyle(
+                                color: AppColors
+                                    .primaryColor, // Set the desired text color here
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isFavorite = !isFavorite;
+                          });
+                        },
+                        child: Icon(
+                          isFavorite
+                              ? FontAwesomeIcons.solidHeart
+                              : FontAwesomeIcons.heart,
+                          color: AppColors.primaryColor,
+                          size: 30,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -172,7 +199,7 @@ class ClothingDetailsPage extends StatelessWidget {
                     viewportFraction: 0.55,
                     hasIndicator: false,
                     infscroll: false,
-                    linkedImages: recommendations,
+                    linkedImages: widget.recommendations,
                     linked: true,
                     bgColor: AppColors.secondaryColor,
                   ),

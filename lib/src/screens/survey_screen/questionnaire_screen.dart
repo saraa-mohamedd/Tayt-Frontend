@@ -79,7 +79,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                             children: [
                               Expanded(
                                 child: LinearProgressIndicator(
-                                  value: (_currentPageIndex + 1) / questions.length,
+                                  value: (_currentPageIndex) / questions.length,
                                   backgroundColor: Colors.white,
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                     AppColors.primaryColor,
@@ -88,7 +88,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                               ),
                               SizedBox(width: 10),
                               Text(
-                                '${((_currentPageIndex + 1) / questions.length * 100).toInt()}%',
+                                '${((_currentPageIndex) / questions.length * 100).toInt()}%',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

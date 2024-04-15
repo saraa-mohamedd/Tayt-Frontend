@@ -46,6 +46,7 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/images/clothing/
+    - assets/images/liked_clothing/
     - assets/icons/
     - assets/meshes/
 

@@ -7,6 +7,7 @@ import 'package:tayt_app/src/screens/clothing_screen/components/body.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
+import 'package:tayt_app/src/screens/likes_screen/likes_screen.dart';
 
 class ClothingScreen extends StatelessWidget {
   static String routeName = '/clothing-screen';
@@ -40,7 +41,13 @@ class ClothingScreen extends StatelessWidget {
             IconButton(
               icon:
                   FaIcon(FontAwesomeIcons.heart, color: AppColors.primaryColor),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LikedClothingScreen(),
+                  ),
+                );
+              },
             ),
             IconButton(
               icon: SvgPicture.asset(
