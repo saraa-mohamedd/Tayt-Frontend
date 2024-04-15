@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/user_screen/user_screen.dart';
+import 'package:tuple/tuple.dart';
 import '../screens/splash_screen/components/body.dart';
 import '../screens/body_mesh_screen/body_mesh_screen.dart';
 import '../screens/clothing_screen/clothing_screen.dart';
@@ -56,7 +58,7 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
           padding: EdgeInsets.symmetric(vertical: 5),
           child: FaIcon(FontAwesomeIcons.personRays, size: 23),
         ),
-        title: ("My Body"),
+        title: ("Try On"),
         activeColorPrimary: AppColors.primaryColor,
         inactiveColorPrimary: Colors.black,
       ),
@@ -74,8 +76,25 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
 
   List<Widget> _screens() {
     // Replace these with your own screen widgets
-    return [HomeScreen(), ClothingScreen(), BodyScreen(), UserScreen()];
-    // return [HomeScreen(), ClothingScreen(), TryOnScreen(), UserScreen()];
+    return [
+      HomeScreen(), 
+      ClothingScreen(),
+      TryOnScreen(
+        outfitItems: Tuple2<int, List<OutfitItem>>(2, [
+          OutfitItem(
+            imagePath: "assets/images/clothing/front1.jpeg",
+            name: "Shirt",
+            description: "Description yo"
+          ),
+          OutfitItem(
+            imagePath: "assets/images/clothing/front11.jpeg",
+            name: "Pants",
+            description: "Description yo"
+          ),
+        ]), 
+        numItems: 2, 
+      ), 
+      UserScreen()];
   }
 
   @override

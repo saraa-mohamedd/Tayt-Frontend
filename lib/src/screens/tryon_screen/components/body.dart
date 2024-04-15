@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,6 +29,18 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Tuple2<int, List<OutfitItem>> outfit = widget.outfit;
     int numItems = widget.numItems;
+
+    List<Tuple3<String, String, String>> linkedImages = [];
+    if (outfit.item2.isNotEmpty) {
+      linkedImages = numItems == 1
+        ? [
+            Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name, outfit.item2[0].description),
+          ]
+        : [
+            Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name, outfit.item2[0].description),
+            Tuple3(outfit.item2[1].imagePath, outfit.item2[1].name, outfit.item2[1].description),
+          ];
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -137,17 +147,7 @@ class _BodyState extends State<Body> {
               viewportFraction: 0.55,
               hasIndicator: false,
               infscroll: false,
-              linkedImages: numItems == 1
-                  ? [
-                      Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name,
-                          outfit.item2[0].description),
-                    ]
-                  : [
-                      Tuple3(outfit.item2[0].imagePath, outfit.item2[0].name,
-                          outfit.item2[0].description),
-                      Tuple3(outfit.item2[1].imagePath, outfit.item2[1].name,
-                          outfit.item2[1].description),
-                    ],
+              linkedImages: linkedImages,
               linked: true,
               bgColor: AppColors.primaryColor,
             )),
