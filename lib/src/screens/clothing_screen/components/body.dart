@@ -6,6 +6,7 @@ import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart';
 import 'clothing_details_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tayt_app/models/clothing_item.dart';
 
 class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
@@ -18,11 +19,20 @@ class _BodyState extends State<Body> {
   final _searchController = TextEditingController();
   int _currentPage = 0;
   final _pageSize = 10; // Number of items per page
-  final _clothingItems = List.generate(100, (index) => 'Clothing ${index + 1}');
+
+  final _clothingItems = List.generate(
+      100,
+      (index) => ClothingItem(
+            id: index + 1, // Assuming IDs start from 1
+            name: 'Clothing ${index + 1}',
+            description: 'Description for Clothing ${index + 1}',
+            imagePath: 'assets/images/clothing/front${index + 1}.jpeg',
+            type: ClothingType.top,
+          ));
   List<bool> _isHeartFilledList =
       List.filled(100, false); // List to track the filled state of each heart
 
-  List<String> _getCurrentPageItems() {
+  List<ClothingItem> _getCurrentPageItems() {
     final startIndex = _currentPage * _pageSize;
     final endIndex = (startIndex + _pageSize) < _clothingItems.length
         ? (startIndex + _pageSize)
@@ -32,7 +42,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> currentPageItems = _getCurrentPageItems();
+    final List<ClothingItem> currentPageItems = _getCurrentPageItems();
 
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
 
@@ -137,14 +147,24 @@ class _BodyState extends State<Body> {
                                     FontAwesomeIcons.heart,
                                     color: AppColors.primaryColor,
                                   ),
-                            onPressed: () {
+                            onPressed: () async {
                               setState(() {
                                 favesProvider.toggleFavorite(all_clothingitems[
                                     _currentPage * _pageSize + index]);
-
-                                // _isHeartFilledList[index] = !_isHeartFilledList[
-                                //     index]; // Toggle the filled state of the heart icon
                               });
+
+                              final item = all_clothingitems[
+                                  _currentPage * _pageSize + index];
+                              final isFavorite = favesProvider.isFavorite(item);
+
+                              if (isFavorite) {
+                                // Call likeItem to add like if the item is favorited
+                                await favesProvider.likeItem(
+                                    '1', item.id.toString());
+                              } else {
+                                // Call unlikeItem to remove like if the item is unfavorited
+                                // await unlikeItem('userId', 'itemId'); // Implement unlikeItem function
+                              }
                             },
                           ),
                         ),

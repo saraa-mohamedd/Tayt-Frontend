@@ -8,6 +8,7 @@ import 'package:tayt_app/src/deps/carousel.dart';
 import 'package:tuple/tuple.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:tayt_app/models/clothing_item.dart';
+import 'package:tayt_app/models/outfit.dart';
 
 class Body extends StatefulWidget {
   // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>

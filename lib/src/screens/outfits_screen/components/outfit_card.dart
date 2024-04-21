@@ -7,6 +7,7 @@ import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tuple/tuple.dart';
+import 'package:tayt_app/models/outfit.dart';
 
 class OutfitCard extends StatefulWidget {
   final Outfit outfit;

@@ -9,6 +9,7 @@ import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
+import 'package:tayt_app/models/outfit.dart';
 import 'package:tayt_app/models/clothing_item.dart';
 
 class ClothingDetailsPage extends StatefulWidget {

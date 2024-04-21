@@ -15,6 +15,7 @@ import '../screens/body_screen/body_screen.dart';
 import '../screens/body_mesh_screen/components/body_mesh.dart';
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 import 'package:tayt_app/models/clothing_item.dart';
+import 'package:tayt_app/models/outfit.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override
@@ -83,11 +84,13 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
       TryOnScreen(
         outfit: Outfit(id: 2, items: [
           ClothingItem(
+              id: 24,
               imagePath: 'assets/images/clothing/front24.jpeg',
               name: 'Clothing 24',
               description: 'Description 24',
               type: ClothingType.dress),
           ClothingItem(
+              id: 25,
               imagePath: 'assets/images/clothing/front25.jpeg',
               name: 'Clothing 25',
               description: 'Description 25',

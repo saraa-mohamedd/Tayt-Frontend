@@ -8,20 +8,24 @@ class FavoritesProvider extends ChangeNotifier {
   List<ClothingItem> favorites = [];
 
   Future<void> fetchFavorites(String userId) async {
-    print("here");
-    const url = "http://127.0.0.1:5000/like/1";
     try {
+      final url = "http://10.0.2.2:5000/like/$userId";
+      print(url);
+
       final response = await http.get(Uri.parse(url));
 
+      print(response.body);
       if (response.statusCode == 200) {
         print("Fetched favorites successfully");
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         final List<dynamic> likes = responseData['likes'];
+        print(likes);
 
         favorites.clear(); // Clear existing favorites
 
         likes.forEach((likeData) {
           final item = ClothingItem(
+            id: likeData['id'],
             imagePath: "assets/images/liked_clothing/image1.jpeg", //fix this
             name: likeData['item_name'],
             description: likeData['description'],
@@ -39,6 +43,30 @@ class FavoritesProvider extends ChangeNotifier {
     } catch (error) {
       // Handle errors
       print('Error fetching favorites: $error');
+    }
+  }
+
+  Future<void> likeItem(String userId, String itemId) async {
+    final url = 'http://10.0.2.2:5000/like';
+    final Map<String, dynamic> requestData = {
+      'user_id': userId,
+      'item_id': itemId,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode(requestData),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        print('Item liked successfully');
+      } else {
+        print('Failed to like item: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error liking item: $error');
     }
   }
 
