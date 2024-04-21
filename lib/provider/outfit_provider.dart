@@ -1,23 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
-
-enum ClothingType { top, bottom, dress }
-
-class ClothingItem {
-  final String imagePath;
-  final String name;
-  final String description;
-  final bool isLiked;
-  final ClothingType type;
-
-  ClothingItem({
-    required this.imagePath,
-    required this.name,
-    required this.description,
-    this.isLiked = false,
-    required this.type,
-  });
-}
+import 'package:tayt_app/models/clothing_item.dart';
 
 class Outfit {
   final List<ClothingItem> items;

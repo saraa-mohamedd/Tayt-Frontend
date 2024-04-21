@@ -14,6 +14,7 @@ import '../screens/home_screen/home_screen.dart';
 import '../screens/body_screen/body_screen.dart';
 import '../screens/body_mesh_screen/components/body_mesh.dart';
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
+import 'package:tayt_app/models/clothing_item.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override

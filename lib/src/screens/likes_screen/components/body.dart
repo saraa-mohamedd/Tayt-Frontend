@@ -1,17 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
-import 'package:tayt_app/provider/outfit_provider.dart';
+import 'package:tayt_app/models/clothing_item.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
-
-// class FavoriteItem {
-//   final String id;
-//   final String name;
-
-//   FavoriteItem({required this.id, required this.name});
-// }
 
 class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
@@ -21,6 +15,13 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch favorites when the Body widget is initialized
+    Provider.of<FavoritesProvider>(context, listen: false).fetchFavorites('1');
+  }
+
   @override
   Widget build(BuildContext context) {
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
@@ -43,7 +44,6 @@ class _BodyState extends State<Body> {
                 borderRadius: BorderRadius.circular(10.0),
                 child: Image.asset(
                   favoriteItem.imagePath,
-                  // generateImagePath(favoriteItem.id),
                   width: 65,
                   height: 100,
                   fit: BoxFit.cover,
@@ -63,8 +63,7 @@ class _BodyState extends State<Body> {
                     color: Colors.grey[600],
                   )),
               trailing: IconButton(
-                icon: Icon(FontAwesomeIcons.solidHeart,
-                    color: AppColors.primaryColor),
+                icon: Icon(Icons.favorite, color: AppColors.primaryColor),
                 onPressed: () {
                   setState(() {
                     favesProvider.removeFromFavorites(favoriteItem);

@@ -8,6 +8,7 @@ import 'package:tayt_app/src/deps/carousel_counter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
 import 'package:tuple/tuple.dart';
+import 'package:tayt_app/models/clothing_item.dart';
 
 class CustomCarousel extends StatelessWidget {
   const CustomCarousel({
