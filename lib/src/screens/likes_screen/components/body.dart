@@ -66,7 +66,8 @@ class _BodyState extends State<Body> {
                 icon: Icon(Icons.favorite, color: AppColors.primaryColor),
                 onPressed: () {
                   setState(() {
-                    favesProvider.removeFromFavorites(favoriteItem);
+                    favesProvider.unlikeItem('1', favoriteItem.id.toString());
+                    faves.removeAt(index);
                   });
                 },
               ),

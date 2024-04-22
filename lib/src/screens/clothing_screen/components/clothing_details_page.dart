@@ -193,10 +193,11 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                           setState(() {
                             isFavorite = !isFavorite;
                             if (isFavorite) {
-                              favesProvider.addToFavorites(widget.clothingItem);
+                              favesProvider.likeItem(
+                                  '1', widget.clothingItem.id.toString());
                             } else {
-                              favesProvider
-                                  .removeFromFavorites(widget.clothingItem);
+                              favesProvider.unlikeItem(
+                                  '1', widget.clothingItem.id.toString());
                             }
                           });
                         },

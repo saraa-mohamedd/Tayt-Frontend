@@ -7,6 +7,7 @@ import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart'
 import 'clothing_details_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/models/clothing_item.dart';
+import 'package:tayt_app/provider/clothing_provider.dart';
 
 class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
@@ -20,29 +21,27 @@ class _BodyState extends State<Body> {
   int _currentPage = 0;
   final _pageSize = 10; // Number of items per page
 
-  final _clothingItems = List.generate(
-      100,
-      (index) => ClothingItem(
-            id: index + 1, // Assuming IDs start from 1
-            name: 'Clothing ${index + 1}',
-            description: 'Description for Clothing ${index + 1}',
-            imagePath: 'assets/images/clothing/front${index + 1}.jpeg',
-            type: ClothingType.top,
-          ));
-  List<bool> _isHeartFilledList =
-      List.filled(100, false); // List to track the filled state of each heart
+  @override
+  void initState() {
+    super.initState();
+    // Fetch clothing items when the Body widget is initialized
+    Provider.of<ClothingProvider>(context, listen: false).fetchClothingItems();
+  }
 
-  List<ClothingItem> _getCurrentPageItems() {
+  List<ClothingItem> _getCurrentPageItems(List<ClothingItem> allClothingItems) {
     final startIndex = _currentPage * _pageSize;
-    final endIndex = (startIndex + _pageSize) < _clothingItems.length
+    final endIndex = (startIndex + _pageSize) < allClothingItems.length
         ? (startIndex + _pageSize)
-        : _clothingItems.length;
-    return _clothingItems.sublist(startIndex, endIndex);
+        : allClothingItems.length;
+    return allClothingItems.sublist(startIndex, endIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<ClothingItem> currentPageItems = _getCurrentPageItems();
+    // Retrieve the list of clothing items from the provider
+    final clothingProvider = Provider.of<ClothingProvider>(context);
+    final List<ClothingItem> currentPageItems =
+        _getCurrentPageItems(clothingProvider.clothingItems);
 
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
 
@@ -64,6 +63,7 @@ class _BodyState extends State<Body> {
               ),
               itemCount: currentPageItems.length,
               itemBuilder: (context, index) {
+                final clothingItem = currentPageItems[index];
                 return GestureDetector(
                   onTap: () {
                     // Navigate to ClothingDetailsPage
@@ -71,8 +71,7 @@ class _BodyState extends State<Body> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ClothingDetailsPage(
-                          clothingItem: all_clothingitems[
-                              _currentPage * _pageSize + index],
+                          clothingItem: clothingItem,
                         ),
                       ),
                     );
@@ -88,7 +87,7 @@ class _BodyState extends State<Body> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.asset(
-                            'assets/images/clothing/front${_currentPage * _pageSize + index + 1}.jpeg',
+                            clothingItem.imagePath,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container();
@@ -113,7 +112,7 @@ class _BodyState extends State<Body> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Clothing ${_currentPage * _pageSize + index + 1}',
+                                  clothingItem.name,
                                   style: TextStyle(
                                     color: AppColors.primaryColor,
                                     fontWeight: FontWeight.bold,
@@ -137,8 +136,7 @@ class _BodyState extends State<Body> {
                           top: 0,
                           right: 8,
                           child: IconButton(
-                            icon: favesProvider.isFavorite(all_clothingitems[
-                                    _currentPage * _pageSize + index])
+                            icon: favesProvider.isFavorite(clothingItem)
                                 ? FaIcon(
                                     FontAwesomeIcons.solidHeart,
                                     color: AppColors.primaryColor,
@@ -149,21 +147,20 @@ class _BodyState extends State<Body> {
                                   ),
                             onPressed: () async {
                               setState(() {
-                                favesProvider.toggleFavorite(all_clothingitems[
-                                    _currentPage * _pageSize + index]);
+                                favesProvider.toggleFavorite(clothingItem);
                               });
 
-                              final item = all_clothingitems[
-                                  _currentPage * _pageSize + index];
-                              final isFavorite = favesProvider.isFavorite(item);
+                              final isFavorite =
+                                  favesProvider.isFavorite(clothingItem);
 
                               if (isFavorite) {
                                 // Call likeItem to add like if the item is favorited
                                 await favesProvider.likeItem(
-                                    '1', item.id.toString());
+                                    '1', clothingItem.id.toString());
                               } else {
                                 // Call unlikeItem to remove like if the item is unfavorited
-                                // await unlikeItem('userId', 'itemId'); // Implement unlikeItem function
+                                await favesProvider.unlikeItem(
+                                    '1', clothingItem.id.toString());
                               }
                             },
                           ),
@@ -205,14 +202,14 @@ class _BodyState extends State<Body> {
                 IconButton(
                   icon:
                       Icon(Icons.arrow_forward, color: AppColors.primaryColor),
-                  onPressed:
-                      (_currentPage + 1) * _pageSize >= _clothingItems.length
-                          ? null
-                          : () {
-                              setState(() {
-                                _currentPage++;
-                              });
-                            },
+                  onPressed: (_currentPage + 1) * _pageSize >=
+                          clothingProvider.clothingItems.length
+                      ? null
+                      : () {
+                          setState(() {
+                            _currentPage++;
+                          });
+                        },
                 ),
               ],
             ),

@@ -70,6 +70,30 @@ class FavoritesProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> unlikeItem(String userId, String itemId) async {
+    final url = 'http://10.0.2.2:5000/unlike';
+    final Map<String, dynamic> requestData = {
+      'user_id': userId,
+      'item_id': itemId,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode(requestData),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        print('Item unliked successfully');
+      } else {
+        print('Failed to unlike item: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error unliking item: $error');
+    }
+  }
+
   void addToFavorites(ClothingItem item) {
     favorites.add(item);
     notifyListeners();

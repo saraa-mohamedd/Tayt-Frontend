@@ -17,19 +17,19 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Finished APIs
 
-- Get all items (for filter in search)        SALMA
-- Get item            SALMA
-- Add like          SALMA
+- Get all items (for filter in search)        SALMA DONE
+- Get item            SALMA NOT NECESSARY?
+- Add like          SALMA DONE
 - Add to outfit     SARA
 - Get all outfits   SARA
 - Compatibility recommendation ---
-- Get all likes         SALMA
+- Get all likes         SALMA DONE
 - Both body models (fadel db integration)  SARA
+- Remove like SALMA DONE
 
 ## APIs TODO
-- Remove from outfit
 - Tryon (Hood)
+- Remove from outfit 
 - Rating (fixing input size)
-- Remove like
 - Add body column to user (also get body)
 - Consider blob in db
