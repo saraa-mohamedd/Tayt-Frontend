@@ -192,20 +192,9 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                       ),
                       SizedBox(width: 10),
                       GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isFavorite = !isFavorite;
-                            if (isFavorite) {
-                              favesProvider.likeItem(
-                                  '1', widget.clothingItem.id.toString());
-                            } else {
-                              favesProvider.unlikeItem(
-                                  '1', widget.clothingItem.id.toString());
-                            }
-                          });
-                        },
+                        onTap: () {},
                         child: Icon(
-                          isFavorite
+                          widget.clothingItem.isLiked
                               ? FontAwesomeIcons.solidHeart
                               : FontAwesomeIcons.heart,
                           color: AppColors.primaryColor,

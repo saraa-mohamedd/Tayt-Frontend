@@ -1,4 +1,4 @@
-import 'dart:convert'; // Add this import statement
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -66,6 +66,7 @@ class _BodyState extends State<Body> {
               itemCount: currentPageItems.length,
               itemBuilder: (context, index) {
                 final clothingItem = currentPageItems[index];
+                final bool isLiked = favesProvider.isFavorite(clothingItem);
                 return GestureDetector(
                   onTap: () {
                     // Navigate to ClothingDetailsPage
@@ -89,8 +90,7 @@ class _BodyState extends State<Body> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.memory(
-                            base64Decode(clothingItem
-                                .frontImage), // Use base64Decode here
+                            base64Decode(clothingItem.frontImage),
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container();
@@ -104,8 +104,7 @@ class _BodyState extends State<Body> {
                           child: Container(
                             padding: EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
-                              color: AppColors.secondaryColor.withOpacity(
-                                  0.7), // Semi-transparent background for text
+                              color: AppColors.secondaryColor.withOpacity(0.7),
                               borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(15.0),
                                 bottomRight: Radius.circular(15.0),
@@ -139,19 +138,28 @@ class _BodyState extends State<Body> {
                           top: 0,
                           right: 8,
                           child: IconButton(
-                            icon: favesProvider.isFavorite(clothingItem)
-                                ? Icon(
-                                    Icons.favorite,
-                                    color: AppColors.primaryColor,
-                                  )
-                                : Icon(
-                                    Icons.favorite_border,
-                                    color: AppColors.primaryColor,
-                                  ),
-                            onPressed: () {
+                            icon: isLiked
+                                ? Icon(Icons.favorite,
+                                    color: AppColors.primaryColor)
+                                : Icon(Icons.favorite_border,
+                                    color: AppColors.primaryColor),
+                            onPressed: () async {
                               setState(() {
-                                favesProvider.toggleFavorite(clothingItem);
+                                isLiked
+                                    ? favesProvider
+                                        .removeFromFavorites(clothingItem)
+                                    : favesProvider
+                                        .addToFavorites(clothingItem);
                               });
+
+                              // Call APIs for liking/unliking
+                              if (isLiked) {
+                                await favesProvider.unlikeItem(
+                                    '1', clothingItem.id.toString());
+                              } else {
+                                await favesProvider.likeItem(
+                                    '1', clothingItem.id.toString());
+                              }
                             },
                           ),
                         ),

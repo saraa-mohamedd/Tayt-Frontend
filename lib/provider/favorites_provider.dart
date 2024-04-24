@@ -9,7 +9,7 @@ class FavoritesProvider extends ChangeNotifier {
 
   Future<void> fetchFavorites(String userId) async {
     try {
-      final url = "http://127.0.0.1:5000/like/$userId";
+      final url = "http://10.0.2.2:5000/like/$userId";
       print(url);
 
       final response = await http.get(Uri.parse(url));
@@ -30,7 +30,6 @@ class FavoritesProvider extends ChangeNotifier {
             name: likeData['item_name'],
             description: likeData['description'],
             type: ClothingType.top,
-            isLiked: likeData['liked'],
           );
           favorites.add(item);
         });
@@ -47,7 +46,7 @@ class FavoritesProvider extends ChangeNotifier {
   }
 
   Future<void> likeItem(String userId, String itemId) async {
-    final url = 'http://127.0.0.1:5000/like';
+    final url = 'http://10.0.2.2:5000/like';
     final Map<String, dynamic> requestData = {
       'user_id': userId,
       'item_id': itemId,
@@ -71,7 +70,7 @@ class FavoritesProvider extends ChangeNotifier {
   }
 
   Future<void> unlikeItem(String userId, String itemId) async {
-    final url = 'http://127.0.0.1:5000/unlike';
+    final url = 'http://10.0.2.2:5000/unlike';
     final Map<String, dynamic> requestData = {
       'user_id': userId,
       'item_id': itemId,
@@ -95,7 +94,9 @@ class FavoritesProvider extends ChangeNotifier {
   }
 
   void addToFavorites(ClothingItem item) {
-    favorites.add(item);
+    if (!favorites.contains(item)) {
+      favorites.add(item);
+    }
     notifyListeners();
   }
 
