@@ -42,7 +42,7 @@ class CustomCarousel extends StatelessWidget {
           items: linked
               ? linkedImages
                   .map((item) => CarouselImage(
-                        imageUrl: item.imagePath,
+                        imageUrl: 'assets/images/secondarycolor_swatch.png',
                         width: width,
                         height: height,
                         backgroundColor: bgColor.withOpacity(0.5),

@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -85,13 +87,13 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
         outfit: Outfit(id: 2, items: [
           ClothingItem(
               id: 24,
-              imagePath: 'assets/images/clothing/front24.jpeg',
+              frontImage: '',
               name: 'Clothing 24',
               description: 'Description 24',
               type: ClothingType.dress),
           ClothingItem(
               id: 25,
-              imagePath: 'assets/images/clothing/front25.jpeg',
+              frontImage: '',
               name: 'Clothing 25',
               description: 'Description 25',
               type: ClothingType.dress)

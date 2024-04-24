@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -63,8 +65,8 @@ class _OutfitCardState extends State<OutfitCard> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            widget.outfit.items[0].imagePath,
+                          child: Image.memory(
+                            base64Decode(widget.outfit.items[0].frontImage),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -110,8 +112,8 @@ class _OutfitCardState extends State<OutfitCard> {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(
-                                widget.outfit.items[1].imagePath,
+                              child: Image.memory(
+                                base64Decode(widget.outfit.items[1].frontImage),
                                 fit: BoxFit.cover,
                               ),
                             ),

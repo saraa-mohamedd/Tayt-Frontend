@@ -42,8 +42,8 @@ class _BodyState extends State<Body> {
             child: ListTile(
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(
-                  favoriteItem.imagePath,
+                child: Image.memory(
+                  base64Decode(favoriteItem.frontImage),
                   width: 65,
                   height: 100,
                   fit: BoxFit.cover,

@@ -1,8 +1,10 @@
+import 'dart:typed_data';
+
 enum ClothingType { top, bottom, dress }
 
 class ClothingItem {
   final int id;
-  final String imagePath;
+  final String frontImage;
   final String name;
   final String description;
   final bool isLiked;
@@ -10,7 +12,7 @@ class ClothingItem {
 
   ClothingItem({
     required this.id,
-    required this.imagePath,
+    required this.frontImage,
     required this.name,
     required this.description,
     this.isLiked = false,

@@ -7,11 +7,16 @@ import 'package:http/http.dart' as http;
 class ClothingProvider extends ChangeNotifier {
   List<ClothingItem> _clothingItems = [];
 
-  Future<void> fetchClothingItems() async {
-    try {
-      final url = "http://10.0.2.2:5000/item";
+  Future<void> fetchClothingItems(String userId) async {
+    final Map<String, dynamic> requestData = {
+      'user_id': userId,
+    };
 
-      final response = await http.get(Uri.parse(url));
+    try {
+      print(requestData);
+      print("here");
+      final url = Uri.parse("http://10.0.2.2:5000/item?user_id=$userId");
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body) as Map<String, dynamic>;
@@ -19,15 +24,27 @@ class ClothingProvider extends ChangeNotifier {
 
         _clothingItems.clear(); // Clear existing clothing items
 
+        //PRINT RESPONSE
+        print('Response data: $responseData');
+        print('Items: $items');
         items.forEach((itemsData) {
-          final item = ClothingItem(
-            id: itemsData['id'],
-            imagePath: "assets/images/clothing/front1.jpeg", //fix this
-            name: itemsData['item_name'],
-            description: itemsData['description'],
-            type: ClothingType.top, //this too
-          );
-          _clothingItems.add(item);
+          try {
+            final item = ClothingItem(
+              id: itemsData['id'],
+              frontImage: itemsData['front_image'],
+              name: itemsData['item_name'],
+              description: itemsData['description'],
+              type: ClothingType.top, // Assuming 'top' is the type of clothing
+              isLiked: itemsData['liked'],
+            );
+            _clothingItems.add(item);
+            print('the image is ');
+            print(item.frontImage.length);
+          } catch (error) {
+            // Log error for individual item
+            print(
+                'YOOOOOOOOOOError decoding image for item ${itemsData['id']}: $error');
+          }
         });
 
         notifyListeners();
@@ -36,7 +53,7 @@ class ClothingProvider extends ChangeNotifier {
         print('Failed to fetch clothing items: ${response.statusCode}');
       }
     } catch (error) {
-      // Handle errors
+      // Handle network or other general errors
       print('Error fetching clothing items: $error');
     }
   }

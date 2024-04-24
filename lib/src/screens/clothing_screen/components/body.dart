@@ -1,13 +1,14 @@
+import 'dart:convert'; // Add this import statement
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
-import 'package:tayt_app/provider/outfit_provider.dart';
+import 'package:tayt_app/provider/clothing_provider.dart';
+import 'package:tayt_app/models/clothing_item.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart';
 import 'clothing_details_page.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tayt_app/models/clothing_item.dart';
-import 'package:tayt_app/provider/clothing_provider.dart';
 
 class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
@@ -25,7 +26,8 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     // Fetch clothing items when the Body widget is initialized
-    Provider.of<ClothingProvider>(context, listen: false).fetchClothingItems();
+    Provider.of<ClothingProvider>(context, listen: false)
+        .fetchClothingItems('1');
   }
 
   List<ClothingItem> _getCurrentPageItems(List<ClothingItem> allClothingItems) {
@@ -86,8 +88,9 @@ class _BodyState extends State<Body> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
-                          child: Image.asset(
-                            clothingItem.imagePath,
+                          child: Image.memory(
+                            base64Decode(clothingItem
+                                .frontImage), // Use base64Decode here
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container();
@@ -137,31 +140,18 @@ class _BodyState extends State<Body> {
                           right: 8,
                           child: IconButton(
                             icon: favesProvider.isFavorite(clothingItem)
-                                ? FaIcon(
-                                    FontAwesomeIcons.solidHeart,
+                                ? Icon(
+                                    Icons.favorite,
                                     color: AppColors.primaryColor,
                                   )
-                                : FaIcon(
-                                    FontAwesomeIcons.heart,
+                                : Icon(
+                                    Icons.favorite_border,
                                     color: AppColors.primaryColor,
                                   ),
-                            onPressed: () async {
+                            onPressed: () {
                               setState(() {
                                 favesProvider.toggleFavorite(clothingItem);
                               });
-
-                              final isFavorite =
-                                  favesProvider.isFavorite(clothingItem);
-
-                              if (isFavorite) {
-                                // Call likeItem to add like if the item is favorited
-                                await favesProvider.likeItem(
-                                    '1', clothingItem.id.toString());
-                              } else {
-                                // Call unlikeItem to remove like if the item is unfavorited
-                                await favesProvider.unlikeItem(
-                                    '1', clothingItem.id.toString());
-                              }
                             },
                           ),
                         ),

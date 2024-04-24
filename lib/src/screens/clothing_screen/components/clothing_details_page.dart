@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
@@ -18,10 +21,10 @@ class ClothingDetailsPage extends StatefulWidget {
   final String storeUrl = 'https://www.amazon.com/';
 
   final List<ClothingItem> recommendations = [
-    all_clothingitems[1],
-    all_clothingitems[2],
-    all_clothingitems[3],
-    all_clothingitems[4],
+    // all_clothingitems[1],
+    // all_clothingitems[2],
+    // all_clothingitems[3],
+    // all_clothingitems[4],
   ];
   ClothingDetailsPage({
     required this.clothingItem,
@@ -41,7 +44,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    String imagePath = widget.clothingItem.imagePath;
+    String imagePath = widget.clothingItem.frontImage;
     String name = widget.clothingItem.name;
     String description = widget.clothingItem.description;
     String storeName = widget.storeName;
@@ -91,7 +94,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
                 image: DecorationImage(
-                  image: AssetImage(imagePath),
+                  image: MemoryImage(base64Decode(imagePath)),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -259,10 +262,12 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             15.0),
-                                                    child: Image.asset(
-                                                      availableOutfits[index]
-                                                          .items[0]
-                                                          .imagePath,
+                                                    child: Image.memory(
+                                                      base64Decode(
+                                                          availableOutfits[
+                                                                  index]
+                                                              .items[0]
+                                                              .frontImage),
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
