@@ -10,16 +10,16 @@ class FavoritesProvider extends ChangeNotifier {
   Future<void> fetchFavorites(String userId) async {
     try {
       final url = "http://10.0.2.2:5000/like/$userId";
-      print(url);
+      // print(url);
 
       final response = await http.get(Uri.parse(url));
 
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
-        print("Fetched favorites successfully");
+        // print("Fetched favorites successfully");
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         final List<dynamic> likes = responseData['likes'];
-        print(likes);
+        // print(likes);
 
         favorites.clear(); // Clear existing favorites
 
@@ -52,12 +52,16 @@ class FavoritesProvider extends ChangeNotifier {
       'item_id': itemId,
     };
 
+    // print(url);
+
     try {
       final response = await http.post(
         Uri.parse(url),
         body: json.encode(requestData),
         headers: {'Content-Type': 'application/json'},
       );
+
+      fetchFavorites(userId);
 
       if (response.statusCode == 200) {
         print('Item liked successfully');
@@ -76,12 +80,16 @@ class FavoritesProvider extends ChangeNotifier {
       'item_id': itemId,
     };
 
+    print("unlikeing: ${url}");
+
     try {
       final response = await http.post(
         Uri.parse(url),
         body: json.encode(requestData),
         headers: {'Content-Type': 'application/json'},
       );
+
+      fetchFavorites(userId);
 
       if (response.statusCode == 200) {
         print('Item unliked successfully');
@@ -93,27 +101,78 @@ class FavoritesProvider extends ChangeNotifier {
     }
   }
 
-  void addToFavorites(ClothingItem item) {
-    if (!favorites.contains(item)) {
-      favorites.add(item);
+  Future<ClothingItem> fetchItem(String itemId) async {
+    try {
+      final url = "http://10.0.2.2:5000/item/$itemId";
+      print(url);
+
+      final response = await http.get(Uri.parse(url));
+
+      // print(response.body);
+      if (response.statusCode == 200) {
+        // print("Fetched item successfully");
+        final responseData = json.decode(response.body) as Map<String, dynamic>;
+        final dynamic itemData = responseData['item'];
+
+        final item = ClothingItem(
+          id: itemData['id'],
+          frontImage: itemData['front_image'],
+          name: itemData['item_name'],
+          description: itemData['description'],
+          type: ClothingType.top,
+        );
+
+        return item;
+      } else {
+        // Handle other status codes
+        throw Exception('Failed to fetch item: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Error fetching item: $error');
     }
-    notifyListeners();
   }
 
-  void removeFromFavorites(ClothingItem item) {
-    favorites.remove(item);
-    notifyListeners();
+  // void addToFavorites(ClothingItem item) {
+  //   if (!favorites.contains(item)) {
+
+  //     favorites.add(item);
+  //   }
+  //   notifyListeners();
+  // }
+
+  void getItem(int itemid) {}
+
+  void addToFavorites(String userId, String itemId) {
+    Future<ClothingItem> item = fetchItem(itemId);
+    if (!favorites.contains(item)) {
+      likeItem(userId, itemId);
+    }
   }
 
-  bool isFavorite(ClothingItem item) {
-    return favorites.contains(item);
+  void removeFromFavorites(String userId, String itemId) {
+    print("in remove from favorites");
+    // Future<ClothingItem> item = fetchItem(itemId);
+    // if (favorites.contains(item)) {
+    unlikeItem(userId, itemId);
+    // }
   }
 
-  void toggleFavorite(ClothingItem item) {
-    if (isFavorite(item)) {
-      removeFromFavorites(item);
+  bool isFavorite(String userId, String itemId) {
+    List<int> itemIds = favorites.map((item) => item.id).toList();
+    print("itemIds: $itemIds");
+    print("itemId: $itemId");
+    if (itemIds.contains(int.parse(itemId))) {
+      return true;
+    }
+    return false;
+  }
+
+  void toggleFavorite(String userId, String itemId) {
+    print('isFavorite: ${isFavorite(userId, itemId)}');
+    if (isFavorite(userId, itemId)) {
+      removeFromFavorites(userId, itemId);
     } else {
-      addToFavorites(item);
+      addToFavorites(userId, itemId);
     }
   }
 

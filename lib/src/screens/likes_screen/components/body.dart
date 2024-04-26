@@ -67,7 +67,7 @@ class _BodyState extends State<Body> {
                 onPressed: () {
                   setState(() {
                     favesProvider.unlikeItem('1', favoriteItem.id.toString());
-                    faves.removeAt(index);
+                    // faves.removeAt(index);
                   });
                 },
               ),

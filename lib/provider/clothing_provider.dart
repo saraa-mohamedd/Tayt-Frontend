@@ -14,7 +14,6 @@ class ClothingProvider extends ChangeNotifier {
 
     try {
       print(requestData);
-      print("here");
       final url = Uri.parse("http://10.0.2.2:5000/item?user_id=$userId");
       final response = await http.get(url);
 
@@ -25,8 +24,8 @@ class ClothingProvider extends ChangeNotifier {
         _clothingItems.clear(); // Clear existing clothing items
 
         //PRINT RESPONSE
-        print('Response data: $responseData');
-        print('Items: $items');
+        // print('Response data: $responseData');
+        // print('Items: $items');
         items.forEach((itemsData) {
           try {
             final item = ClothingItem(
@@ -38,12 +37,9 @@ class ClothingProvider extends ChangeNotifier {
               isLiked: itemsData['liked'],
             );
             _clothingItems.add(item);
-            print('the image is ');
-            print(item.frontImage.length);
           } catch (error) {
             // Log error for individual item
-            print(
-                'YOOOOOOOOOOError decoding image for item ${itemsData['id']}: $error');
+            print('Error decoding image for item ${itemsData['id']}: $error');
           }
         });
 

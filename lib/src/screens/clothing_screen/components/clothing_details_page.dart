@@ -51,7 +51,8 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
     String storeUrl = widget.storeUrl;
 
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
-    bool isFavorite = favesProvider.isFavorite(widget.clothingItem);
+    bool isFavorite =
+        favesProvider.isFavorite('1', widget.clothingItem.id.toString());
 
     OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
     List<Outfit> availableOutfits =
@@ -192,9 +193,14 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                       ),
                       SizedBox(width: 10),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            favesProvider.toggleFavorite(
+                                '1', widget.clothingItem.id.toString());
+                          });
+                        },
                         child: Icon(
-                          widget.clothingItem.isLiked
+                          isFavorite
                               ? FontAwesomeIcons.solidHeart
                               : FontAwesomeIcons.heart,
                           color: AppColors.primaryColor,

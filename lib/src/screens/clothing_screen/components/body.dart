@@ -46,6 +46,8 @@ class _BodyState extends State<Body> {
         _getCurrentPageItems(clothingProvider.clothingItems);
 
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
+    // favesProvider.fetchFavorites('1');
+    // clothingProvider.fetchClothingItems('1');
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -66,7 +68,8 @@ class _BodyState extends State<Body> {
               itemCount: currentPageItems.length,
               itemBuilder: (context, index) {
                 final clothingItem = currentPageItems[index];
-                final bool isLiked = favesProvider.isFavorite(clothingItem);
+                final bool isLiked =
+                    favesProvider.isFavorite('1', clothingItem.id.toString());
                 return GestureDetector(
                   onTap: () {
                     // Navigate to ClothingDetailsPage
@@ -145,21 +148,23 @@ class _BodyState extends State<Body> {
                                     color: AppColors.primaryColor),
                             onPressed: () async {
                               setState(() {
-                                isLiked
-                                    ? favesProvider
-                                        .removeFromFavorites(clothingItem)
-                                    : favesProvider
-                                        .addToFavorites(clothingItem);
+                                // isLiked
+                                //     ? favesProvider.removeFromFavorites(
+                                //         '1', clothingItem.id.toString())
+                                //     : favesProvider.addToFavorites(
+                                //         '1', clothingItem.id.toString());
+                                favesProvider.toggleFavorite(
+                                    '1', clothingItem.id.toString());
                               });
 
                               // Call APIs for liking/unliking
-                              if (isLiked) {
-                                await favesProvider.unlikeItem(
-                                    '1', clothingItem.id.toString());
-                              } else {
-                                await favesProvider.likeItem(
-                                    '1', clothingItem.id.toString());
-                              }
+                              // if (isLiked) {
+                              //   await favesProvider.unlikeItem(
+                              //       '1', clothingItem.id.toString());
+                              // } else {
+                              //   await favesProvider.likeItem(
+                              //       '1', clothingItem.id.toString());
+                              // }
                             },
                           ),
                         ),
