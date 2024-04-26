@@ -90,13 +90,17 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
               frontImage: '',
               name: 'Clothing 24',
               description: 'Description 24',
-              type: ClothingType.dress),
+              type: ClothingType.dress,
+              vendor: '',
+              vendorLink: ''),
           ClothingItem(
               id: 25,
               frontImage: '',
               name: 'Clothing 25',
               description: 'Description 25',
-              type: ClothingType.dress)
+              type: ClothingType.dress,
+              vendor: '',
+              vendorLink: '')
         ]),
         numItems: 2,
       ),

@@ -3,12 +3,30 @@ import 'package:flutter/gestures.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
 import 'package:tayt_app/src/screens/signup_screen/signup_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 
-class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+class Body extends StatefulWidget {
+  Body({Key? key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  void initState() {
+    super.initState();
+    // Fetch clothing items when the Body widget is initialized
+    Provider.of<AuthProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,6 +68,7 @@ class Body extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: TextField(
+            controller: _emailController,
             style: const TextStyle(
               color: const Color.fromARGB(255, 100, 100, 100),
               fontSize: 15,
@@ -79,6 +98,7 @@ class Body extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: TextField(
+            controller: _passwordController,
             style: const TextStyle(
               color: Color.fromARGB(255, 100, 100, 100),
               fontSize: 15,
@@ -113,6 +133,9 @@ class Body extends StatelessWidget {
             ),
             child: ElevatedButton(
               onPressed: () {
+                authProvider.login(
+                    _emailController.text, _passwordController.text);
+
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) =>

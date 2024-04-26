@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,8 +18,6 @@ import 'package:tayt_app/models/clothing_item.dart';
 
 class ClothingDetailsPage extends StatefulWidget {
   final ClothingItem clothingItem;
-  final String storeName = 'Store and Brand Name';
-  final String storeUrl = 'https://www.amazon.com/';
 
   final List<ClothingItem> recommendations = [
     // all_clothingitems[1],
@@ -47,12 +46,14 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
     String imagePath = widget.clothingItem.frontImage;
     String name = widget.clothingItem.name;
     String description = widget.clothingItem.description;
-    String storeName = widget.storeName;
-    String storeUrl = widget.storeUrl;
+    String vendor = widget.clothingItem.vendor;
+    String vendorLink = widget.clothingItem.vendorLink;
+
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
-    bool isFavorite =
-        favesProvider.isFavorite('1', widget.clothingItem.id.toString());
+    bool isFavorite = favesProvider.isFavorite(
+        authProvider.getUserId(), widget.clothingItem.id.toString());
 
     OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
     List<Outfit> availableOutfits =
@@ -120,9 +121,18 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: GestureDetector(
-                      onTap: () {
-                        // _launchURL('https://www.amazon.com/');
-                        // Add your onTap logic here
+                      onTap: () async {
+                        try {
+                          await launch(vendorLink);
+                        } catch (e) {
+                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Error: $e'),
+                              duration: Duration(seconds: 5),
+                            ),
+                          );
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 5),
@@ -133,7 +143,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                               5.0), // Optional: rounded corners
                         ),
                         child: Text(
-                          "Store and Brand Name ",
+                          vendor,
                           style: const TextStyle(
                             fontSize: 16,
                             fontStyle: FontStyle.italic,
@@ -196,7 +206,8 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                         onTap: () {
                           setState(() {
                             favesProvider.toggleFavorite(
-                                '1', widget.clothingItem.id.toString());
+                                authProvider.getUserId(),
+                                widget.clothingItem.id.toString());
                           });
                         },
                         child: Icon(
@@ -359,13 +370,5 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
         ),
       ),
     );
-  }
-}
-
-void _launchURL(String url) async {
-  if (await canLaunchUrlString(url)) {
-    await launchUrlString(url);
-  } else {
-    throw 'Could not launch $url';
   }
 }

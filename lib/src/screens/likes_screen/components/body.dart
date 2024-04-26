@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/models/clothing_item.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
@@ -18,14 +18,20 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
+
+    String userId =
+        Provider.of<AuthProvider>(context, listen: false).getUserId();
     // Fetch favorites when the Body widget is initialized
-    Provider.of<FavoritesProvider>(context, listen: false).fetchFavorites('1');
+    Provider.of<FavoritesProvider>(context, listen: false)
+        .fetchFavorites(userId);
   }
 
   @override
   Widget build(BuildContext context) {
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
     List<ClothingItem> faves = favesProvider.favorites;
+
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     return ListView.builder(
       itemCount: faves.length,
@@ -66,7 +72,8 @@ class _BodyState extends State<Body> {
                 icon: Icon(Icons.favorite, color: AppColors.primaryColor),
                 onPressed: () {
                   setState(() {
-                    favesProvider.unlikeItem('1', favoriteItem.id.toString());
+                    favesProvider.unlikeItem(
+                        authProvider.getUserId(), favoriteItem.id.toString());
                     // faves.removeAt(index);
                   });
                 },

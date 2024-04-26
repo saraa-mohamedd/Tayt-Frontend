@@ -30,6 +30,8 @@ class FavoritesProvider extends ChangeNotifier {
             name: likeData['item_name'],
             description: likeData['description'],
             type: ClothingType.top,
+            vendor: likeData['vendor'],
+            vendorLink: likeData['vendor_link'],
           );
           favorites.add(item);
         });
@@ -119,7 +121,9 @@ class FavoritesProvider extends ChangeNotifier {
           frontImage: itemData['front_image'],
           name: itemData['item_name'],
           description: itemData['description'],
-          type: ClothingType.top,
+          type: ClothingType.top, //hard coded need  to change
+          vendor: itemData['vendor'],
+          vendorLink: itemData['vendor_link'],
         );
 
         return item;

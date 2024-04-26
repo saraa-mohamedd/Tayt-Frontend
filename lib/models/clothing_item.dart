@@ -7,15 +7,17 @@ class ClothingItem {
   final String frontImage;
   final String name;
   final String description;
-  final bool isLiked;
   final ClothingType type;
+  final String vendor;
+  final String vendorLink;
 
   ClothingItem({
     required this.id,
     required this.frontImage,
     required this.name,
     required this.description,
-    this.isLiked = false,
     required this.type,
+    required this.vendor,
+    required this.vendorLink,
   });
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tayt_app/models/clothing_item.dart';
-import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
 
 class ClothingProvider extends ChangeNotifier {
@@ -34,11 +33,13 @@ class ClothingProvider extends ChangeNotifier {
               name: itemsData['item_name'],
               description: itemsData['description'],
               type: ClothingType.top, // Assuming 'top' is the type of clothing
-              isLiked: itemsData['liked'],
+              vendor: itemsData['vendor'],
+              vendorLink: itemsData['vendor_link'],
             );
             _clothingItems.add(item);
           } catch (error) {
             // Log error for individual item
+            print(itemsData['vendor']);
             print('Error decoding image for item ${itemsData['id']}: $error');
           }
         });

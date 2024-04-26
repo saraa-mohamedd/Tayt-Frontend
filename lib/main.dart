@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/routes/routes.dart';
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => OutfitProvider()),
-        ChangeNotifierProvider(create: (_) => FavoritesProvider())
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider())
       ],
       // create: (_) => OutfitProvider(),
       child: MaterialApp(

@@ -1,10 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/clothing_provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/models/clothing_item.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/search_bar.dart';
@@ -25,9 +24,11 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
+    String userId =
+        Provider.of<AuthProvider>(context, listen: false).getUserId();
     // Fetch clothing items when the Body widget is initialized
     Provider.of<ClothingProvider>(context, listen: false)
-        .fetchClothingItems('1');
+        .fetchClothingItems(userId);
   }
 
   List<ClothingItem> _getCurrentPageItems(List<ClothingItem> allClothingItems) {
@@ -41,6 +42,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     // Retrieve the list of clothing items from the provider
+    final authProvider = Provider.of<AuthProvider>(context);
     final clothingProvider = Provider.of<ClothingProvider>(context);
     final List<ClothingItem> currentPageItems =
         _getCurrentPageItems(clothingProvider.clothingItems);
@@ -68,8 +70,8 @@ class _BodyState extends State<Body> {
               itemCount: currentPageItems.length,
               itemBuilder: (context, index) {
                 final clothingItem = currentPageItems[index];
-                final bool isLiked =
-                    favesProvider.isFavorite('1', clothingItem.id.toString());
+                final bool isLiked = favesProvider.isFavorite(
+                    authProvider.getUserId(), clothingItem.id.toString());
                 return GestureDetector(
                   onTap: () {
                     // Navigate to ClothingDetailsPage
@@ -148,23 +150,10 @@ class _BodyState extends State<Body> {
                                     color: AppColors.primaryColor),
                             onPressed: () async {
                               setState(() {
-                                // isLiked
-                                //     ? favesProvider.removeFromFavorites(
-                                //         '1', clothingItem.id.toString())
-                                //     : favesProvider.addToFavorites(
-                                //         '1', clothingItem.id.toString());
                                 favesProvider.toggleFavorite(
-                                    '1', clothingItem.id.toString());
+                                    authProvider.getUserId(),
+                                    clothingItem.id.toString());
                               });
-
-                              // Call APIs for liking/unliking
-                              // if (isLiked) {
-                              //   await favesProvider.unlikeItem(
-                              //       '1', clothingItem.id.toString());
-                              // } else {
-                              //   await favesProvider.likeItem(
-                              //       '1', clothingItem.id.toString());
-                              // }
                             },
                           ),
                         ),
