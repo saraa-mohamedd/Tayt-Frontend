@@ -132,35 +132,8 @@ class FavoritesProvider extends ChangeNotifier {
     }
   }
 
-  // void addToFavorites(ClothingItem item) {
-  //   if (!favorites.contains(item)) {
-
-  //     favorites.add(item);
-  //   }
-  //   notifyListeners();
-  // }
-
-  void getItem(int itemid) {}
-
-  void addToFavorites(String userId, String itemId) {
-    Future<ClothingItem> item = fetchItem(itemId);
-    if (!favorites.contains(item)) {
-      likeItem(userId, itemId);
-    }
-  }
-
-  void removeFromFavorites(String userId, String itemId) {
-    print("in remove from favorites");
-    // Future<ClothingItem> item = fetchItem(itemId);
-    // if (favorites.contains(item)) {
-    unlikeItem(userId, itemId);
-    // }
-  }
-
   bool isFavorite(String userId, String itemId) {
     List<int> itemIds = favorites.map((item) => item.id).toList();
-    print("itemIds: $itemIds");
-    print("itemId: $itemId");
     if (itemIds.contains(int.parse(itemId))) {
       return true;
     }
@@ -168,11 +141,10 @@ class FavoritesProvider extends ChangeNotifier {
   }
 
   void toggleFavorite(String userId, String itemId) {
-    print('isFavorite: ${isFavorite(userId, itemId)}');
     if (isFavorite(userId, itemId)) {
-      removeFromFavorites(userId, itemId);
+      unlikeItem(userId, itemId);
     } else {
-      addToFavorites(userId, itemId);
+      likeItem(userId, itemId);
     }
   }
 
