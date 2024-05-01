@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
+import 'package:tayt_app/provider/clothing_provider.dart';
 import 'package:tayt_app/routes/routes.dart';
 import 'package:tayt_app/service/navigation_service.dart';
 import 'package:tayt_app/src/screens/splash_screen/splash_screen.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => OutfitProvider()),
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
-        ChangeNotifierProvider(create: (_) => AuthProvider())
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ClothingProvider()),
       ],
       // create: (_) => OutfitProvider(),
       child: MaterialApp(

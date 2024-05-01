@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
@@ -13,8 +14,6 @@ import 'package:tayt_app/models/outfit.dart';
 
 class OutfitCard extends StatefulWidget {
   final Outfit outfit;
-  // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
-  //     outfitItems;
   final int numItems;
 
   const OutfitCard({
@@ -29,8 +28,16 @@ class OutfitCard extends StatefulWidget {
 
 class _OutfitCardState extends State<OutfitCard> {
   @override
+  void initState() {
+    super.initState();
+    final userId =
+        Provider.of<AuthProvider>(context, listen: false).getUserId();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Card(
       elevation: 4,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -43,32 +50,40 @@ class _OutfitCardState extends State<OutfitCard> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                    height: 170,
-                    width: 120,
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Stack(children: [
+                  height: 170,
+                  width: 120,
+                  padding: EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Stack(
+                    children: [
                       GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ClothingDetailsPage(
-                              // imagePath: widget.outfit.items[0].imagePath,
-                              // name: widget.outfit.items[0].name,
-                              // description: widget.outfit.items[0].description,
-                              clothingItem: widget.outfit.items[0],
-                            ),
-                          ),
-                        ),
+                        onTap: () {
+                          if (widget.outfit.items[0].frontImage != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ClothingDetailsPage(
+                                  clothingItem: widget.outfit.items[0],
+                                ),
+                              ),
+                            );
+                          }
+                        },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.memory(
-                            base64Decode(widget.outfit.items[0].frontImage),
-                            fit: BoxFit.cover,
-                          ),
+                          child: widget.outfit.items[0].frontImage != null
+                              ? Image.memory(
+                                  base64Decode(
+                                      widget.outfit.items[0].frontImage),
+                                  fit: BoxFit.cover,
+                                )
+                              : Icon(
+                                  Icons.error,
+                                  color: Colors.red,
+                                ),
                         ),
                       ),
                       Positioned(
@@ -76,8 +91,11 @@ class _OutfitCardState extends State<OutfitCard> {
                         right: 5,
                         child: GestureDetector(
                           onTap: () {
-                            outfitProvider.removeFromOutfit(
-                                widget.outfit.id, 0);
+                            Provider.of<OutfitProvider>(context, listen: false)
+                                .removeFromOutfit(
+                                    authProvider.userId,
+                                    widget.outfit.id,
+                                    widget.outfit.items[0].id);
                           },
                           child: Icon(
                             FontAwesomeIcons.trashAlt,
@@ -86,7 +104,9 @@ class _OutfitCardState extends State<OutfitCard> {
                           ),
                         ),
                       ),
-                    ])),
+                    ],
+                  ),
+                ),
                 Container(
                   height: 170,
                   width: 120,
@@ -96,44 +116,52 @@ class _OutfitCardState extends State<OutfitCard> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: widget.numItems == 2
-                      ? Stack(children: [
-                          GestureDetector(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ClothingDetailsPage(
-                                  clothingItem: widget.outfit.items[1],
-                                  // imagePath: widget.outfit.items[1].imagePath,
-                                  // name: widget.outfit.items[1].name,
-                                  // description:
-                                  //     widget.outfit.items[1].description,
+                      ? Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ClothingDetailsPage(
+                                    clothingItem: widget.outfit.items[1],
+                                  ),
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: widget.outfit.items[1].frontImage != null
+                                    ? Image.memory(
+                                        base64Decode(
+                                            widget.outfit.items[1].frontImage),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                      ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 5,
+                              right: 5,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Provider.of<OutfitProvider>(context,
+                                          listen: false)
+                                      .removeFromOutfit(
+                                          authProvider.userId,
+                                          widget.outfit.id,
+                                          widget.outfit.items[1].id);
+                                },
+                                child: Icon(
+                                  FontAwesomeIcons.trashAlt,
+                                  color: Color.fromARGB(255, 150, 45, 45),
+                                  size: 16,
                                 ),
                               ),
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.memory(
-                                base64Decode(widget.outfit.items[1].frontImage),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 5,
-                            right: 5,
-                            child: GestureDetector(
-                              onTap: () {
-                                outfitProvider.removeFromOutfit(
-                                    widget.outfit.id, 1);
-                              },
-                              child: Icon(
-                                FontAwesomeIcons.trashAlt,
-                                color: Color.fromARGB(255, 150, 45, 45),
-                                size: 16,
-                              ),
-                            ),
-                          ),
-                        ])
+                          ],
+                        )
                       : Container(
                           decoration: BoxDecoration(
                             border: Border.all(

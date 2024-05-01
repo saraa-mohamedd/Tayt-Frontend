@@ -1,17 +1,13 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
+import 'package:tayt_app/provider/clothing_provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
-import 'package:tayt_app/src/deps/colors.dart';
-import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
 import 'package:tayt_app/models/outfit.dart';
 import 'package:tayt_app/models/clothing_item.dart';
@@ -42,6 +38,15 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    String userId =
+        Provider.of<AuthProvider>(context, listen: false).getUserId();
+    // Fetch clothing items when the Body widget is initialized
+    Provider.of<OutfitProvider>(context, listen: false).fetchOutfits(userId);
+  }
+
+  @override
   Widget build(BuildContext context) {
     String imagePath = widget.clothingItem.frontImage;
     String name = widget.clothingItem.name;
@@ -58,6 +63,8 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
     OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
     List<Outfit> availableOutfits =
         outfitProvider.getIncompleteOutfits(widget.clothingItem);
+
+    ClothingProvider clothingProvider = Provider.of<ClothingProvider>(context);
 
     void getOutfits() {
       // change state to display all available outfits
@@ -171,7 +178,8 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                       ElevatedButton(
                         onPressed: () {
                           // display all available outfits
-                          getOutfits();
+                          outfitProvider
+                              .getIncompleteOutfits(widget.clothingItem);
                           toggleOutfitsVisibility();
                           // render row of outfit cards
                         },
@@ -245,8 +253,10 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                                         onTap: () {
                                           toggleOutfitsVisibility();
                                           outfitProvider.addToOutfit(
+                                              authProvider.getUserId(),
                                               availableOutfits[index].id,
-                                              widget.clothingItem);
+                                              widget.clothingItem.id
+                                                  .toString());
                                           // Add your onTap logic here
                                         },
                                         child: Stack(
@@ -303,6 +313,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                                         onTap: () {
                                           toggleOutfitsVisibility();
                                           outfitProvider.createOutfit(
+                                              authProvider.getUserId(),
                                               widget.clothingItem);
                                           // Add your onTap logic here
                                         },
@@ -352,6 +363,30 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                     ),
                   ),
                   SizedBox(height: 10),
+                  // FutureBuilder<List<ClothingItem>>(
+                  //   future: clothingProvider.getCompatibleRecommendations(
+                  //       widget.clothingItem.id.toString()),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       return CircularProgressIndicator();
+                  //     } else if (snapshot.hasError) {
+                  //       return Text(
+                  //           'Error getting recommendations: ${snapshot.error}');
+                  //     } else {
+                  //       return CustomCarousel(
+                  //         banners: [],
+                  //         width: 200,
+                  //         height: 200,
+                  //         viewportFraction: 0.55,
+                  //         hasIndicator: false,
+                  //         infscroll: false,
+                  //         linkedImages: snapshot.data!,
+                  //         linked: true,
+                  //         bgColor: AppColors.secondaryColor,
+                  //       );
+                  //     }
+                  //   },
+                  // ), //uncomment when integrating compatible recommendations
                   CustomCarousel(
                     banners: [],
                     width: 200,

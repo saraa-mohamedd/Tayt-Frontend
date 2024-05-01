@@ -73,10 +73,11 @@ class ClothingScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ChangeNotifierProvider(
-        create: (_) => ClothingProvider(),
-        child: Body(),
-      ),
+      // body: ChangeNotifierProvider(
+      //   create: (_) => ClothingProvider(),
+      //   child: Body(),
+      // ),
+      body: Body(),
     );
   }
 }

@@ -25,9 +25,11 @@ class AuthProvider extends ChangeNotifier {
         userId = responseData['user_id'].toString();
         notifyListeners();
       } else {
+        // throw Error(); //uncomment when we integrate login in server
         print('Failed to login: ${response.statusCode}');
       }
     } catch (error) {
+      // throw Error(); //uncomment when we integrate login in server
       print('Error logging in: $error');
     }
   }
@@ -54,7 +56,6 @@ class AuthProvider extends ChangeNotifier {
         print('User registered successfully');
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         userId = responseData['user_id'];
-
         notifyListeners();
       } else {
         print('Failed to register: ${response.statusCode}');
@@ -68,4 +69,9 @@ class AuthProvider extends ChangeNotifier {
     // return userId;
     return '1'; //hardcoded for now
   }
+}
+
+class AuthenticationException implements Exception {
+  final String message;
+  AuthenticationException(this.message);
 }

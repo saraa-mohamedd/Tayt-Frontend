@@ -1,20 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/user_screen/user_screen.dart';
-import 'package:tuple/tuple.dart';
-import '../screens/splash_screen/components/body.dart';
-import '../screens/body_mesh_screen/body_mesh_screen.dart';
 import '../screens/clothing_screen/clothing_screen.dart';
 import '../screens/home_screen/home_screen.dart';
-import '../screens/body_screen/body_screen.dart';
-import '../screens/body_mesh_screen/components/body_mesh.dart';
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 import 'package:tayt_app/models/clothing_item.dart';
 import 'package:tayt_app/models/outfit.dart';
@@ -84,24 +75,7 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
       HomeScreen(),
       ClothingScreen(),
       TryOnScreen(
-        outfit: Outfit(id: 2, items: [
-          ClothingItem(
-              id: 24,
-              frontImage: '',
-              name: 'Clothing 24',
-              description: 'Description 24',
-              type: ClothingType.dress,
-              vendor: '',
-              vendorLink: ''),
-          ClothingItem(
-              id: 25,
-              frontImage: '',
-              name: 'Clothing 25',
-              description: 'Description 25',
-              type: ClothingType.dress,
-              vendor: '',
-              vendorLink: '')
-        ]),
+        outfit: Outfit(id: 2, items: []),
         numItems: 2,
       ),
       UserScreen()

@@ -26,7 +26,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-
+    bool noLoginError = true;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -133,15 +133,27 @@ class _BodyState extends State<Body> {
             ),
             child: ElevatedButton(
               onPressed: () {
-                authProvider.login(
-                    _emailController.text, _passwordController.text);
-
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        BottomNavBar(), // Replace with your desired screen
-                  ),
-                );
+                authProvider
+                    .login(_emailController.text, _passwordController.text)
+                    .catchError((e) {
+                  noLoginError = false;
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    backgroundColor: AppColors.secondaryColor,
+                    content: Text(
+                      'Incorrect Credentials. Please try again.',
+                      style: TextStyle(color: AppColors.primaryColor),
+                    ),
+                  ));
+                }).whenComplete(() {
+                  if (noLoginError) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BottomNavBar(), // Replace with your desired screen
+                      ),
+                    );
+                  }
+                });
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(350, 20),

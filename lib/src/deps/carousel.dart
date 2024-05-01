@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,9 +44,10 @@ class CustomCarousel extends StatelessWidget {
           items: linked
               ? linkedImages
                   .map((item) => CarouselImage(
-                        imageUrl: 'assets/images/secondarycolor_swatch.png',
+                        imageUrl: item.frontImage,
                         width: width,
                         height: height,
+                        isbase64encoded: true,
                         backgroundColor: bgColor.withOpacity(0.5),
                         onPressed: () {
                           // Navigate to ClothingDetailsPage
@@ -111,6 +114,7 @@ class CarouselImage extends StatelessWidget {
     required this.imageUrl,
     this.backgroundColor = Colors.white,
     this.padding,
+    this.isbase64encoded = false,
     this.onPressed,
     super.key,
   });
@@ -120,6 +124,7 @@ class CarouselImage extends StatelessWidget {
   final Color backgroundColor;
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onPressed;
+  final bool isbase64encoded;
 
   @override
   Widget build(BuildContext context) {
@@ -133,13 +138,24 @@ class CarouselImage extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: backgroundColor,
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              imageUrl,
-              fit: BoxFit.cover,
-            ),
-          )),
+          child: isbase64encoded
+              // ? add border radius to image
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.memory(
+                    base64Decode(imageUrl),
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container();
+                    },
+                  ))
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                )),
     );
   }
 }

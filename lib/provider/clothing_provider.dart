@@ -32,7 +32,9 @@ class ClothingProvider extends ChangeNotifier {
               frontImage: itemsData['front_image'],
               name: itemsData['item_name'],
               description: itemsData['description'],
-              type: ClothingType.top, // Assuming 'top' is the type of clothing
+              type: itemsData['garment_type'] == 'top'
+                  ? ClothingType.top
+                  : ClothingType.bottom,
               vendor: itemsData['vendor'],
               vendorLink: itemsData['vendor_link'],
             );
@@ -57,5 +59,52 @@ class ClothingProvider extends ChangeNotifier {
 
   List<ClothingItem> get clothingItems {
     return [..._clothingItems];
+  }
+
+  Future<List<ClothingItem>> getCompatibleRecommendations(
+      String clothingItemId) async {
+    final url = Uri.parse(
+        "http://10.0.2.2:5000/itemrecommendation?item_id=${clothingItemId}");
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body) as Map<String, dynamic>;
+        final List<dynamic> items = responseData['items'];
+
+        List<ClothingItem> compatibleItems = [];
+
+        items.forEach((itemsData) {
+          try {
+            final item = ClothingItem(
+              id: itemsData['id'],
+              frontImage: itemsData['front_image'],
+              name: itemsData['item_name'],
+              description: itemsData['description'],
+              type: itemsData['garment_type'] == 'top'
+                  ? ClothingType.top
+                  : ClothingType.bottom,
+              vendor: itemsData['vendor'],
+              vendorLink: itemsData['vendor_link'],
+            );
+            compatibleItems.add(item);
+          } catch (error) {
+            print(
+                'Error getting compatible recommendations for ${clothingItemId}: $error');
+          }
+        });
+
+        return compatibleItems;
+      } else {
+        // Handle other status codes
+        print('Failed to fetch clothing items: ${response.statusCode}');
+        return [];
+      }
+    } catch (error) {
+      // Handle network or other general errors
+      print('Error fetching clothing items: $error');
+      return [];
+    }
   }
 }

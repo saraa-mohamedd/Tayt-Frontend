@@ -29,6 +29,8 @@ class _BodyState extends State<Body> {
     // Fetch clothing items when the Body widget is initialized
     Provider.of<ClothingProvider>(context, listen: false)
         .fetchClothingItems(userId);
+    Provider.of<FavoritesProvider>(context, listen: false)
+        .fetchFavorites(userId);
   }
 
   List<ClothingItem> _getCurrentPageItems(List<ClothingItem> allClothingItems) {
@@ -44,6 +46,7 @@ class _BodyState extends State<Body> {
     // Retrieve the list of clothing items from the provider
     final authProvider = Provider.of<AuthProvider>(context);
     final clothingProvider = Provider.of<ClothingProvider>(context);
+
     final List<ClothingItem> currentPageItems =
         _getCurrentPageItems(clothingProvider.clothingItems);
 
