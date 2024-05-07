@@ -227,11 +227,10 @@ class OutfitProvider extends ChangeNotifier {
       final url = 'http://10.0.2.2:5000/item';
 
       final Map<String, dynamic> requestData = {
-        'user_id': '1',
+        'user_id': userId,
         'item_id': itemId,
         'outfit_id': outfitId,
       };
-
       print("request data is $requestData");
       final response = await http.delete(
         Uri.parse(url),
@@ -241,7 +240,7 @@ class OutfitProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         print('Item removed from outfit successfully');
-        await fetchOutfits('1'); // await the fetchOutfits function
+        await fetchOutfits(userId); // await the fetchOutfits function
       } else {
         print('Failed to remove item from outfit: ${response.statusCode}');
       }

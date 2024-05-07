@@ -7,6 +7,7 @@ class ClothingProvider extends ChangeNotifier {
   List<ClothingItem> _clothingItems = [];
 
   Future<void> fetchClothingItems(String userId) async {
+    print("here fetching");
     final Map<String, dynamic> requestData = {
       'user_id': userId,
     };

@@ -37,6 +37,7 @@ class _OutfitCardState extends State<OutfitCard> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    // String userId = authProvider.getUserId();
 
     return Card(
       elevation: 4,
@@ -93,7 +94,7 @@ class _OutfitCardState extends State<OutfitCard> {
                           onTap: () {
                             Provider.of<OutfitProvider>(context, listen: false)
                                 .removeFromOutfit(
-                                    authProvider.userId,
+                                    authProvider.getUserId(),
                                     widget.outfit.id,
                                     widget.outfit.items[0].id);
                           },
@@ -149,7 +150,7 @@ class _OutfitCardState extends State<OutfitCard> {
                                   Provider.of<OutfitProvider>(context,
                                           listen: false)
                                       .removeFromOutfit(
-                                          authProvider.userId,
+                                          authProvider.getUserId(),
                                           widget.outfit.id,
                                           widget.outfit.items[1].id);
                                 },

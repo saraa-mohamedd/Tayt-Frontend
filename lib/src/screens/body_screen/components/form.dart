@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -90,6 +91,10 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
 
   @override
   Widget build(BuildContext context) {
+    final meshProvider = Provider.of<MeasurementsProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    final userId = authProvider.getUserId();
     return Stack(
       children: [
         Center(
@@ -138,7 +143,6 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                   gender = index == 0 ? "female" : "male";
                   print('switched to: $gender');
                 },
-                // curve: Curves.linear,
                 customTextStyles: const [
                   TextStyle(
                       color: Colors.black87,
@@ -151,7 +155,6 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                       fontFamily: 'Helvetica Neue',
                       letterSpacing: -0.1),
                 ]),
-            // child: GenderToggleSwitch(),
           ),
           MeasurementTextField(
             labelText: 'Height',
@@ -208,8 +211,19 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                     waist: double.parse(waistController.text),
                     hips: double.parse(hipsController.text));
 
-                Provider.of<MeasurementsProvider>(context, listen: false)
-                    .renderUsingMeasurements(m);
+                meshProvider.startGenerating();
+                print(meshProvider.isGenerating);
+                meshProvider
+                    .generateBodyMeshUsingMeasurements(
+                        double.parse(chestController.text),
+                        double.parse(waistController.text),
+                        double.parse(hipsController.text),
+                        userId)
+                    // .then((value) => meshProvider.startGenerating)
+                    .then((value) => meshProvider.getBodyMesh(userId));
+                // meshProvider.startGenerating();
+                // meshProvider.getBodyMesh(userId);
+                // .renderUsingMeasurements(m);
 
                 heightController.clear();
                 weightController.clear();

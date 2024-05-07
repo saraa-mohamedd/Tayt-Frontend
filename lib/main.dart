@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
+import 'package:tayt_app/provider/mesh_renderer.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/provider/clothing_provider.dart';
 import 'package:tayt_app/routes/routes.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ClothingProvider()),
+        ChangeNotifierProvider(create: (_) => MeasurementsProvider())
       ],
       // create: (_) => OutfitProvider(),
       child: MaterialApp(
