@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
+import 'package:tayt_app/provider/mesh_renderer.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
 import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
@@ -12,6 +15,16 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the body mesh data when the widget is initialized
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final userId = authProvider.getUserId();
+    Provider.of<MeasurementsProvider>(context, listen: false)
+        .getBodyMesh(userId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(

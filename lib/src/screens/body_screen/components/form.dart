@@ -76,6 +76,7 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
   final hipsController = TextEditingController();
   final chestController = TextEditingController();
   final waistController = TextEditingController();
+  bool isLoading = false;
   String gender = "female";
 
   @override
@@ -211,41 +212,32 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                     waist: double.parse(waistController.text),
                     hips: double.parse(hipsController.text));
 
+                setState(() {
+                  isLoading = true;
+                });
                 meshProvider.startGenerating();
                 print(meshProvider.isGenerating);
                 meshProvider
-                    .generateBodyMeshUsingMeasurements(
-                        double.parse(chestController.text),
-                        double.parse(waistController.text),
-                        double.parse(hipsController.text),
-                        userId)
-                    // .then((value) => meshProvider.startGenerating)
-                    .then((value) => meshProvider.getBodyMesh(userId));
-                // meshProvider.startGenerating();
-                // meshProvider.getBodyMesh(userId);
-                // .renderUsingMeasurements(m);
+                    .generateBodyMeshUsingMeasurements(m, userId)
+                    .then((value) {
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: BodyMeshScreen(),
+                    withNavBar: true, // OPTIONAL VALUE. True by default.
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  );
+                  setState(() {
+                    isLoading = false;
+                  });
+                });
+
+                // show loading screen
 
                 heightController.clear();
                 weightController.clear();
                 hipsController.clear();
                 chestController.clear();
                 waistController.clear();
-                // print('Navigating to BodyMeshScreen');
-                //Navigator.pushNamed(context, BodyMeshScreen.routeName);
-                PersistentNavBarNavigator.pushNewScreen(
-                  context,
-                  screen: BodyMeshScreen(),
-                  withNavBar: true, // OPTIONAL VALUE. True by default.
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                );
-
-                //ensure navbar shows in next screen
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => BodyMeshScreen(),
-                //   ),
-                // );
               },
               child: Text(
                 'Submit',
@@ -267,6 +259,44 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
             ),
           ),
         ]),
+        if (isLoading)
+          // create small container with message and loading spinner
+          Center(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.30,
+              width: MediaQuery.of(context).size.width * 0.80,
+              decoration: BoxDecoration(
+                color: AppColors.secondaryColor.withOpacity(0.9),
+                borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x3d000000),
+                    blurRadius: 10,
+                    offset: const Offset(5, 5),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Generating Body Mesh...',
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 20),
+                    CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
       ],
     );
   }

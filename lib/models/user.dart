@@ -8,6 +8,7 @@ class User {
   final String email;
   final String password;
   final Measurements measurements;
+  final String bodyMesh;
   //final List<ClothingItem> favorites = [];
 
   User({
@@ -16,5 +17,6 @@ class User {
     required this.email,
     required this.password,
     required this.measurements,
+    required this.bodyMesh,
   });
 }

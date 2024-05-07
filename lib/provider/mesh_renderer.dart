@@ -8,12 +8,8 @@ import 'package:path_provider/path_provider.dart';
 class MeasurementsProvider extends ChangeNotifier {
   String bodyMeshFile = '';
   bool isGenerating = false;
-
-  String fetchBodyMeshPath(String userId) {
-    bodyMeshFile = 'assets/meshes/result.obj';
-    // notifyListeners();
-    return bodyMeshFile;
-  }
+  bool bodyGenerated = false;
+  String bodyMesh = '';
 
   bool get getIsGenerating {
     return isGenerating;
@@ -21,16 +17,32 @@ class MeasurementsProvider extends ChangeNotifier {
 
   void startGenerating() {
     isGenerating = true;
+    bodyGenerated = false;
     notifyListeners();
   }
 
+  // Future<void> genrateBodyMeshUsingHMR(String userId, String image){
+  //   final url = 'http://10.0.2.2:5002/infer';
+  //   try{
+
+  //   } catch (error) {
+  //     print('Error generating body mesh: $error');
+  //     throw error;
+  //   }
+
+  // }
+
   Future<void> generateBodyMeshUsingMeasurements(
-      double chest, double waist, double hips, String userId) async {
+      Measurements measurements, String userId) async {
+    // double chest, double waist, double hips, String userId) async {
     final url = 'http://10.0.2.2:5001/generate';
     Map<String, dynamic> request = {
-      "chest": chest,
-      "waist": waist,
-      "hips": hips,
+      "chest": measurements.chest,
+      "waist": measurements.waist,
+      "hips": measurements.hips,
+      "height": measurements.height,
+      "weight": measurements.weight,
+      "gender": measurements.gender,
       "user_id": userId
     };
     final headers = {'Content-Type': 'application/json'};
@@ -41,40 +53,41 @@ class MeasurementsProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body) as Map<String, dynamic>;
       print('Response data: $responseData');
+      isGenerating = false;
+      bodyGenerated = true;
+      notifyListeners();
     } else {
       print('Failed to render mesh: ${response.statusCode}');
     }
   }
 
-  Future<void> getBodyMesh(String userId) async {
-    final url = 'http://10.0.2.2:5000/body/${userId}';
+  Future<String> getBodyMesh(String userId) async {
+    final url = 'http://10.0.2.2:5000/body/$userId';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body) as Map<String, dynamic>;
-        print('Response data: $responseData');
-        print('here');
-        print(
-            'writing to file: ${utf8.decode(base64Decode(responseData['body']))}');
+        final bodyMeshData = utf8.decode(base64Decode(responseData['body']));
+        // Update the bodyMesh property
+        bodyMesh = bodyMeshData;
 
-        // final file = File(
-        //   '/home/mahdy/Desktop/Thesis-Flutter-Frontend/lib/test.txt',
-        // );
+        print('Body mesh: $bodyMesh');
 
-        // // await file
-        // //     .writeAsString(utf8.decode(base64Decode(responseData['body'])));
-        // // read file and print
-        // final contents = await file.readAsString();
-        // print('contents: $contents');
+        // // Notify listeners or do any other necessary operations
+        // notifyListeners();
 
-        isGenerating = false;
-
-        notifyListeners();
+        return bodyMesh;
       } else {
         print('Failed to fetch body mesh: ${response.statusCode}');
+        throw Exception('Failed to fetch body mesh: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching body mesh: $error');
+      throw error; // Rethrow the error
     }
+  }
+
+  String returnBodyMesh() {
+    return bodyMesh;
   }
 }

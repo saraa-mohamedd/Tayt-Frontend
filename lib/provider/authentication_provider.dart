@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tayt_app/models/user.dart';
 
 class AuthProvider extends ChangeNotifier {
   String userId = "";
