@@ -104,20 +104,6 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
             width: MediaQuery.of(context).size.width * 0.95,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(0.0)),
-              // border: Border.fromBorderSide(
-              //   BorderSide(
-              //     color: Color.fromARGB(255, 46, 17, 20),
-              //     width: 3.0,
-              //   ),
-              // ),
-              // color: Color(0xfa6c3e57),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Color(0x3d000000),
-              //     blurRadius: 10,
-              //     offset: Offset(5, 5),
-              //   ),
-              // ],
             ),
           ),
         ),
@@ -215,8 +201,6 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                 setState(() {
                   isLoading = true;
                 });
-                meshProvider.startGenerating();
-                print(meshProvider.isGenerating);
                 meshProvider
                     .generateBodyMeshUsingMeasurements(m, userId)
                     .then((value) {

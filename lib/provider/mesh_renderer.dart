@@ -7,30 +7,42 @@ import 'package:path_provider/path_provider.dart';
 
 class MeasurementsProvider extends ChangeNotifier {
   String bodyMeshFile = '';
-  bool isGenerating = false;
   bool bodyGenerated = false;
   String bodyMesh = '';
 
-  bool get getIsGenerating {
-    return isGenerating;
+  Future<void> generateBodyMeshUsingHMR(String userId, File image) async {
+    final url = 'http://10.0.2.2:5002/infer';
+
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.files.add(await http.MultipartFile.fromBytes(
+      'image_file',
+      await image.readAsBytes(),
+      filename: 'image.jpg', // Set the filename if needed
+    ));
+    // request.files
+    //     .add(await http.MultipartFile.fromPath('image_file', image.path));
+    request.fields['user_id'] = userId;
+
+    try {
+      print('in try block of generateBodyMeshUsingHMR ${request}');
+      // final response = await http.post(Uri.parse(url), body: request);
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        // final responseData = json.decode(response.toString());
+        // print('Response data: $responseData');
+        notifyListeners();
+      } else {
+        print('Failed to render mesh: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error generating body mesh: $error');
+      throw error;
+    } catch (error) {
+      print('Error generating body mesh: $error');
+      throw error;
+    }
   }
-
-  void startGenerating() {
-    isGenerating = true;
-    bodyGenerated = false;
-    notifyListeners();
-  }
-
-  // Future<void> genrateBodyMeshUsingHMR(String userId, String image){
-  //   final url = 'http://10.0.2.2:5002/infer';
-  //   try{
-
-  //   } catch (error) {
-  //     print('Error generating body mesh: $error');
-  //     throw error;
-  //   }
-
-  // }
 
   Future<void> generateBodyMeshUsingMeasurements(
       Measurements measurements, String userId) async {
@@ -46,14 +58,12 @@ class MeasurementsProvider extends ChangeNotifier {
       "user_id": userId
     };
     final headers = {'Content-Type': 'application/json'};
-    isGenerating = true;
     final response = await http.post(Uri.parse(url),
         headers: headers, body: json.encode(request));
 
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body) as Map<String, dynamic>;
       print('Response data: $responseData');
-      isGenerating = false;
       bodyGenerated = true;
       notifyListeners();
     } else {
@@ -70,8 +80,8 @@ class MeasurementsProvider extends ChangeNotifier {
         final bodyMeshData = utf8.decode(base64Decode(responseData['body']));
         // Update the bodyMesh property
         bodyMesh = bodyMeshData;
-
-        print('Body mesh: $bodyMesh');
+        print('in getBodyMesh');
+        // print('Body mesh: $bodyMesh');
 
         // // Notify listeners or do any other necessary operations
         // notifyListeners();

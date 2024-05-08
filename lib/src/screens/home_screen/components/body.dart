@@ -60,9 +60,9 @@ class Body extends StatelessWidget {
             ),
             CustomCarousel(
                 banners: [
-                  'assets/images/secondarycolor_swatch.png',
-                  'assets/images/secondarycolor_swatch.png',
-                  'assets/images/secondarycolor_swatch.png',
+                  'assets/images/clothing/front2.jpeg',
+                  'assets/images/clothing/front6.jpeg',
+                  'assets/images/clothing/front16.jpeg',
                 ],
                 height: 130,
                 width: 150,

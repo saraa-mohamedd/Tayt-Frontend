@@ -53,6 +53,7 @@ class _BodyState extends State<Body> {
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
     // favesProvider.fetchFavorites('1');
     // clothingProvider.fetchClothingItems('1');
+    print("in clothing");
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),

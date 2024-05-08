@@ -3,6 +3,7 @@ import 'package:flutter_cube/flutter_cube.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/src/deps/colors.dart';
 
 class MeshRender extends StatefulWidget {
   const MeshRender({Key? key}) : super(key: key);
@@ -78,8 +79,9 @@ class _MeshRenderState extends State<MeshRender> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Center(
-          child:
-              CircularProgressIndicator()); // Show a loading indicator while fetching data
+          child: CircularProgressIndicator(
+              color: AppColors
+                  .primaryColor)); // Show a loading indicator while fetching data
     } else {
       // Once data is loaded, render the Cube
       return _buildCube();
