@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
+import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -72,7 +73,7 @@ class Body extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BodyMeshScreen(),
+                        builder: (context) => BodyScreen(),
                       ),
                     );
                   } catch (e) {

@@ -5,10 +5,13 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/mesh_renderer.dart';
-import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
-import 'package:tayt_app/src/screens/body_screen/components/form.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'dart:io';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
+
+
+import 'package:tayt_app/src/screens/body_screen/components/form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,16 +39,35 @@ class Body extends StatefulWidget {
   State<Body> createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   late File _selectedImage;
   bool isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(_handleTabSelection); // Add listener
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose(); // Dispose the controller
+    super.dispose();
+  }
+
+  void _handleTabSelection() {
+    setState(() {
+      // Force rebuild when tab changes
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final meshRenderer = Provider.of<MeasurementsProvider>(context);
+     final meshRenderer = Provider.of<MeasurementsProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final userId = authProvider.getUserId();
-
     return Stack(
       children: [
         Column(
@@ -69,42 +91,65 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.95,
-                  child: MeasurementsForm(),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: const Radius.circular(40.0),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0x3d000000),
-                        blurRadius: 10,
-                        offset: Offset(5, 5),
+            // Add a tab controller
+            Container(
+              child: TabBar(
+                controller: _tabController,
+                onTap: (index) {
+                  _tabController.animateTo(index); // Switch to the tapped tab
+                  
+                },
+                //change the color of the selected tab
+                labelColor: AppColors.primaryColor,
+                unselectedLabelColor: Colors.black,
+                indicatorColor: AppColors.primaryColor,
+
+                tabs: [
+                  Tab(
+                    //icon: Icon(Icons.person),
+                    icon: FaIcon(FontAwesomeIcons.ruler),
+                    text: 'Measurements',
+                  ),
+                  Tab(
+                    icon: Icon(Icons.camera_alt),
+                    text: 'Upload Picture',
+                  ),
+                ],
+              ),
+            ),
+            //tabbar view
+            Container(
+              height: MediaQuery.of(context).size.height * 0.55,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Center(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            child: MeasurementsForm(),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: const Radius.circular(40.0),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0x3d000000),
+                                  blurRadius: 10,
+                                  offset: Offset(5, 5),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Text(
-                  'OR',
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        color: Colors.black,
-                        fontSize: 19,
-                        fontFamily: 'Poppins',
-                      ),
-                ),
-              ),
-            ),
-            Center(
+                  Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 17.0, bottom: 30),
                 child: ElevatedButton.icon(
@@ -158,56 +203,17 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-          ],
-        ),
-        if (isLoading)
-          // Loading container positioned on top
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.5), // Adjust opacity as needed
-              child: Center(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.30,
-                  width: MediaQuery.of(context).size.width * 0.80,
-                  decoration: BoxDecoration(
-                    color: AppColors.secondaryColor.withOpacity(0.9),
-                    borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x3d000000),
-                        blurRadius: 10,
-                        offset: const Offset(5, 5),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Generating Body Mesh...',
-                          style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(height: 20),
-                        CircularProgressIndicator(
-                          color: AppColors.primaryColor,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ],
               ),
             ),
-          ),
+          ],
+        ),
+        
       ],
     );
   }
 
-  Future _pickImageFromGallery() async {
+    Future _pickImageFromGallery() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
@@ -215,3 +221,4 @@ class _BodyState extends State<Body> {
     });
   }
 }
+
