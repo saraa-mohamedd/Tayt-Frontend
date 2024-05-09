@@ -3,7 +3,10 @@ import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/survey_screen/questionnaire_screen.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  final String email;
+  final String password;
+  const Body({Key? key, required this.email, required this.password})
+      : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -40,34 +43,6 @@ class _BodyState extends State<Body> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Container(
-              //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              //   decoration: BoxDecoration(
-              //     color: AppColors.secondaryColor.withOpacity(0.9),
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   child: Row(
-              //     children: [
-              //       // Expanded(
-              //       //   child: LinearProgressIndicator(
-              //       //     value: (_currentPageIndex) / 4,
-              //       //     backgroundColor: Colors.white,
-              //       //     valueColor: AlwaysStoppedAnimation<Color>(
-              //       //       AppColors.primaryColor,
-              //       //     ),
-              //       //   ),
-              //       // ),
-              //       SizedBox(width: 10),
-              //       Text(
-              //         '${((_currentPageIndex + 0) / 4 * 100).toInt()}%',
-              //         style: TextStyle(
-              //           color: Colors.white,
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               SizedBox(height: 40),
               Container(
                 padding: EdgeInsets.all(20),
@@ -109,7 +84,8 @@ class _BodyState extends State<Body> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => QuestionnaireScreen(),
+                      builder: (context) => QuestionnaireScreen(
+                          email: widget.email, password: widget.password),
                     ),
                   );
                 },

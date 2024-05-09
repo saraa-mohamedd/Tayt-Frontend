@@ -35,18 +35,21 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> register(String email, String password, String first_name,
-      double weight, double height) async {
+  Future<void> register(String email, String password, double weight,
+      double height, String gender) async {
+    print("called register");
     final url = 'http://10.0.2.2:5000/signup';
     final Map<String, dynamic> requestData = {
       'email': email,
       'password': password,
-      'first_name': first_name,
-      'weight': weight,
-      'height': height,
+      'first_name': "dang",
+      'weight': weight as double,
+      'height': height as double,
+      'gender': gender
     };
 
     try {
+      print("signing up");
       final response = await http.post(
         Uri.parse(url),
         body: json.encode(requestData),
@@ -57,6 +60,7 @@ class AuthProvider extends ChangeNotifier {
         print('User registered successfully');
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         userId = responseData['user_id'];
+        print("userid is $userId");
         notifyListeners();
       } else {
         print('Failed to register: ${response.statusCode}');

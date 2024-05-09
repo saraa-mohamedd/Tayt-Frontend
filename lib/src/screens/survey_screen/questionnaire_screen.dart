@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/survey_screen/components/body.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
@@ -8,7 +10,11 @@ import 'package:tayt_app/src/screens/survey_screen/final_screen.dart';
 import 'dart:io';
 
 class QuestionnaireScreen extends StatefulWidget {
-  const QuestionnaireScreen({Key? key}) : super(key: key);
+  final String email;
+  final String password;
+  const QuestionnaireScreen(
+      {Key? key, required this.email, required this.password})
+      : super(key: key);
 
   @override
   _QuestionnaireScreenState createState() => _QuestionnaireScreenState();
@@ -18,6 +24,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
   List<String> answers = List.filled(7, '');
+  File image = File('');
   final List<String> questions = [
     'Are you male or female?',
     'What is your weight?',
@@ -35,6 +42,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   void initState() {
     super.initState();
+    Provider.of<AuthProvider>(context, listen: false);
   }
 
   @override
@@ -45,6 +53,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -207,48 +217,11 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                                               setState(() {
                                                                 answers[index] =
                                                                     image.path;
+                                                                image = image;
                                                               });
                                                             },
                                                           ),
                                                           SizedBox(height: 10),
-                                                          // Row(
-                                                          //   mainAxisAlignment:
-                                                          //       MainAxisAlignment
-                                                          //           .center,
-                                                          //   children: [
-                                                          //     ElevatedButton(
-                                                          //       onPressed: () {
-                                                          //         // If an image is uploaded, go to the home screen
-                                                          //         Navigator.of(
-                                                          //                 context)
-                                                          //             .push(
-                                                          //           MaterialPageRoute(
-                                                          //             builder:
-                                                          //                 (context) =>
-                                                          //                     Body(),
-                                                          //           ),
-                                                          //         );
-                                                          //       },
-                                                          //       child: Text(
-                                                          //         'Skip',
-                                                          //         style: TextStyle(
-                                                          //             color: Colors
-                                                          //                 .white),
-                                                          //       ),
-                                                          //       style: ElevatedButton
-                                                          //           .styleFrom(
-                                                          //         backgroundColor:
-                                                          //             AppColors
-                                                          //                 .primaryColor,
-                                                          //         elevation: 0,
-                                                          //         // Increase width
-                                                          //         minimumSize:
-                                                          //             Size(180,
-                                                          //                 40),
-                                                          //       ),
-                                                          //     ),
-                                                          //   ],
-                                                          // ),
                                                         ],
                                                       )
                                                     : TextField(
@@ -296,18 +269,35 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                   ),
                   SizedBox(height: 10),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Navigate to the next page or complete the survey
                       if (_currentPageIndex < questions.length - 1 &&
                           answers[3] == '') {
+                        print("next page");
                         _pageController.nextPage(
                           duration: Duration(milliseconds: 500),
                           curve: Curves.ease,
                         );
+                        if (_currentPageIndex == 3) {
+                          authProvider.register(
+                              widget.email,
+                              widget.password,
+                              double.parse(answers[1]),
+                              double.parse(answers[2]),
+                              answers[0]);
+                        }
                       } else {
+                        await authProvider.register(
+                            widget.email,
+                            widget.password,
+                            double.parse(answers[1]),
+                            double.parse(answers[2]),
+                            answers[0]);
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => FinalScreen(),
+                            builder: (context) => FinalScreen(
+                              answers: answers,
+                            ),
                           ),
                         );
                       }

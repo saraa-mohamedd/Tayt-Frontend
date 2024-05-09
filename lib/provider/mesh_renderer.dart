@@ -10,7 +10,11 @@ class MeasurementsProvider extends ChangeNotifier {
   bool bodyGenerated = false;
   String bodyMesh = '';
 
-  Future<void> generateBodyMeshUsingHMR(String userId, File image) async {
+  Future<void> generateBodyMeshUsingHMR(
+    String userId,
+    File image,
+    //String gender, String weight, String height) async {
+  ) async {
     final url = 'http://10.0.2.2:5002/infer';
 
     var request = http.MultipartRequest('POST', Uri.parse(url));
@@ -62,6 +66,7 @@ class MeasurementsProvider extends ChangeNotifier {
         headers: headers, body: json.encode(request));
 
     if (response.statusCode == 200) {
+      print("in mice");
       final responseData = json.decode(response.body) as Map<String, dynamic>;
       print('Response data: $responseData');
       bodyGenerated = true;

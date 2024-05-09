@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/models/body_measurements.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
+import 'package:tayt_app/provider/mesh_renderer.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
 
 class FinalScreen extends StatefulWidget {
-  const FinalScreen({Key? key}) : super(key: key);
+  final List<String> answers; // Example argument
+  const FinalScreen({Key? key, required this.answers}) : super(key: key);
 
   @override
   _FinalScreenState createState() => _FinalScreenState();
@@ -21,10 +28,21 @@ class _FinalScreenState extends State<FinalScreen> {
         _currentPageIndex = _pageController.page!.round();
       });
     });
+    printAnswers();
+  }
+
+  void printAnswers() {
+    for (String answer in widget.answers) {
+      print(answer);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final image = File(widget.answers[3]);
+    final meshRenderer = Provider.of<MeasurementsProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final userId = authProvider.getUserId();
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -117,7 +135,23 @@ class _FinalScreenState extends State<FinalScreen> {
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    if (widget.answers[3] != "" || widget.answers[3] != null) {
+                      //call hmr
+                      meshRenderer.generateBodyMeshUsingHMR(userId, image);
+                    } else {
+                      Measurements measurements = Measurements(
+                          waist: double.parse(widget.answers[6]),
+                          hips: double.parse(widget.answers[5]),
+                          chest: double.parse(widget.answers[4]),
+                          height: double.parse(widget.answers[2]),
+                          weight: double.parse(widget.answers[1]),
+                          gender: widget.answers[0]);
+
+                      //call mice
+                      meshRenderer.generateBodyMeshUsingMeasurements(
+                          measurements, userId);
+                    }
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => BottomNavBar(),

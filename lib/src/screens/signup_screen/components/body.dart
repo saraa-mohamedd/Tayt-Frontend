@@ -3,8 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/survey_screen/survey_info_screen.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
+
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +64,7 @@ class SignUpPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: TextField(
+            controller: emailController,
             style: const TextStyle(
               color: const Color.fromARGB(255, 100, 100, 100),
               fontSize: 15,
@@ -79,6 +95,7 @@ class SignUpPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: TextField(
+            controller: passwordController,
             style: const TextStyle(
               color: Color.fromARGB(255, 100, 100, 100),
               fontSize: 15,
@@ -106,16 +123,19 @@ class SignUpPage extends StatelessWidget {
             ),
           ),
         ),
-        // SizedBox(height: 20),
         Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: ElevatedButton(
               onPressed: () {
+                String email = emailController.text;
+                String password = passwordController.text;
+                // Do something with the email and password, like sending them to a server for authentication
                 // Navigate to the first survey screen
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => SurveyInfoScreen(),
+                    builder: (context) =>
+                        SurveyInfoScreen(email: email, password: password),
                   ),
                 );
               },
@@ -141,25 +161,6 @@ class SignUpPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 30),
-        // Column(
-        //   children: [
-        //     Center(child: Text('Already have an account?')),
-        //     Center(
-        //       child: TextButton(
-        //         onPressed: () {
-        //           // Navigate to the sign-in page
-        //         },
-        //         child: Text(
-        //           'Sign In',
-        //           style: TextStyle(
-        //             color: AppColors.primaryColor,
-        //             fontFamily: 'Helvetica Neue',
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
         Column(
           children: [
             Center(
