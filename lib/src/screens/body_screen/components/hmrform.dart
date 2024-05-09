@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
@@ -61,21 +65,19 @@ class MeasurementTextField extends StatelessWidget {
   }
 }
 
-class MeasurementsForm extends StatefulWidget {
-  const MeasurementsForm({Key? key}) : super(key: key);
+class HMRForm extends StatefulWidget {
+  const HMRForm({Key? key}) : super(key: key);
 
   @override
-  State<MeasurementsForm> createState() => _MeasurementsFormState();
+  State<HMRForm> createState() => _HMRFormState();
 }
 
-class _MeasurementsFormState extends State<MeasurementsForm> {
-  _MeasurementsFormState({Key? key});
+class _HMRFormState extends State<HMRForm> {
+  _HMRFormState({Key? key});
 
   final heightController = TextEditingController();
   final weightController = TextEditingController();
-  final hipsController = TextEditingController();
-  final chestController = TextEditingController();
-  final waistController = TextEditingController();
+  late File _selectedImage;
   bool isLoading = false;
   String gender = "female";
 
@@ -83,10 +85,6 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
   void dispose() {
     heightController.dispose();
     weightController.dispose();
-    hipsController.dispose();
-    chestController.dispose();
-    waistController.dispose();
-
     super.dispose();
   }
 
@@ -94,8 +92,9 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
   Widget build(BuildContext context) {
     final meshProvider = Provider.of<MeasurementsProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-
+         final meshRenderer = Provider.of<MeasurementsProvider>(context);
     final userId = authProvider.getUserId();
+
     return Stack(
       children: [
         Center(
@@ -153,20 +152,60 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
             hintText: 'in kg',
             controller: weightController,
           ),
-          MeasurementTextField(
-            labelText: 'Hips',
-            hintText: 'in cm',
-            controller: hipsController,
-          ),
-          MeasurementTextField(
-            labelText: 'Chest',
-            hintText: 'in cm',
-            controller: chestController,
-          ),
-          MeasurementTextField(
-              labelText: 'Waist',
-              hintText: 'in cm',
-              controller: waistController),
+          Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 17.0, bottom: 10),
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      await _pickImageFromGallery();
+                      setState(() {
+                        print("Loading...");
+                        isLoading = true;
+                      });
+                      await meshRenderer.generateBodyMeshUsingHMR(
+                          userId, _selectedImage);
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: BodyMeshScreen(),
+                        withNavBar: true, // OPTIONAL VALUE. True by default.
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    } catch (error) {
+                      // Handle error if any
+                      print("Error: $error");
+                    } finally {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    Icons.camera,
+                    color: AppColors.primaryColor,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: AppColors.secondaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(70.0),
+                    ),
+                    shadowColor: Colors.black.withOpacity(0.5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 10.0),
+                  ),
+                  label: Text(
+                    ' Upload a Picture',
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: AppColors.primaryColor,
+                          fontSize: 15,
+                          fontFamily: 'Helvetica Neue',
+                        ),
+                  ),
+                ),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.only(
               top: 10.0,
@@ -175,10 +214,7 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
             child: ElevatedButton(
               onPressed: () {
                 if (heightController.text.isEmpty ||
-                    weightController.text.isEmpty ||
-                    hipsController.text.isEmpty ||
-                    chestController.text.isEmpty ||
-                    waistController.text.isEmpty) {
+                    weightController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       backgroundColor: AppColors.secondaryColor,
@@ -191,19 +227,12 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                   return;
                 }
 
-                Measurements m = Measurements(
-                    gender: gender,
-                    height: double.parse(heightController.text),
-                    weight: double.parse(weightController.text),
-                    chest: double.parse(chestController.text),
-                    waist: double.parse(waistController.text),
-                    hips: double.parse(hipsController.text));
-
                 setState(() {
                   isLoading = true;
                 });
                 meshProvider
-                    .generateBodyMeshUsingMeasurements(m, userId)
+                    .editBodyMesh(userId, _selectedImage, double.parse(heightController.text),
+                        double.parse(weightController.text), gender)
                     .then((value) {
                   PersistentNavBarNavigator.pushNewScreen(
                     context,
@@ -215,20 +244,14 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                     isLoading = false;
                   });
                 });
-
-                // show loading screen
-
                 heightController.clear();
                 weightController.clear();
-                hipsController.clear();
-                chestController.clear();
-                waistController.clear();
               },
               child: Text(
                 'Submit',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                       color: Colors.black87,
-                      fontSize: 15,
+                      fontSize: 17,
                       fontFamily: 'Helvetica Neue',
                     ),
               ),
@@ -237,9 +260,9 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(70.0),
                 ),
-                shadowColor: Colors.black.withOpacity(0.5),
+                //shadowColor: Colors.black.withOpacity(0.5),
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 30.0, vertical: 12.0),
+                    horizontal: 75.0, vertical: 10.0),
               ),
             ),
           ),
@@ -284,5 +307,13 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
           )
       ],
     );
+  }
+
+  Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _selectedImage = File(returnedImage!.path);
+    });
   }
 }

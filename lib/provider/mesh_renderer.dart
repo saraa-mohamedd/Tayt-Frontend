@@ -48,6 +48,34 @@ class MeasurementsProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> editBodyMesh(String userId, File image, double height, double weight, String gender) async{
+    final url = 'http://10.0.0.2:`5002/edit';
+    try{
+      print("editing body mesh");
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.files.add(await http.MultipartFile.fromBytes(
+        'image_file',
+        await image.readAsBytes(),
+        filename: 'image.jpg', // Set the filename if needed
+      ));
+      request.fields['user_id'] = userId;
+      request.fields['height'] = height.toString();
+      request.fields['weight'] = weight.toString();
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        print("editing worked");
+        notifyListeners();
+      } else {
+        print('Failed to render mesh: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error generating body mesh: $error');
+      throw error;
+    }
+  }
+
   Future<void> generateBodyMeshUsingMeasurements(
       Measurements measurements, String userId) async {
     // double chest, double waist, double hips, String userId) async {

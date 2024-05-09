@@ -12,7 +12,6 @@ import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
 
 
 import 'package:tayt_app/src/screens/body_screen/components/form.dart';
-import 'package:tayt_app/src/screens/body_screen/components/hmrform.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,6 +41,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late File _selectedImage;
   bool isLoading = false;
 
   @override
@@ -119,7 +119,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
             ),
             //tabbar view
             Container(
-              height: MediaQuery.of(context).size.height * 0.60,
+              height: MediaQuery.of(context).size.height * 0.55,
               child: TabBarView(
                 controller: _tabController,
                 children: [
@@ -133,8 +133,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                             child: MeasurementsForm(),
                             decoration: BoxDecoration(
                               color: AppColors.primaryColor,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20)),
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: const Radius.circular(40.0),
+                              ),
                               boxShadow: [
                                 BoxShadow(
                                   color: Color(0x3d000000),
@@ -148,32 +149,60 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                       ),
                     ],
                   ),
-              Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Center(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.45,
-                            width: MediaQuery.of(context).size.width * 0.95,
-                            child: HMRForm(),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x3d000000),
-                                  blurRadius: 10,
-                                  offset: Offset(5, 5),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 17.0, bottom: 30),
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      await _pickImageFromGallery();
+                      setState(() {
+                        print("Loading...");
+                        isLoading = true;
+                      });
+                      await meshRenderer.generateBodyMeshUsingHMR(
+                          userId, _selectedImage);
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: BodyMeshScreen(),
+                        withNavBar: true, // OPTIONAL VALUE. True by default.
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    } catch (error) {
+                      // Handle error if any
+                      print("Error: $error");
+                    } finally {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  },
+                  icon: FaIcon(
+                    FontAwesomeIcons.camera,
+                    color: Colors.white,
                   ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: AppColors.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(70.0),
+                    ),
+                    shadowColor: Colors.black.withOpacity(0.5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0, vertical: 15.0),
+                  ),
+                  label: Text(
+                    ' Upload a Picture',
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: Colors.white,
+                          fontSize: 19,
+                          fontFamily: 'Helvetica Neue',
+                        ),
+                  ),
+                ),
+              ),
+            ),
                 ],
               ),
             ),
@@ -184,5 +213,11 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     );
   }
 
+    Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _selectedImage = File(returnedImage!.path);
+    });
+  }
 }
-
