@@ -62,10 +62,63 @@ class ClothingProvider extends ChangeNotifier {
     return [..._clothingItems];
   }
 
+Future<void> searchEngine(String userQuery) async {
+  print("search engine in action");
+
+  // Construct the URL with the query string
+  final url = Uri.parse("http://10.0.2.2:5000/search?query=$userQuery");
+
+  try {
+    final response = await http.get(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body) as Map<String, dynamic>;
+      final List<dynamic> items = responseData['items'];
+
+      _clothingItems.clear(); // Clear existing clothing items
+
+      // PRINT RESPONSE
+      print('Response data: $responseData');
+      print('Items: $items');
+
+      items.forEach((itemsData) {
+        try {
+          final item = ClothingItem(
+            id: itemsData['id'],
+            frontImage: itemsData['front_image'],
+            name: itemsData['item_name'],
+            description: itemsData['description'],
+            type: itemsData['garment_type'] == 'top'
+                ? ClothingType.top
+                : ClothingType.bottom,
+            vendor: itemsData['vendor'],
+            vendorLink: itemsData['vendor_link'],
+          );
+          _clothingItems.add(item);
+        } catch (error) {
+          // Log error for individual item
+          print(itemsData['vendor']);
+          print('Error decoding image for item ${itemsData['id']}: $error');
+        }
+      });
+
+      notifyListeners();
+    } else {
+      print('Failed to complete search: ${response.statusCode}');
+    }
+  } catch (error) {
+    // Handle network or other general errors
+    print('Error fetching search items: $error');
+  }
+}
+
+
   Future<List<ClothingItem>> getCompatibleRecommendations(
       String clothingItemId) async {
     final url = Uri.parse(
-        "http://10.0.2.2:5000/itemrecommendation?item_id=${clothingItemId}");
+        "http://10.0.2.2:5005/recommend?item_id=${clothingItemId}");
 
     try {
       final response = await http.get(url);

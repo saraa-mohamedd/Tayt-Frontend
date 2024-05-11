@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
@@ -41,6 +42,15 @@ class _BodyState extends State<Body> {
     return allClothingItems.sublist(startIndex, endIndex);
   }
 
+  Future<void> _performSearch(String query) async {
+    await Provider.of<ClothingProvider>(context, listen: false)
+        .searchEngine(query);
+    // Reset current page to 0 after performing search
+    setState(() {
+      _currentPage = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // Retrieve the list of clothing items from the provider
@@ -51,9 +61,6 @@ class _BodyState extends State<Body> {
         _getCurrentPageItems(clothingProvider.clothingItems);
 
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
-    // favesProvider.fetchFavorites('1');
-    // clothingProvider.fetchClothingItems('1');
-    print("in clothing");
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -61,7 +68,10 @@ class _BodyState extends State<Body> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: 20),
-          ClothingSearchBar(searchController: _searchController),
+          ClothingSearchBar(
+            searchController: _searchController,
+            onSearch: _performSearch, // Pass the search function callback
+          ),
           SizedBox(height: 20),
           Expanded(
             child: GridView.builder(
@@ -69,7 +79,6 @@ class _BodyState extends State<Body> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
-                //childAspectRatio: 0.9, // Adjust this value to control the size of the grid items
               ),
               itemCount: currentPageItems.length,
               itemBuilder: (context, index) {

@@ -3,11 +3,13 @@ import 'package:tayt_app/src/deps/colors.dart';
 
 class ClothingSearchBar extends StatelessWidget {
   const ClothingSearchBar({
-    super.key,
+    Key? key,
     required TextEditingController searchController,
-  }) : _searchController = searchController;
+    required this.onSearch,
+  }) : _searchController = searchController, super(key: key);
 
   final TextEditingController _searchController;
+  final Function(String) onSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,8 @@ class ClothingSearchBar extends StatelessWidget {
               prefixIcon: IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  // Perform the search here
+                  // Call the onSearch callback with the query
+                  onSearch(_searchController.text);
                 },
               ),
               focusedBorder: const OutlineInputBorder(
@@ -54,7 +57,7 @@ class ClothingSearchBar extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.filter_list_outlined, size: 30),
           onPressed: () {
-            // Perform the search here
+            // Perform filtering here if needed
           },
         ),
       ],
