@@ -62,6 +62,14 @@ class ClothingProvider extends ChangeNotifier {
     return [..._clothingItems];
   }
 
+  Future<List<ClothingItem>> searchEngine(String userQuery) {
+    final url = Uri.parse("http://10.0.2.2:5000/search");
+
+    try{
+      
+    }
+  }
+
   Future<List<ClothingItem>> getCompatibleRecommendations(
       String clothingItemId) async {
     final url = Uri.parse(
