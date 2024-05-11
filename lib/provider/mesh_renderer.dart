@@ -48,21 +48,20 @@ class MeasurementsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> editBodyMesh(String userId, File image, double height, double weight, String gender) async{
-    final url = 'http://10.0.0.2:`5002/edit';
-    try{
+  Future<void> editBodyMesh(
+      String userId, double height, double weight, String gender) async {
+    final url = 'http://10.0.2.2:5000/edit';
+    try {
       print("editing body mesh");
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.files.add(await http.MultipartFile.fromBytes(
-        'image_file',
-        await image.readAsBytes(),
-        filename: 'image.jpg', // Set the filename if needed
-      ));
-      request.fields['user_id'] = userId;
-      request.fields['height'] = height.toString();
-      request.fields['weight'] = weight.toString();
-
-      final response = await request.send();
+      Map<String, dynamic> request = {
+        "height": height,
+        "weight": weight,
+        "gender": gender,
+        "user_id": userId
+      };
+      final headers = {'Content-Type': 'application/json'};
+      final response = await http.post(Uri.parse(url),
+          headers: headers, body: json.encode(request));
 
       if (response.statusCode == 200) {
         print("editing worked");

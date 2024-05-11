@@ -72,7 +72,7 @@ class AuthProvider extends ChangeNotifier {
 
   String getUserId() {
     // return userId;
-    return '4'; //hardcoded for now
+    return '1'; //hardcoded for now
   }
 }
 

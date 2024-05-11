@@ -92,7 +92,7 @@ class _HMRFormState extends State<HMRForm> {
   Widget build(BuildContext context) {
     final meshProvider = Provider.of<MeasurementsProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-         final meshRenderer = Provider.of<MeasurementsProvider>(context);
+    final meshRenderer = Provider.of<MeasurementsProvider>(context);
     final userId = authProvider.getUserId();
 
     return Stack(
@@ -153,66 +153,50 @@ class _HMRFormState extends State<HMRForm> {
             controller: weightController,
           ),
           Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 17.0, bottom: 10),
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    try {
-                      await _pickImageFromGallery();
-                      setState(() {
-                        print("Loading...");
-                        isLoading = true;
-                      });
-                      await meshRenderer.generateBodyMeshUsingHMR(
-                          userId, _selectedImage);
-                      PersistentNavBarNavigator.pushNewScreen(
-                        context,
-                        screen: BodyMeshScreen(),
-                        withNavBar: true, // OPTIONAL VALUE. True by default.
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino,
-                      );
-                    } catch (error) {
-                      // Handle error if any
-                      print("Error: $error");
-                    } finally {
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
-                  },
-                  icon: Icon(
-                    Icons.camera,
-                    color: AppColors.primaryColor,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 17.0, bottom: 10),
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  try {
+                    await _pickImageFromGallery();
+                  } catch (error) {
+                    // Handle error if any
+                    print("Error: $error");
+                  } finally {
+                    setState(() {
+                      isLoading = false;
+                    });
+                  }
+                },
+                icon: Icon(
+                  Icons.camera,
+                  color: AppColors.primaryColor,
+                ),
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: AppColors.secondaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(70.0),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: AppColors.secondaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(70.0),
-                    ),
-                    shadowColor: Colors.black.withOpacity(0.5),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0, vertical: 10.0),
-                  ),
-                  label: Text(
-                    ' Upload a Picture',
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          color: AppColors.primaryColor,
-                          fontSize: 15,
-                          fontFamily: 'Helvetica Neue',
-                        ),
-                  ),
+                  shadowColor: Colors.black.withOpacity(0.5),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 10.0),
+                ),
+                label: Text(
+                  ' Upload a Picture',
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                        color: AppColors.primaryColor,
+                        fontSize: 15,
+                        fontFamily: 'Helvetica Neue',
+                      ),
                 ),
               ),
             ),
+          ),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 20.0
-            ),
+            padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (heightController.text.isEmpty ||
                     weightController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -230,9 +214,13 @@ class _HMRFormState extends State<HMRForm> {
                 setState(() {
                   isLoading = true;
                 });
-                meshProvider
-                    .editBodyMesh(userId, _selectedImage, double.parse(heightController.text),
-                        double.parse(weightController.text), gender)
+                meshProvider.editBodyMesh(
+                    userId,
+                    double.parse(heightController.text),
+                    double.parse(weightController.text),
+                    gender);
+                await meshProvider
+                    .generateBodyMeshUsingHMR(userId, _selectedImage)
                     .then((value) {
                   PersistentNavBarNavigator.pushNewScreen(
                     context,
