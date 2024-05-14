@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_screen/components/body.dart';
 import 'package:provider/provider.dart';
-import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/provider/body_provider.dart';
 
 class BodyScreen extends StatelessWidget {
   static String routeName = '/body-screen';
@@ -15,7 +15,7 @@ class BodyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-        value: MeasurementsProvider(),
+        value: BodyProvider(),
         child: Scaffold(
           appBar: AppBar(
             titleSpacing: 20,

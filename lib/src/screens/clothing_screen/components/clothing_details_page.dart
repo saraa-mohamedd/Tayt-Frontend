@@ -15,12 +15,7 @@ import 'package:tayt_app/models/clothing_item.dart';
 class ClothingDetailsPage extends StatefulWidget {
   final ClothingItem clothingItem;
 
-  final List<ClothingItem> recommendations = [
-    // all_clothingitems[1],
-    // all_clothingitems[2],
-    // all_clothingitems[3],
-    // all_clothingitems[4],
-  ];
+  final List<ClothingItem> recommendations = [];
   ClothingDetailsPage({
     required this.clothingItem,
   });
@@ -152,7 +147,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                         child: Text(
                           vendor,
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 19,
                             fontStyle: FontStyle.italic,
                             decoration: TextDecoration.underline,
                             decorationColor: AppColors.secondaryColor,
@@ -168,7 +163,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                     child: Text(
                       description,
                       style: TextStyle(fontSize: 16),
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -363,30 +358,36 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  // FutureBuilder<List<ClothingItem>>(
-                  //   future: clothingProvider.getCompatibleRecommendations(
-                  //       widget.clothingItem.id.toString()),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return CircularProgressIndicator();
-                  //     } else if (snapshot.hasError) {
-                  //       return Text(
-                  //           'Error getting recommendations: ${snapshot.error}');
-                  //     } else {
-                  //       return CustomCarousel(
-                  //         banners: [],
-                  //         width: 200,
-                  //         height: 200,
-                  //         viewportFraction: 0.55,
-                  //         hasIndicator: false,
-                  //         infscroll: false,
-                  //         linkedImages: snapshot.data!,
-                  //         linked: true,
-                  //         bgColor: AppColors.secondaryColor,
-                  //       );
-                  //     }
-                  //   },
-                  // ), //uncomment when integrating compatible recommendations
+                  FutureBuilder<List<ClothingItem>>(
+                    future: clothingProvider.getCompatibleRecommendations(
+                        widget.clothingItem.id.toString()),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Padding(
+                          padding: const EdgeInsets.all(40.0),
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            color: AppColors.primaryColor,
+                          )),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text(
+                            'Error getting recommendations: ${snapshot.error}');
+                      } else {
+                        return CustomCarousel(
+                          banners: [],
+                          width: 200,
+                          height: 200,
+                          viewportFraction: 0.55,
+                          hasIndicator: false,
+                          infscroll: false,
+                          linkedImages: snapshot.data!,
+                          linked: true,
+                          bgColor: AppColors.secondaryColor,
+                        );
+                      }
+                    },
+                  ), //uncomment when integrating compatible recommendations
                   CustomCarousel(
                     banners: [],
                     width: 200,

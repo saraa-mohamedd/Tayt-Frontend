@@ -60,14 +60,10 @@ class _BodyState extends State<Body> {
               ),
               title: Text(
                 favoriteItem.name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
               subtitle: Text(favoriteItem.description,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  )),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 12)),
               trailing: IconButton(
                 icon: Icon(Icons.favorite, color: AppColors.primaryColor),
                 onPressed: () {

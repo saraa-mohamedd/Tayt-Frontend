@@ -6,7 +6,7 @@ import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/provider/body_provider.dart';
 import 'package:tayt_app/models/body_measurements.dart';
 
 class MeasurementTextField extends StatelessWidget {
@@ -92,7 +92,7 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
 
   @override
   Widget build(BuildContext context) {
-    final meshProvider = Provider.of<MeasurementsProvider>(context);
+    final meshProvider = Provider.of<BodyProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
 
     final userId = authProvider.getUserId();
@@ -168,10 +168,7 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
               hintText: 'in cm',
               controller: waistController),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 20.0
-            ),
+            padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
             child: ElevatedButton(
               onPressed: () {
                 if (heightController.text.isEmpty ||

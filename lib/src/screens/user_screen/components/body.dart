@@ -19,7 +19,7 @@ class Body extends StatelessWidget {
               //circle avatar
               Container(
                 margin: const EdgeInsets.only(top: 20),
-                child: const Stack(children: [
+                child: Stack(children: [
                   CircleAvatar(
                     radius: 80,
                     backgroundColor: AppColors.secondaryColor,

@@ -136,6 +136,8 @@ class _BodyState extends State<Body> {
                 authProvider
                     .login(_emailController.text, _passwordController.text)
                     .catchError((e) {
+                  _emailController.clear();
+                  _passwordController.clear();
                   noLoginError = false;
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     backgroundColor: AppColors.secondaryColor,

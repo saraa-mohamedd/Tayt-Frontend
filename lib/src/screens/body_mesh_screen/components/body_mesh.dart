@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cube/flutter_cube.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
-import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/provider/body_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 
 class MeshRender extends StatefulWidget {
@@ -27,8 +27,7 @@ class _MeshRenderState extends State<MeshRender> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final userId = authProvider.getUserId();
 
-    final meshProvider =
-        Provider.of<MeasurementsProvider>(context, listen: false);
+    final meshProvider = Provider.of<BodyProvider>(context, listen: false);
     final bodyMeshData = await meshProvider.getBodyMesh(userId);
 
     // Parse bodyMeshData into vertices and faces

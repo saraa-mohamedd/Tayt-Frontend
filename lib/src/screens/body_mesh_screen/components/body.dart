@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
-import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/provider/body_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/components/body_mesh.dart';
 import 'package:tayt_app/src/screens/body_screen/body_screen.dart';
@@ -21,8 +21,7 @@ class _BodyState extends State<Body> {
     // Fetch the body mesh data when the widget is initialized
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final userId = authProvider.getUserId();
-    Provider.of<MeasurementsProvider>(context, listen: false)
-        .getBodyMesh(userId);
+    Provider.of<BodyProvider>(context, listen: false).getBodyMesh(userId);
   }
 
   @override
@@ -80,7 +79,7 @@ class _BodyState extends State<Body> {
                 );
               },
               icon: FaIcon(
-                FontAwesomeIcons.ruler,
+                FontAwesomeIcons.pencil,
                 color: Colors.black,
               ),
               style: ElevatedButton.styleFrom(
@@ -94,7 +93,7 @@ class _BodyState extends State<Body> {
                     horizontal: 30.0, vertical: 15.0),
               ),
               label: Text(
-                'Back to Body Measurements',
+                'Back to Edit My Body',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                       color: Colors.black,
                       fontSize: 19,

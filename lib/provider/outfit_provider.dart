@@ -114,6 +114,9 @@ class OutfitProvider extends ChangeNotifier {
           } else {
             print("both found");
 
+            //print the image
+            print("top image is ${top.frontImage}");
+
             final item = Outfit(
               id: outfitData['id'],
               items: [top, bottom],
@@ -170,11 +173,6 @@ class OutfitProvider extends ChangeNotifier {
     }
   }
 
-  // void createOutfit(ClothingItem item) {
-  //   outfits.add(Outfit(items: [item], id: outfits.length + 1));
-  //   notifyListeners();
-  // }
-
   Future<void> createOutfit(String userId, ClothingItem item) async {
     print("Creating outfit");
     try {
@@ -201,26 +199,6 @@ class OutfitProvider extends ChangeNotifier {
     }
   }
 
-  // void removeFromOutfit(int index, int itemIndex) {
-  //   Outfit outfit = outfits.firstWhere((outfit) => outfit.id == index);
-  //   outfit.items.removeAt(itemIndex);
-
-  //   if (outfit.items.isEmpty) {
-  //     outfits.removeWhere((outfit) => outfit.id == index);
-  //     notifyListeners();
-  //     return;
-  //   }
-
-  //   // replace the outfit with the updated outfit
-  //   outfits = outfits.map((outfit) {
-  //     if (outfit.id == index) {
-  //       return outfit;
-  //     }
-  //     return outfit;
-  //   }).toList();
-  //   notifyListeners();
-  // }
-
   Future<void> removeFromOutfit(String userId, int outfitId, int itemId) async {
     print("Removing item from outfit");
     try {
@@ -246,6 +224,37 @@ class OutfitProvider extends ChangeNotifier {
       }
     } catch (error) {
       print('Error removing item from outfit: $error');
+    }
+  }
+
+  Future<double> getRating(String top, String bottom) async {
+    try {
+      final url = 'http://10.0.2.2:5007/predictrating';
+
+      final Map<String, dynamic> requestData = {
+        'top': top,
+        'bottom': bottom,
+      };
+
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode(requestData),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body) as Map<String, dynamic>;
+        print(responseData);
+        final rating = responseData['score'];
+
+        return rating;
+      } else {
+        print('Failed to get rating: ${response.statusCode}');
+        return 0;
+      }
+    } catch (error) {
+      print('Error getting rating: $error');
+      return 0;
     }
   }
 

@@ -26,6 +26,14 @@ class OutfitCard extends StatefulWidget {
   _OutfitCardState createState() => _OutfitCardState();
 }
 
+void printFullString(String str) {
+  const int chunkSize = 100;
+  for (int i = 0; i < str.length; i += chunkSize) {
+    print(str.substring(
+        i, i + chunkSize < str.length ? i + chunkSize : str.length));
+  }
+}
+
 class _OutfitCardState extends State<OutfitCard> {
   @override
   void initState() {
@@ -38,7 +46,7 @@ class _OutfitCardState extends State<OutfitCard> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     // String userId = authProvider.getUserId();
-
+    //printFullString(widget.outfit.items[0].frontImage);
     return Card(
       elevation: 4,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/models/body_measurements.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
-import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/provider/body_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/widgets/nav_bar.dart';
 
@@ -40,7 +40,7 @@ class _FinalScreenState extends State<FinalScreen> {
   @override
   Widget build(BuildContext context) {
     final image = File(widget.answers[3]);
-    final meshRenderer = Provider.of<MeasurementsProvider>(context);
+    final meshRenderer = Provider.of<BodyProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final userId = authProvider.getUserId();
     return Scaffold(

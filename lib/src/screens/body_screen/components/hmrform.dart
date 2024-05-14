@@ -10,7 +10,7 @@ import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:tayt_app/provider/mesh_renderer.dart';
+import 'package:tayt_app/provider/body_provider.dart';
 import 'package:tayt_app/models/body_measurements.dart';
 
 class MeasurementTextField extends StatelessWidget {
@@ -90,9 +90,9 @@ class _HMRFormState extends State<HMRForm> {
 
   @override
   Widget build(BuildContext context) {
-    final meshProvider = Provider.of<MeasurementsProvider>(context);
+    final meshProvider = Provider.of<BodyProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    final meshRenderer = Provider.of<MeasurementsProvider>(context);
+    final meshRenderer = Provider.of<BodyProvider>(context);
     final userId = authProvider.getUserId();
 
     return Stack(
