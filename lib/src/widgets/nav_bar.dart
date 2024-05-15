@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/collision_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/user_screen/user_screen.dart';
 import '../screens/clothing_screen/clothing_screen.dart';
@@ -70,15 +72,19 @@ class _MyBottomNavBarAppState extends State<BottomNavBar> {
   }
 
   List<Widget> _screens() {
-    // Replace these with your own screen widgets
     return [
-      HomeScreen(),
+      const HomeScreen(),
       ClothingScreen(),
       TryOnScreen(
-        outfit: Outfit(id: 2, items: []),
+        outfit: Provider.of<CollisionsProvider>(context).topItem.id == -1
+            ? Outfit(id: 2, items: [])
+            : Outfit(items: [
+                Provider.of<CollisionsProvider>(context).topItem,
+                Provider.of<CollisionsProvider>(context).bottomItem
+              ], id: 0),
         numItems: 2,
       ),
-      UserScreen()
+      const UserScreen()
     ];
   }
 

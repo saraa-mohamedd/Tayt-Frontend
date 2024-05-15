@@ -200,7 +200,7 @@ class OutfitProvider extends ChangeNotifier {
   }
 
   Future<void> removeFromOutfit(String userId, int outfitId, int itemId) async {
-    print("Removing item from outfit");
+    print("Removing item ${itemId} from outfit ${outfitId}");
     try {
       final url = 'http://10.0.2.2:5000/item';
 
@@ -218,6 +218,8 @@ class OutfitProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         print('Item removed from outfit successfully');
+        print(
+            'outfit length: ${outfits.where((outfit) => outfit.id == outfitId).length}');
         await fetchOutfits(userId); // await the fetchOutfits function
       } else {
         print('Failed to remove item from outfit: ${response.statusCode}');

@@ -9,7 +9,7 @@ import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/screens/clothing_screen/components/clothing_details_page.dart';
 import 'package:tayt_app/src/screens/tryon_screen/tryon_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tuple/tuple.dart';
+import 'package:tayt_app/provider/collision_provider.dart';
 import 'package:tayt_app/models/outfit.dart';
 
 class OutfitCard extends StatefulWidget {
@@ -45,14 +45,17 @@ class _OutfitCardState extends State<OutfitCard> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final collisionsProvider =
+        Provider.of<CollisionsProvider>(context, listen: false);
     // String userId = authProvider.getUserId();
-    //printFullString(widget.outfit.items[0].frontImage);
+    // printFullString(widget.outfit.items[0].frontImage);
+
     return Card(
       elevation: 4,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       color: AppColors.primaryColor,
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
             Row(
@@ -61,7 +64,7 @@ class _OutfitCardState extends State<OutfitCard> {
                 Container(
                   height: 170,
                   width: 120,
-                  padding: EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.circular(10),
@@ -89,7 +92,7 @@ class _OutfitCardState extends State<OutfitCard> {
                                       widget.outfit.items[0].frontImage),
                                   fit: BoxFit.cover,
                                 )
-                              : Icon(
+                              : const Icon(
                                   Icons.error,
                                   color: Colors.red,
                                 ),
@@ -106,7 +109,7 @@ class _OutfitCardState extends State<OutfitCard> {
                                     widget.outfit.id,
                                     widget.outfit.items[0].id);
                           },
-                          child: Icon(
+                          child: const Icon(
                             FontAwesomeIcons.trashAlt,
                             color: Color.fromARGB(255, 150, 45, 45),
                             size: 16,
@@ -119,7 +122,7 @@ class _OutfitCardState extends State<OutfitCard> {
                 Container(
                   height: 170,
                   width: 120,
-                  padding: EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.circular(10),
@@ -144,7 +147,7 @@ class _OutfitCardState extends State<OutfitCard> {
                                             widget.outfit.items[1].frontImage),
                                         fit: BoxFit.cover,
                                       )
-                                    : Icon(
+                                    : const Icon(
                                         Icons.error,
                                         color: Colors.red,
                                       ),
@@ -162,7 +165,7 @@ class _OutfitCardState extends State<OutfitCard> {
                                           widget.outfit.id,
                                           widget.outfit.items[1].id);
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   FontAwesomeIcons.trashAlt,
                                   color: Color.fromARGB(255, 150, 45, 45),
                                   size: 16,
@@ -180,7 +183,7 @@ class _OutfitCardState extends State<OutfitCard> {
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.question_mark_rounded,
                             color: AppColors.primaryColor,
                             size: 32,
@@ -189,26 +192,38 @@ class _OutfitCardState extends State<OutfitCard> {
                 ),
                 IconButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(AppColors.secondaryColor),
-                    shape: MaterialStateProperty.all(CircleBorder()),
+                    backgroundColor: widget.outfit.items.length == 2
+                        ? MaterialStateProperty.all(AppColors.secondaryColor)
+                        : MaterialStateProperty.all(
+                            AppColors.secondaryColor.withOpacity(0.7)),
+                    shape: MaterialStateProperty.all(const CircleBorder()),
                   ),
                   icon: SvgPicture.asset(
                     'assets/icons/hanger.svg',
                     width: 32,
                     height: 32,
-                    color: AppColors.primaryColor,
+                    color: widget.outfit.items.length == 2
+                        ? AppColors.primaryColor
+                        : AppColors.primaryColor.withOpacity(0.5),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TryOnScreen(
-                                outfit: widget.outfit,
-                                numItems: widget.numItems,
-                              )),
-                    );
-                  },
+                  onPressed: widget.outfit.items.length == 2
+                      ? () {
+                          // collisionsProvider.setCurrentOutfit(widget.outfit);
+                          collisionsProvider.generateCollisions(
+                              widget.outfit, authProvider.getUserId());
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => TryOnScreen(
+                          //             outfit: widget.outfit,
+                          //             numItems: widget.numItems,
+                          //           )),
+                          // );
+                          // navigate to try on screen in nav bar
+
+                          Navigator.pushNamed(context, TryOnScreen.routeName);
+                        }
+                      : () => null,
                 ),
               ],
             ),

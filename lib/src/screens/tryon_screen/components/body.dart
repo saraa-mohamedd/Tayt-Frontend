@@ -6,9 +6,11 @@ import 'package:flutter_cube/flutter_cube.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/collision_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
+import 'package:tayt_app/src/screens/outfits_screen/outfits_screen.dart';
 import 'package:tuple/tuple.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:tayt_app/models/clothing_item.dart';
@@ -16,8 +18,6 @@ import 'package:tayt_app/models/outfit.dart';
 import 'package:tayt_app/src/screens/tryon_screen/components/body_mesh.dart';
 
 class Body extends StatefulWidget {
-  // final Tuple2<Tuple3<String, String, String>, Tuple3<String, String, String>>
-  //     outfitItems;
   final Outfit outfit;
   final int numItems;
 
@@ -38,6 +38,8 @@ class _BodyState extends State<Body> {
     int numItems = widget.numItems;
     double rating = 0;
     OutfitProvider outfitProvider = Provider.of<OutfitProvider>(context);
+    CollisionsProvider collisionsProvider =
+        Provider.of<CollisionsProvider>(context);
 
     List<ClothingItem> linkedItems = [];
     if (outfit.items.isNotEmpty) {
@@ -57,7 +59,7 @@ class _BodyState extends State<Body> {
                   child: Container(
                 width: MediaQuery.of(context).size.width * 0.95,
                 height: MediaQuery.of(context).size.height * 0.7,
-                child: MeshRender(),
+                child: CollisionsVideo(),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(180.0)),
@@ -81,8 +83,10 @@ class _BodyState extends State<Body> {
               ),
               onPressed: () async {
                 // call api to get rating of the outfit
-                rating = await outfitProvider.getRating(
-                    outfit.items[0].frontImage, outfit.items[1].frontImage);
+                rating = outfit.items.length > 0
+                    ? await outfitProvider.getRating(
+                        outfit.items[0].frontImage, outfit.items[1].frontImage)
+                    : 0;
                 rating = rating * 100;
                 rating = double.parse(rating.toStringAsFixed(4));
                 showDialog(
@@ -140,12 +144,15 @@ class _BodyState extends State<Body> {
           ),
         ),
         SizedBox(
-          height: 10,
+          height: 0,
         ),
         Padding(
             padding: const EdgeInsets.all(16.0),
             child: CustomCarousel(
-              banners: [],
+              banners: [
+                collisionsProvider.topItem.frontImage,
+                collisionsProvider.bottomItem.frontImage
+              ],
               width: 200,
               height: 200,
               viewportFraction: 0.55,
@@ -160,12 +167,12 @@ class _BodyState extends State<Body> {
             padding: const EdgeInsets.only(top: 10.0, bottom: 30),
             child: ElevatedButton.icon(
               onPressed: () {
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (context) =>
-                //         BodyScreen(), // Replace with your desired screen
-                //   ),
-                // );
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        OutfitsScreen(), // Replace with your desired screen
+                  ),
+                );
               },
               icon: Icon(
                 Ionicons.shirt_outline,

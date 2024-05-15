@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tayt_app/models/clothing_item.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,7 +41,9 @@ class ClothingProvider extends ChangeNotifier {
                   ? ClothingType.top
                   : ClothingType.bottom,
               vendor: itemsData['vendor'],
-              vendorLink: itemsData['vendor_link'],
+              vendorLink: !(itemsData['item_link'] == null)
+                  ? itemsData['item_link']
+                  : '',
             );
             _clothingItems.add(item);
           } catch (error) {

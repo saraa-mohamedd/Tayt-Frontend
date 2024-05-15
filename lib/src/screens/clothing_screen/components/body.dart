@@ -84,12 +84,15 @@ class _BodyState extends State<Body> {
                   )))
               : currentPageItems.isEmpty
                   ? Center(
-                      child: Text(
-                        'No items found',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Text(
+                          'No items found',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     )

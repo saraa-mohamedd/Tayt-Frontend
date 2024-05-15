@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tayt_app/provider/authentication_provider.dart';
+import 'package:tayt_app/provider/collision_provider.dart';
 import 'package:tayt_app/provider/favorites_provider.dart';
 import 'package:tayt_app/provider/body_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ClothingProvider()),
-        ChangeNotifierProvider(create: (_) => BodyProvider())
+        ChangeNotifierProvider(create: (_) => BodyProvider()),
+        ChangeNotifierProvider(create: (_) => CollisionsProvider())
       ],
       // create: (_) => OutfitProvider(),
       child: MaterialApp(
