@@ -208,24 +208,107 @@ class _OutfitCardState extends State<OutfitCard> {
                   ),
                   onPressed: widget.outfit.items.length == 2
                       ? () {
-                          // collisionsProvider.setCurrentOutfit(widget.outfit);
-                          collisionsProvider.generateCollisions(
-                              widget.outfit, authProvider.getUserId(), "S");
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TryOnScreen(
-                                      outfit: widget.outfit,
-                                      numItems: widget.numItems,
-                                    )),
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.40,
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color:
+                                      AppColors.secondaryColor.withOpacity(0.9),
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Please Pick a Size for your Outfit',
+                                      style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 30),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        _buildSizeButton(context, 'S',
+                                            collisionsProvider, authProvider),
+                                        _buildSizeButton(context, 'M',
+                                            collisionsProvider, authProvider),
+                                        _buildSizeButton(context, 'L',
+                                            collisionsProvider, authProvider),
+                                        _buildSizeButton(context, 'XL',
+                                            collisionsProvider, authProvider),
+                                      ],
+                                    ),
+                                    SizedBox(height: 30),
+                                  ],
+                                ),
+                              );
+                            },
                           );
-                          // navigate to try on screen in nav bar
                         }
                       : () => null,
                 ),
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSizeButton(BuildContext context, String size,
+      CollisionsProvider collisionsProvider, AuthProvider authProvider) {
+    return GestureDetector(
+      onTap: () {
+        // Handle size selection
+        print('Size selected: $size');
+        collisionsProvider.generateCollisions(
+            widget.outfit, authProvider.getUserId(), size);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => TryOnScreen(
+                    outfit: widget.outfit,
+                    numItems: widget.numItems,
+                  )),
+        );
+        // navigate to try on screen in nav bar
+      },
+      child: Container(
+        height: 60,
+        width: 60,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            size,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

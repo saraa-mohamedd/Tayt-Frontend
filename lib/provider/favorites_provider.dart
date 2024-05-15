@@ -121,9 +121,13 @@ class FavoritesProvider extends ChangeNotifier {
           frontImage: itemData['front_image'],
           name: itemData['item_name'],
           description: itemData['description'],
-          type: ClothingType.top, //hard coded need  to change
-          vendor: itemData['vendor'],
-          vendorLink: itemData['vendor_link'],
+          type: itemData['garment_type'] == 'top'
+              ? ClothingType.top
+              : ClothingType.bottom,
+          //if vendor is null then set it to empty string
+          vendor: itemData['vendor'] == null ? "" : itemData['vendor'],
+          vendorLink:
+              itemData['vendor_link'] == null ? "" : itemData['vendor_link'],
         );
 
         return item;

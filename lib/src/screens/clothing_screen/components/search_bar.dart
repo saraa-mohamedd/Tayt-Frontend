@@ -62,87 +62,9 @@ class ClothingSearchBar extends StatelessWidget {
           icon: Icon(Icons.filter_list_outlined, size: 30),
           onPressed: () {
             // Perform filtering here if needed
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return Container(
-                  height: MediaQuery.of(context).size.height * 0.40,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppColors.secondaryColor.withOpacity(0.9),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Please Pick a Size for your Outfit',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildSizeButton(context, 'S'),
-                          _buildSizeButton(context, 'M'),
-                          _buildSizeButton(context, 'L'),
-                          _buildSizeButton(context, 'XL'),
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      
-                    ],
-                  ),
-                );
-              },
-            );
           },
         ),
       ],
     );
   }
-
-  Widget _buildSizeButton(BuildContext context, String size) {
-    return GestureDetector(
-      onTap: () {
-        // Handle size selection
-        //call generateCollisions and send the size
-      },
-      child: Container(
-        height: 60,
-        width: 60,
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Text(
-            size,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  
 }

@@ -41,13 +41,25 @@ class CollisionsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> generateCollisions(Outfit outfit, String userId, String size) async {
+  Future<void> generateCollisions(
+      Outfit outfit, String userId, String size) async {
     setCurrentOutfit(outfit);
     final Map<String, dynamic> requestData = {
       'outfit_id': outfit.id,
       'user_id': userId,
     };
-    final url = 'http://10.0.2.2:5004/api/hood/${outfit.id}/${userId}/1';
+    int sendSize = 0;
+    if (size == "S") {
+      sendSize = 0;
+    } else if (size == "M") {
+      sendSize = 1;
+    } else if (size == "L") {
+      sendSize = 2;
+    } else if (size == "XL") {
+      sendSize = 3;
+    }
+    final url =
+        'http://10.0.2.2:5004/api/hood/${outfit.id}/${userId}/${sendSize}';
 
     try {
       isGenerating = true;
