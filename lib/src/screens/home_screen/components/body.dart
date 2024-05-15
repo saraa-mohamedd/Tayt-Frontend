@@ -43,10 +43,11 @@ class Body extends StatelessWidget {
           const SizedBox(height: 10),
           CustomCarousel(
             banners: [
-              'assets/images/secondarycolor_swatch.png',
-              'assets/images/secondarycolor_swatch.png',
-              'assets/images/secondarycolor_swatch.png',
-              'assets/images/secondarycolor_swatch.png',
+              'assets/images/themes/theme1.png',
+              'assets/images/themes/theme2.png',
+              'assets/images/themes/theme3.png',
+              'assets/images/themes/theme4.png',
+              'assets/images/themes/theme5.png',
             ],
             width: 348,
             height: 200,
