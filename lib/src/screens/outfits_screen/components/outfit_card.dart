@@ -210,7 +210,7 @@ class _OutfitCardState extends State<OutfitCard> {
                       ? () {
                           // collisionsProvider.setCurrentOutfit(widget.outfit);
                           collisionsProvider.generateCollisions(
-                              widget.outfit, authProvider.getUserId());
+                              widget.outfit, authProvider.getUserId(), "S");
                           Navigator.push(
                             context,
                             MaterialPageRoute(

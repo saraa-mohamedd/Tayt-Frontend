@@ -41,7 +41,7 @@ class CollisionsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> generateCollisions(Outfit outfit, String userId) async {
+  Future<void> generateCollisions(Outfit outfit, String userId, String size) async {
     setCurrentOutfit(outfit);
     final Map<String, dynamic> requestData = {
       'outfit_id': outfit.id,
