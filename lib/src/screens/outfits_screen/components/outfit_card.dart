@@ -211,17 +211,15 @@ class _OutfitCardState extends State<OutfitCard> {
                           // collisionsProvider.setCurrentOutfit(widget.outfit);
                           collisionsProvider.generateCollisions(
                               widget.outfit, authProvider.getUserId());
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => TryOnScreen(
-                          //             outfit: widget.outfit,
-                          //             numItems: widget.numItems,
-                          //           )),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TryOnScreen(
+                                      outfit: widget.outfit,
+                                      numItems: widget.numItems,
+                                    )),
+                          );
                           // navigate to try on screen in nav bar
-
-                          Navigator.pushNamed(context, TryOnScreen.routeName);
                         }
                       : () => null,
                 ),
