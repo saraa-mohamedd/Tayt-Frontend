@@ -112,6 +112,7 @@ class _BodyState extends State<Body> {
                           return GestureDetector(
                             onTap: () {
                               // Navigate to ClothingDetailsPage
+                              authProvider.addRecentItem(clothingItem);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -1,10 +1,22 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tayt_app/models/clothing_item.dart';
 import 'package:tayt_app/models/user.dart';
 
 class AuthProvider extends ChangeNotifier {
   String userId = "";
+  List<ClothingItem> recentItems = [];
+
+  void addRecentItem(ClothingItem item) {
+    recentItems.removeWhere((element) => element.id == item.id);
+    recentItems.insert(0, item);
+    print(recentItems);
+    if (recentItems.length > 10) {
+      recentItems.removeAt(9);
+    }
+    notifyListeners();
+  }
 
   Future<void> login(String email, String password) async {
     final url = 'http://10.0.2.2:5000/login';

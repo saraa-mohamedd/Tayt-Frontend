@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 import 'package:tayt_app/src/deps/carousel.dart';
 import 'package:tayt_app/src/screens/body_mesh_screen/body_mesh_screen.dart';
@@ -10,6 +12,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -104,7 +107,7 @@ class Body extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          'Edit My Body',
+                          'My Body',
                           style: Theme.of(context)
                               .textTheme
                               .headlineMedium!
@@ -123,49 +126,49 @@ class Body extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  width: 300,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(40),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.secondaryColor,
-                          spreadRadius: 1,
-                          blurRadius: 0,
-                          offset:
-                              const Offset(2, 3), // changes position of shadow
-                        ),
-                      ]),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const FaIcon(FontAwesomeIcons.heart,
-                            color: AppColors.secondaryColor),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'My Likes',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium!
-                              .copyWith(
-                                color: AppColors.secondaryColor,
-                                fontSize: 20,
-                                fontFamily: 'Helvetica Neue',
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () {},
+              //   child: Container(
+              //     width: 300,
+              //     height: 50,
+              //     decoration: BoxDecoration(
+              //         color: AppColors.primaryColor,
+              //         borderRadius: BorderRadius.circular(40),
+              //         boxShadow: [
+              //           BoxShadow(
+              //             color: AppColors.secondaryColor,
+              //             spreadRadius: 1,
+              //             blurRadius: 0,
+              //             offset:
+              //                 const Offset(2, 3), // changes position of shadow
+              //           ),
+              //         ]),
+              //     child: Center(
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           const FaIcon(FontAwesomeIcons.heart,
+              //               color: AppColors.secondaryColor),
+              //           const SizedBox(
+              //             width: 10,
+              //           ),
+              //           Text(
+              //             'My Likes',
+              //             style: Theme.of(context)
+              //                 .textTheme
+              //                 .headlineMedium!
+              //                 .copyWith(
+              //                   color: AppColors.secondaryColor,
+              //                   fontSize: 20,
+              //                   fontFamily: 'Helvetica Neue',
+              //                   fontWeight: FontWeight.w500,
+              //                 ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 10,
               ),
@@ -228,21 +231,18 @@ class Body extends StatelessWidget {
           height: 10,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: CustomCarousel(
-              banners: [
-                'assets/images/secondarycolor_swatch.png',
-                'assets/images/primarycolor_swatch.png',
-                'assets/images/secondarycolor_swatch.png',
-                'assets/images/primarycolor_swatch.png',
-                'assets/images/secondarycolor_swatch.png',
-              ],
-              height: 130,
-              width: 150,
-              hasIndicator: false,
-              viewportFraction: 0.4,
-              infscroll: false),
-        ),
+            padding: const EdgeInsets.only(left: 16.0),
+            child: CustomCarousel(
+                banners:
+                    authProvider.recentItems.map((e) => e.frontImage).toList(),
+                height: 200,
+                width: 200,
+                hasIndicator: false,
+                viewportFraction: 0.55,
+                infscroll: false,
+                linked: true,
+                linkedImages: authProvider.recentItems.toList(),
+                bgColor: AppColors.secondaryColor)),
       ],
     );
   }

@@ -75,6 +75,7 @@ class _BodyState extends State<Body> {
                 },
               ),
               onTap: () {
+                authProvider.addRecentItem(favoriteItem);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

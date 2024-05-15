@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 // import 'package:tayt_app/config/size_config.dart';
 import 'package:tayt_app/controllers/carousel_controllers.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/outfit_provider.dart';
 import 'package:tayt_app/src/deps/carousel_counter.dart';
 import 'package:tayt_app/src/deps/colors.dart';
@@ -51,13 +53,12 @@ class CustomCarousel extends StatelessWidget {
                         backgroundColor: bgColor.withOpacity(0.5),
                         onPressed: () {
                           // Navigate to ClothingDetailsPage
+                          Provider.of<AuthProvider>(context, listen: false)
+                              .addRecentItem(item);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ClothingDetailsPage(
-                                // imagePath: url.item1,
-                                // name: url.item2,
-                                // description: url.item3,
                                 clothingItem: item,
                               ),
                             ),
