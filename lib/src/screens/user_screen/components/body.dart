@@ -29,7 +29,7 @@ class Body extends StatelessWidget {
                   ),
                   CircleAvatar(
                     radius: 75,
-                    backgroundImage: AssetImage('assets/images/user_icon.png'),
+                    backgroundImage: AssetImage('assets/images/user.jpg'),
                   ),
                 ]),
               ),

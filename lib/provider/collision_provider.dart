@@ -9,6 +9,7 @@ import 'package:tayt_app/models/outfit.dart';
 
 class CollisionsProvider extends ChangeNotifier {
   String bodyMesh = '';
+  // TURN BACK TO FALSE
   bool isGenerating = false;
   bool hasOutfit = false;
 
@@ -59,7 +60,7 @@ class CollisionsProvider extends ChangeNotifier {
       sendSize = 3;
     }
     final url =
-        'http://10.0.2.2:5004/api/hood/${outfit.id}/${userId}/${sendSize}';
+        'http://127.0.0.1:5004/api/hood/${outfit.id}/${userId}/${sendSize}';
 
     try {
       isGenerating = true;

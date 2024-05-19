@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ClothingProvider extends ChangeNotifier {
   List<ClothingItem> _clothingItems = [];
+  List<ClothingItem> _searchItems = [];
   bool isFetching = false;
 
   Future<void> fetchClothingItems(String userId) async {
@@ -16,7 +17,7 @@ class ClothingProvider extends ChangeNotifier {
 
     try {
       print(requestData);
-      final url = Uri.parse("http://10.0.2.2:5000/item?user_id=$userId");
+      final url = Uri.parse("http://127.0.0.1:5000/item?user_id=$userId");
       isFetching = true;
       final response = await http.get(url);
 
@@ -43,7 +44,7 @@ class ClothingProvider extends ChangeNotifier {
               vendor: itemsData['vendor'],
               vendorLink: !(itemsData['item_link'] == null)
                   ? itemsData['item_link']
-                  : '',
+                  : 'https://www.zara.com/',
             );
             _clothingItems.add(item);
           } catch (error) {
@@ -68,11 +69,20 @@ class ClothingProvider extends ChangeNotifier {
     return [..._clothingItems];
   }
 
+  List<ClothingItem> get searchItems {
+    return [..._searchItems];
+  }
+
+  void clearSearchItems() {
+    _searchItems.clear();
+    notifyListeners();
+  }
+
   Future<void> searchEngine(String userQuery) async {
     print("search engine in action");
 
     // Construct the URL with the query string
-    final url = Uri.parse("http://10.0.2.2:5000/search?query=$userQuery");
+    final url = Uri.parse("http://127.0.0.1:5000/search?query=$userQuery");
 
     try {
       //send the query in the body
@@ -88,7 +98,7 @@ class ClothingProvider extends ChangeNotifier {
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         final List<dynamic> items = responseData['items'];
 
-        _clothingItems.clear(); // Clear existing clothing items
+        _searchItems.clear(); // Clear existing clothing items
 
         // PRINT RESPONSE
         print('Response data: $responseData');
@@ -107,7 +117,7 @@ class ClothingProvider extends ChangeNotifier {
               vendor: itemsData['vendor'],
               vendorLink: itemsData['vendor_link'],
             );
-            _clothingItems.add(item);
+            _searchItems.add(item);
           } catch (error) {
             // Log error for individual item
             print(itemsData['vendor']);
@@ -129,7 +139,7 @@ class ClothingProvider extends ChangeNotifier {
       String clothingItemId) async {
     print("getting compatible recommendations");
     final url =
-        Uri.parse("http://10.0.2.2:5005/recommend?item_id=$clothingItemId");
+        Uri.parse("http://127.0.0.1:5005/recommend?item_id=$clothingItemId");
 
     try {
       print("before reponse");

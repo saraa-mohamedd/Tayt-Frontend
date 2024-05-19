@@ -61,7 +61,7 @@ class _BodyState extends State<Body> {
                 height: MediaQuery.of(context).size.height * 0.7,
                 child: CollisionsVideo(),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xFF3B3B3B),
                   borderRadius: BorderRadius.all(Radius.circular(180.0)),
                   boxShadow: [
                     BoxShadow(

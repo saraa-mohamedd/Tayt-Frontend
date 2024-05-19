@@ -23,7 +23,7 @@ class QuestionnaireScreen extends StatefulWidget {
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
-  List<String> answers = List.filled(7, '');
+  List<String> answers = List.filled(7, '-1');
   File image = File('');
   final List<String> questions = [
     'Are you male or female?',
@@ -75,196 +75,212 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 20),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height *
-                        (currentQuestionIndex == 3
-                            ? 0.38
-                            : (currentQuestionIndex > 3
-                                ? 0.32
-                                : (currentQuestionIndex == 1 ||
-                                        currentQuestionIndex == 0
-                                    ? 0.323
-                                    : 0.3))),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.secondaryColor.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: LinearProgressIndicator(
-                                  value: (_currentPageIndex) / questions.length,
-                                  backgroundColor: Colors.white,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppColors.primaryColor,
+                  Container(
+                    height: 350,
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.38,
+                      // (currentQuestionIndex == 3
+                      //     ? 0.38
+                      //     : (currentQuestionIndex > 3
+                      //         ? 0.32
+                      //         : (currentQuestionIndex == 1 ||
+                      //                 currentQuestionIndex == 0
+                      //             ? 0.323
+                      //             : 0.3))),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryColor.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: LinearProgressIndicator(
+                                    value:
+                                        (_currentPageIndex) / questions.length,
+                                    backgroundColor: Colors.white,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      AppColors.primaryColor,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                '${((_currentPageIndex) / questions.length * 100).toInt()}%',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: PageView.builder(
-                            controller: _pageController,
-                            itemCount: questions.length,
-                            itemBuilder: (context, index) {
-                              // Set the current question index
-                              currentQuestionIndex = index;
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: Container(
-                                  decoration: BoxDecoration(
+                                SizedBox(width: 10),
+                                Text(
+                                  '${((_currentPageIndex) / questions.length * 100).toInt()}%',
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 5,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              questions[index],
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.grey[800],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: PageView.builder(
+                              controller: _pageController,
+                              itemCount: questions.length,
+                              itemBuilder: (context, index) {
+                                // Set the current question index
+                                currentQuestionIndex = index;
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Container(
+                                    height: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                questions[index],
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[800],
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(height: 10),
-                                            // Display different UI for the first question
-                                            index == 0
-                                                ? Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Radio<String>(
-                                                            value: 'male',
-                                                            groupValue: _gender,
-                                                            onChanged: (String?
-                                                                value) {
-                                                              setState(() {
-                                                                _gender = value;
-                                                                answers[index] =
-                                                                    _gender!;
-                                                              });
-                                                            },
-                                                          ),
-                                                          Text(
-                                                            'Male',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Radio<String>(
-                                                            value: 'female',
-                                                            groupValue: _gender,
-                                                            onChanged: (String?
-                                                                value) {
-                                                              setState(() {
-                                                                _gender = value;
-                                                                answers[index] =
-                                                                    _gender!;
-                                                              });
-                                                            },
-                                                          ),
-                                                          Text(
-                                                            'Female',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  )
-                                                : index == 3
-                                                    ? Column(
-                                                        children: [
-                                                          UploadPictureWidget(
-                                                            onImageSelected:
-                                                                (File image) {
-                                                              setState(() {
-                                                                answers[index] =
-                                                                    image.path;
-                                                                image = image;
-                                                              });
-                                                            },
-                                                          ),
-                                                          SizedBox(height: 10),
-                                                        ],
-                                                      )
-                                                    : TextField(
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            answers[index] =
-                                                                value;
-                                                          });
-                                                        },
-                                                        decoration:
-                                                            InputDecoration(
-                                                          hintText:
-                                                              'Enter your answer',
-                                                          filled: true,
-                                                          fillColor:
-                                                              Colors.grey[200],
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
-                                                            borderSide:
-                                                                BorderSide.none,
+                                              SizedBox(height: 10),
+                                              // Display different UI for the first question
+                                              index == 0
+                                                  ? Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Radio<String>(
+                                                              value: 'male',
+                                                              groupValue:
+                                                                  _gender,
+                                                              onChanged:
+                                                                  (String?
+                                                                      value) {
+                                                                setState(() {
+                                                                  _gender =
+                                                                      value;
+                                                                  answers[index] =
+                                                                      _gender!;
+                                                                });
+                                                              },
+                                                            ),
+                                                            Text(
+                                                              'Male',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Radio<String>(
+                                                              value: 'female',
+                                                              groupValue:
+                                                                  _gender,
+                                                              onChanged:
+                                                                  (String?
+                                                                      value) {
+                                                                setState(() {
+                                                                  _gender =
+                                                                      value;
+                                                                  answers[index] =
+                                                                      _gender!;
+                                                                });
+                                                              },
+                                                            ),
+                                                            Text(
+                                                              'Female',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : index == 3
+                                                      ? Column(
+                                                          children: [
+                                                            UploadPictureWidget(
+                                                              onImageSelected:
+                                                                  (File image) {
+                                                                setState(() {
+                                                                  answers[index] =
+                                                                      image
+                                                                          .path;
+                                                                  image = image;
+                                                                });
+                                                              },
+                                                            ),
+                                                            SizedBox(
+                                                                height: 10),
+                                                          ],
+                                                        )
+                                                      : TextField(
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              answers[index] =
+                                                                  value;
+                                                            });
+                                                          },
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                'Enter your answer',
+                                                            filled: true,
+                                                            fillColor: Colors
+                                                                .grey[200],
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              borderSide:
+                                                                  BorderSide
+                                                                      .none,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            onPageChanged: (index) {
-                              setState(() {
-                                _currentPageIndex = index;
-                              });
-                            },
+                                );
+                              },
+                              onPageChanged: (index) {
+                                setState(() {
+                                  _currentPageIndex = index;
+                                });
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -272,7 +288,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                     onPressed: () async {
                       // Navigate to the next page or complete the survey
                       if (_currentPageIndex < questions.length - 1 &&
-                          answers[3] == '') {
+                          answers[3] == '-1') {
                         print("next page");
                         _pageController.nextPage(
                           duration: Duration(milliseconds: 500),
@@ -287,12 +303,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                               answers[0]);
                         }
                       } else {
-                        await authProvider.register(
-                            widget.email,
-                            widget.password,
-                            double.parse(answers[1]),
-                            double.parse(answers[2]),
-                            answers[0]);
+                        if (_currentPageIndex == 3 && answers[3] != '-1') {
+                          await authProvider.register(
+                              widget.email,
+                              widget.password,
+                              double.parse(answers[1]),
+                              double.parse(answers[2]),
+                              answers[0]);
+                        }
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => FinalScreen(

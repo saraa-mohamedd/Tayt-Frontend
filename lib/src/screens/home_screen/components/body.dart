@@ -83,7 +83,7 @@ class Body extends StatelessWidget {
                   infscroll: false,
                   linkedImages: snapshot.data!,
                   linked: true,
-                  bgColor: AppColors.secondaryColor,
+                  bgColor: AppColors.primaryColor,
                 );
               }
             },

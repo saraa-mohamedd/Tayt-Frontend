@@ -13,7 +13,7 @@ class HomeProvider extends ChangeNotifier {
     print("for you in action");
 
     final url =
-        Uri.parse("http://10.0.2.2:5005/recommend_for_you?user_id=$userId");
+        Uri.parse("http://127.0.0.1:5005/recommend_for_you?user_id=$userId");
 
     try {
       final response = await http.get(url);

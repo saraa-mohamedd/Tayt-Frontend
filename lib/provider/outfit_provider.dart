@@ -11,7 +11,7 @@ class OutfitProvider extends ChangeNotifier {
 
   Future<void> fetchOutfits(String userId) async {
     try {
-      final url1 = "http://10.0.2.2:5000/outfit/$userId";
+      final url1 = "http://127.0.0.1:5000/outfit/$userId";
 
       final response = await http.get(Uri.parse(url1));
 
@@ -50,7 +50,7 @@ class OutfitProvider extends ChangeNotifier {
           );
 
           if (topId != null) {
-            final url2 = "http://10.0.2.2:5000/item/$topId";
+            final url2 = "http://127.0.0.1:5000/item/$topId";
             final response2 = await http.get(Uri.parse(url2));
 
             if (response2.statusCode == 200) {
@@ -73,7 +73,7 @@ class OutfitProvider extends ChangeNotifier {
           print("before");
 
           if (bottomId != null) {
-            final url3 = "http://10.0.2.2:5000/item/$bottomId";
+            final url3 = "http://127.0.0.1:5000/item/$bottomId";
             final response3 = await http.get(Uri.parse(url3));
 
             if (response3.statusCode == 200) {
@@ -147,7 +147,7 @@ class OutfitProvider extends ChangeNotifier {
   Future<void> addToOutfit(String userId, int outfitId, String itemId) async {
     print("Adding item to outfit");
     try {
-      final url = 'http://10.0.2.2:5000/item';
+      final url = 'http://127.0.0.1:5000/item';
       print(url);
       final Map<String, dynamic> requestData = {
         'user_id': userId,
@@ -176,7 +176,7 @@ class OutfitProvider extends ChangeNotifier {
   Future<void> createOutfit(String userId, ClothingItem item) async {
     print("Creating outfit");
     try {
-      final url = 'http://10.0.2.2:5000/outfit';
+      final url = 'http://127.0.0.1:5000/outfit';
       final Map<String, dynamic> requestData = {
         'user_id': userId,
         'item_id': item.id,
@@ -202,7 +202,7 @@ class OutfitProvider extends ChangeNotifier {
   Future<void> removeFromOutfit(String userId, int outfitId, int itemId) async {
     print("Removing item ${itemId} from outfit ${outfitId}");
     try {
-      final url = 'http://10.0.2.2:5000/item';
+      final url = 'http://127.0.0.1:5000/item';
 
       final Map<String, dynamic> requestData = {
         'user_id': userId,
@@ -231,7 +231,7 @@ class OutfitProvider extends ChangeNotifier {
 
   Future<double> getRating(String top, String bottom) async {
     try {
-      final url = 'http://10.0.2.2:5007/predictrating';
+      final url = 'http://127.0.0.1:5007/predictrating';
 
       final Map<String, dynamic> requestData = {
         'top': top,

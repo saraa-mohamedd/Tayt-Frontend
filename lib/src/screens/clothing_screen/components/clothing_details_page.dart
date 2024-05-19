@@ -162,7 +162,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                       description,
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 14),
                       textAlign: TextAlign.left,
                     ),
                   ),

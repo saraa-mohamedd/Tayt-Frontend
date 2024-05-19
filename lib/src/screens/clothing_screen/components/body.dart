@@ -57,8 +57,11 @@ class _BodyState extends State<Body> {
     final authProvider = Provider.of<AuthProvider>(context);
     final clothingProvider = Provider.of<ClothingProvider>(context);
 
-    final List<ClothingItem> currentPageItems =
-        _getCurrentPageItems(clothingProvider.clothingItems);
+    final List<ClothingItem> currentPageItems = _getCurrentPageItems(
+      clothingProvider.searchItems.isNotEmpty
+          ? clothingProvider.searchItems
+          : clothingProvider.clothingItems,
+    );
 
     FavoritesProvider favesProvider = Provider.of<FavoritesProvider>(context);
 

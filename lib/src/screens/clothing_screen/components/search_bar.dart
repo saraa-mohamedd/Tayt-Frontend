@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tayt_app/provider/authentication_provider.dart';
+import 'package:tayt_app/provider/clothing_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 
 class ClothingSearchBar extends StatelessWidget {
@@ -14,6 +17,10 @@ class ClothingSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ClothingProvider clothingProvider =
+        Provider.of<ClothingProvider>(context, listen: false);
+    AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,9 +39,11 @@ class ClothingSearchBar extends StatelessWidget {
               hintStyle: TextStyle(fontFamily: 'Helvetica Neue'),
               // Add a clear button to the search bar
               suffixIcon: IconButton(
-                icon: Icon(Icons.clear),
-                onPressed: () => _searchController.clear(),
-              ),
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    _searchController.clear();
+                    clothingProvider.clearSearchItems();
+                  }),
               // Add a search icon or button to the search bar
               prefixIcon: IconButton(
                 icon: Icon(Icons.search),

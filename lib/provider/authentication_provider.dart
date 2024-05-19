@@ -19,7 +19,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    final url = 'http://10.0.2.2:5000/login';
+    print("called login");
+    final url = 'http://127.0.0.1:5000/login';
     final Map<String, dynamic> requestData = {
       'email': email,
       'password': password,
@@ -38,19 +39,21 @@ class AuthProvider extends ChangeNotifier {
         userId = responseData['user_id'].toString();
         notifyListeners();
       } else {
-        // throw Error(); //uncomment when we integrate login in server
         print('Failed to login: ${response.statusCode}');
+        // throw Error(); //uncomment when we integrate login in server
+        // throw AuthenticationException('Invalid email or password');
       }
     } catch (error) {
-      // throw Error(); //uncomment when we integrate login in server
       print('Error logging in: $error');
+      // throw Error(); //uncomment when we integrate login in server
+      // throw AuthenticationException('Invalid email or password');
     }
   }
 
   Future<void> register(String email, String password, double weight,
       double height, String gender) async {
     print("called register");
-    final url = 'http://10.0.2.2:5000/signup';
+    final url = 'http://127.0.0.1:5000/signup';
     final Map<String, dynamic> requestData = {
       'email': email,
       'password': password,
@@ -71,8 +74,9 @@ class AuthProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         print('User registered successfully');
         final responseData = json.decode(response.body) as Map<String, dynamic>;
-        userId = responseData['user_id'];
+        userId = responseData['user_id'].toString();
         print("userid is $userId");
+        print("response data is $responseData");
         notifyListeners();
       } else {
         print('Failed to register: ${response.statusCode}');
@@ -83,8 +87,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   String getUserId() {
-    // return userId;
-    return '1'; //hardcoded for now
+    return userId;
+    // return '1'; //hardcoded for now
   }
 }
 

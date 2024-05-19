@@ -136,7 +136,8 @@ class _FinalScreenState extends State<FinalScreen> {
                 SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () async {
-                    if (widget.answers[3] != "" || widget.answers[3] != null) {
+                    print('answer 3: ${widget.answers[3]}');
+                    if (widget.answers[3] != '-1') {
                       //call hmr
                       meshRenderer.generateBodyMeshUsingHMR(userId, image);
                     } else {
@@ -148,6 +149,7 @@ class _FinalScreenState extends State<FinalScreen> {
                           weight: double.parse(widget.answers[1]),
                           gender: widget.answers[0]);
 
+                      print('callling mice: $userId');
                       //call mice
                       meshRenderer.generateBodyMeshUsingMeasurements(
                           measurements, userId);

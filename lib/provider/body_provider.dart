@@ -13,7 +13,7 @@ class BodyProvider extends ChangeNotifier {
     File image,
     //String gender, String weight, String height) async {
   ) async {
-    final url = 'http://10.0.2.2:5002/infer';
+    final url = 'http://127.0.0.1:5002/infer';
 
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.files.add(await http.MultipartFile.fromBytes(
@@ -48,7 +48,7 @@ class BodyProvider extends ChangeNotifier {
 
   Future<void> editBodyMesh(
       String userId, double height, double weight, String gender) async {
-    final url = 'http://10.0.2.2:5000/edit';
+    final url = 'http://127.0.0.1:5000/edit';
     try {
       print("editing body mesh");
       Map<String, dynamic> request = {
@@ -76,7 +76,7 @@ class BodyProvider extends ChangeNotifier {
   Future<void> generateBodyMeshUsingMeasurements(
       Measurements measurements, String userId) async {
     // double chest, double waist, double hips, String userId) async {
-    final url = 'http://10.0.2.2:5001/generate';
+    final url = 'http://127.0.0.1:5001/generate';
     Map<String, dynamic> request = {
       "chest": measurements.chest,
       "waist": measurements.waist,
@@ -101,7 +101,8 @@ class BodyProvider extends ChangeNotifier {
   }
 
   Future<String> getBodyMesh(String userId) async {
-    final url = 'http://10.0.2.2:5000/body/$userId';
+    print('mice userid: $userId ');
+    final url = 'http://127.0.0.1:5000/body/$userId';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
