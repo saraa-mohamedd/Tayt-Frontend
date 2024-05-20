@@ -8,6 +8,7 @@ import 'package:tayt_app/src/screens/body_screen/components/body.dart';
 import 'package:provider/provider.dart';
 import 'package:tayt_app/provider/body_provider.dart';
 
+// Screens for editing the body mesh
 class BodyScreen extends StatelessWidget {
   static String routeName = '/body-screen';
   const BodyScreen({Key? key}) : super(key: key);
@@ -23,7 +24,6 @@ class BodyScreen extends StatelessWidget {
             surfaceTintColor: Color(0xfffaf9f6),
             automaticallyImplyLeading: false,
             toolbarHeight: 60,
-            // backgroundColor: Colors.teal,
             actions: [
               IconButton(
                 icon: FaIcon(FontAwesomeIcons.barsStaggered),
@@ -40,13 +40,6 @@ class BodyScreen extends StatelessWidget {
                     fontSize: 36,
                     fontWeight: FontWeight.values[7],
                     letterSpacing: -0.7,
-                    // shadows: [
-                    //   Shadow(
-                    //     offset: Offset(2.0, 1.0),
-                    //     blurRadius: 0,
-                    //     color: Color(0xffecd06f),
-                    //   ),
-                    // ]
                   ),
             ),
           ),

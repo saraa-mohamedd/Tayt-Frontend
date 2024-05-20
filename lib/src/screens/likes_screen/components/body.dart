@@ -70,7 +70,6 @@ class _BodyState extends State<Body> {
                   setState(() {
                     favesProvider.unlikeItem(
                         authProvider.getUserId(), favoriteItem.id.toString());
-                    // faves.removeAt(index);
                   });
                 },
               ),

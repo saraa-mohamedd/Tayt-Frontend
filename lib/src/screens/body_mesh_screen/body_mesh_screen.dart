@@ -23,11 +23,9 @@ class BodyMeshScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: FaIcon(FontAwesomeIcons.barsStaggered,
-                // color: Color(0xff708d81)
                 color: AppColors.secondaryColor),
             onPressed: () {},
           ),
-          // add more IconButton
         ],
         title: Text(
           'My Body',

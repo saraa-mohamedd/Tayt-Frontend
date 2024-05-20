@@ -132,32 +132,6 @@ class _BodyState extends State<Body> {
               top: 20.0,
             ),
             child: ElevatedButton(
-              // onPressed: () async {
-              //   await authProvider
-              //       .login(_emailController.text, _passwordController.text)
-              //       .catchError((e) {
-              //     print('error caught $e');
-              //     _emailController.clear();
-              //     _passwordController.clear();
-              //     noLoginError = false;
-              //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              //       backgroundColor: AppColors.secondaryColor,
-              //       content: Text(
-              //         'Incorrect Credentials. Please try again.',
-              //         style: TextStyle(color: AppColors.primaryColor),
-              //       ),
-              //     ));
-              //   }).whenComplete(() {
-              //     if (noLoginError) {
-              //       Navigator.of(context).pushReplacement(
-              //         MaterialPageRoute(
-              //           builder: (context) =>
-              //               BottomNavBar(), // Replace with your desired screen
-              //         ),
-              //       );
-              //     }
-              //   });
-              // },
               onPressed: () async {
                 try {
                   await authProvider.login(

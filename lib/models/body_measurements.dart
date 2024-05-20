@@ -1,3 +1,4 @@
+//Used to keep track of user's body measurements for the 3D Body Generation
 import 'package:flutter/material.dart';
 
 class Measurements {

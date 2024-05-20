@@ -8,10 +8,10 @@ import 'package:path_provider/path_provider.dart';
 class BodyProvider extends ChangeNotifier {
   String bodyMesh = '';
 
+  // Api call to generate body measurements from image
   Future<void> generateBodyMeshUsingHMR(
     String userId,
     File image,
-    //String gender, String weight, String height) async {
   ) async {
     final url = 'http://127.0.0.1:5002/infer';
 
@@ -19,20 +19,17 @@ class BodyProvider extends ChangeNotifier {
     request.files.add(await http.MultipartFile.fromBytes(
       'image_file',
       await image.readAsBytes(),
-      filename: 'image.jpg', // Set the filename if needed
+      filename: 'image.jpg', 
     ));
-    // request.files
-    //     .add(await http.MultipartFile.fromPath('image_file', image.path));
+
     request.fields['user_id'] = userId;
 
     try {
       print('in try block of generateBodyMeshUsingHMR ${request}');
-      // final response = await http.post(Uri.parse(url), body: request);
       final response = await request.send();
 
       if (response.statusCode == 200) {
-        // final responseData = json.decode(response.toString());
-        // print('Response data: $responseData');
+
         notifyListeners();
       } else {
         print('Failed to render mesh: ${response.statusCode}');
@@ -46,6 +43,7 @@ class BodyProvider extends ChangeNotifier {
     }
   }
 
+  // Editing body measurements in User table
   Future<void> editBodyMesh(
       String userId, double height, double weight, String gender) async {
     final url = 'http://127.0.0.1:5000/edit';
@@ -73,9 +71,9 @@ class BodyProvider extends ChangeNotifier {
     }
   }
 
+  // Calling MICE to generate 3D Body Mesh
   Future<void> generateBodyMeshUsingMeasurements(
       Measurements measurements, String userId) async {
-    // double chest, double waist, double hips, String userId) async {
     final url = 'http://127.0.0.1:5001/generate';
     Map<String, dynamic> request = {
       "chest": measurements.chest,
@@ -100,6 +98,7 @@ class BodyProvider extends ChangeNotifier {
     }
   }
 
+  // Fetch the body mesh from the backend
   Future<String> getBodyMesh(String userId) async {
     print('mice userid: $userId ');
     final url = 'http://127.0.0.1:5000/body/$userId';
@@ -108,13 +107,8 @@ class BodyProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         final bodyMeshData = utf8.decode(base64Decode(responseData['body']));
-        // Update the bodyMesh property
         bodyMesh = bodyMeshData;
-        print('in getBodyMesh');
-        // print('Body mesh: $bodyMesh');
 
-        // // Notify listeners or do any other necessary operations
-        // notifyListeners();
 
         return bodyMesh;
       } else {
@@ -127,6 +121,7 @@ class BodyProvider extends ChangeNotifier {
     }
   }
 
+  // Body Mesh Getter
   String returnBodyMesh() {
     return bodyMesh;
   }

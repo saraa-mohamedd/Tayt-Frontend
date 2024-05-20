@@ -1,3 +1,4 @@
+// Used to keep track of all the necessary info for each clothing item coming from the backend
 import 'dart:typed_data';
 
 enum ClothingType { top, bottom, dress }

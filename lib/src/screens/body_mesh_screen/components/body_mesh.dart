@@ -5,6 +5,7 @@ import 'package:tayt_app/provider/authentication_provider.dart';
 import 'package:tayt_app/provider/body_provider.dart';
 import 'package:tayt_app/src/deps/colors.dart';
 
+// Display the Body Mesh 
 class MeshRender extends StatefulWidget {
   const MeshRender({Key? key}) : super(key: key);
 
@@ -88,7 +89,6 @@ class _MeshRenderState extends State<MeshRender> {
   }
 
   Widget _buildCube() {
-    // Return the Cube widget with the initialized body object
     return Cube(
       onSceneCreated: (Scene scene) {
         scene.world.add(body);

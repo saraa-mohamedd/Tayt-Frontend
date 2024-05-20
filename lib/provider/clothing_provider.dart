@@ -9,8 +9,8 @@ class ClothingProvider extends ChangeNotifier {
   List<ClothingItem> _searchItems = [];
   bool isFetching = false;
 
+  // Fetch all clothing items in database
   Future<void> fetchClothingItems(String userId) async {
-    print("here fetching");
     final Map<String, dynamic> requestData = {
       'user_id': userId,
     };
@@ -28,9 +28,6 @@ class ClothingProvider extends ChangeNotifier {
 
         _clothingItems.clear(); // Clear existing clothing items
 
-        //PRINT RESPONSE
-        // print('Response data: $responseData');
-        // print('Items: $items');
         items.forEach((itemsData) {
           try {
             final item = ClothingItem(
@@ -65,10 +62,12 @@ class ClothingProvider extends ChangeNotifier {
     }
   }
 
+  // Getter for the clothing items
   List<ClothingItem> get clothingItems {
     return [..._clothingItems];
   }
 
+  // Getter for the searched items
   List<ClothingItem> get searchItems {
     return [..._searchItems];
   }
@@ -78,19 +77,13 @@ class ClothingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Output of the search engine
   Future<void> searchEngine(String userQuery) async {
     print("search engine in action");
 
-    // Construct the URL with the query string
     final url = Uri.parse("http://127.0.0.1:5000/search?query=$userQuery");
 
     try {
-      //send the query in the body
-      // final response = await http.post(
-      //   url,
-      //   headers: {'Content-Type': 'application/json'},
-      //   body: json.encode({'query': userQuery}),
-      // );
 
       final response = await http.get(url);
 
@@ -99,10 +92,6 @@ class ClothingProvider extends ChangeNotifier {
         final List<dynamic> items = responseData['items'];
 
         _searchItems.clear(); // Clear existing clothing items
-
-        // PRINT RESPONSE
-        print('Response data: $responseData');
-        print('Items: $items');
 
         items.forEach((itemsData) {
           try {
@@ -135,6 +124,7 @@ class ClothingProvider extends ChangeNotifier {
     }
   }
 
+  // Fetch compatible items for the garment the user is viewing
   Future<List<ClothingItem>> getCompatibleRecommendations(
       String clothingItemId) async {
     print("getting compatible recommendations");
@@ -142,14 +132,6 @@ class ClothingProvider extends ChangeNotifier {
         Uri.parse("http://127.0.0.1:5005/recommend?item_id=$clothingItemId");
 
     try {
-      print("before reponse");
-      //send the id in the body
-      // final response = await http.post(
-      //   url,
-      //   headers: {'Content-Type': 'application/json'},
-      //   body: json.encode({'item_id': clothingItemId}),
-      // );
-
       final response = await http.get(url);
 
       print("response issss $response");

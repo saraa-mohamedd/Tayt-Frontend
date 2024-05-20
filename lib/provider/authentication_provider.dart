@@ -18,6 +18,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // API call for login
   Future<void> login(String email, String password) async {
     print("called login");
     final url = 'http://127.0.0.1:5000/login';
@@ -50,6 +51,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // API call for register
   Future<void> register(String email, String password, double weight,
       double height, String gender) async {
     print("called register");
@@ -85,10 +87,10 @@ class AuthProvider extends ChangeNotifier {
       print('Error registering: $error');
     }
   }
-
+  
+  // getter for userId
   String getUserId() {
     return userId;
-    // return '1'; //hardcoded for now
   }
 }
 

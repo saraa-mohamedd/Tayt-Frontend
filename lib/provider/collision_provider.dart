@@ -9,12 +9,12 @@ import 'package:tayt_app/models/outfit.dart';
 
 class CollisionsProvider extends ChangeNotifier {
   String bodyMesh = '';
-  // TURN BACK TO FALSE
   bool isGenerating = false;
   bool hasOutfit = false;
 
   get getIsGenerating => isGenerating;
 
+  // Declaring items for collision 
   ClothingItem topItem = ClothingItem(
     id: -1,
     frontImage: "",
@@ -42,6 +42,7 @@ class CollisionsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Call the HOOD Api in order to place clothing on 3D Body
   Future<void> generateCollisions(
       Outfit outfit, String userId, String size) async {
     setCurrentOutfit(outfit);
@@ -67,7 +68,6 @@ class CollisionsProvider extends ChangeNotifier {
 
       final response = await http.get(
         Uri.parse(url),
-        // body: json.encode(requestData),
         headers: {'Content-Type': 'application/json'},
       );
       notifyListeners();

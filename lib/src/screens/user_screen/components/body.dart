@@ -126,49 +126,6 @@ class Body extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              // GestureDetector(
-              //   onTap: () {},
-              //   child: Container(
-              //     width: 300,
-              //     height: 50,
-              //     decoration: BoxDecoration(
-              //         color: AppColors.primaryColor,
-              //         borderRadius: BorderRadius.circular(40),
-              //         boxShadow: [
-              //           BoxShadow(
-              //             color: AppColors.secondaryColor,
-              //             spreadRadius: 1,
-              //             blurRadius: 0,
-              //             offset:
-              //                 const Offset(2, 3), // changes position of shadow
-              //           ),
-              //         ]),
-              //     child: Center(
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           const FaIcon(FontAwesomeIcons.heart,
-              //               color: AppColors.secondaryColor),
-              //           const SizedBox(
-              //             width: 10,
-              //           ),
-              //           Text(
-              //             'My Likes',
-              //             style: Theme.of(context)
-              //                 .textTheme
-              //                 .headlineMedium!
-              //                 .copyWith(
-              //                   color: AppColors.secondaryColor,
-              //                   fontSize: 20,
-              //                   fontFamily: 'Helvetica Neue',
-              //                   fontWeight: FontWeight.w500,
-              //                 ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
               const SizedBox(
                 height: 10,
               ),

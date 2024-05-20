@@ -7,19 +7,16 @@ import 'package:http/http.dart' as http;
 class FavoritesProvider extends ChangeNotifier {
   List<ClothingItem> favorites = [];
 
+  // Fetch user favorites 
   Future<void> fetchFavorites(String userId) async {
     try {
       final url = "http://127.0.0.1:5000/like/$userId";
-      // print(url);
 
       final response = await http.get(Uri.parse(url));
 
-      // print(response.body);
       if (response.statusCode == 200) {
-        // print("Fetched favorites successfully");
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         final List<dynamic> likes = responseData['likes'];
-        // print(likes);
 
         favorites.clear(); // Clear existing favorites
 
@@ -47,14 +44,13 @@ class FavoritesProvider extends ChangeNotifier {
     }
   }
 
+  // Like an item
   Future<void> likeItem(String userId, String itemId) async {
     final url = 'http://127.0.0.1:5000/like';
     final Map<String, dynamic> requestData = {
       'user_id': userId,
       'item_id': itemId,
     };
-
-    // print(url);
 
     try {
       final response = await http.post(
@@ -75,6 +71,7 @@ class FavoritesProvider extends ChangeNotifier {
     }
   }
 
+  // Unlike an item
   Future<void> unlikeItem(String userId, String itemId) async {
     final url = 'http://127.0.0.1:5000/unlike';
     final Map<String, dynamic> requestData = {
@@ -103,16 +100,14 @@ class FavoritesProvider extends ChangeNotifier {
     }
   }
 
+  // Fetch clothing item details 
   Future<ClothingItem> fetchItem(String itemId) async {
     try {
       final url = "http://127.0.0.1:5000/item/$itemId";
-      print(url);
 
       final response = await http.get(Uri.parse(url));
 
-      // print(response.body);
       if (response.statusCode == 200) {
-        // print("Fetched item successfully");
         final responseData = json.decode(response.body) as Map<String, dynamic>;
         final dynamic itemData = responseData['item'];
 
@@ -124,7 +119,6 @@ class FavoritesProvider extends ChangeNotifier {
           type: itemData['garment_type'] == 'top'
               ? ClothingType.top
               : ClothingType.bottom,
-          //if vendor is null then set it to empty string
           vendor: itemData['vendor'] == null ? "Zara" : itemData['vendor'],
           vendorLink: itemData['item_link'] == null
               ? "https://www.zara.com/eg/en/"
@@ -149,6 +143,7 @@ class FavoritesProvider extends ChangeNotifier {
     return false;
   }
 
+  // To handle toggling the favorite status of an item
   void toggleFavorite(String userId, String itemId) {
     if (isFavorite(userId, itemId)) {
       unlikeItem(userId, itemId);

@@ -9,6 +9,7 @@ import 'dart:io';
 class OutfitProvider extends ChangeNotifier {
   List<Outfit> outfits = [];
 
+  // Fetch all outfits the user has created 
   Future<void> fetchOutfits(String userId) async {
     try {
       final url1 = "http://127.0.0.1:5000/outfit/$userId";
@@ -20,7 +21,6 @@ class OutfitProvider extends ChangeNotifier {
 
         final List<dynamic> outfitss = responseData['outfits'];
 
-        print("response is $responseData");
 
         outfits.clear(); // Clear existing favorites
 
@@ -49,6 +49,7 @@ class OutfitProvider extends ChangeNotifier {
             vendorLink: "",
           );
 
+          // if the top exists, create an object for it
           if (topId != null) {
             final url2 = "http://127.0.0.1:5000/item/$topId";
             final response2 = await http.get(Uri.parse(url2));
@@ -70,8 +71,7 @@ class OutfitProvider extends ChangeNotifier {
             }
           }
 
-          print("before");
-
+          // if the bottom exists, create an object for it
           if (bottomId != null) {
             final url3 = "http://127.0.0.1:5000/item/$bottomId";
             final response3 = await http.get(Uri.parse(url3));
@@ -94,8 +94,8 @@ class OutfitProvider extends ChangeNotifier {
             }
           }
 
+          // handle outfit creation based on the presence of a top and bottom 
           if (topId == null && bottomId == null) {
-            // Do nothing or handle this case separately
             print('No top or bottom found');
           } else if (topId == null) {
             print('No top found');
@@ -114,22 +114,11 @@ class OutfitProvider extends ChangeNotifier {
           } else {
             print("both found");
 
-            //print the image
-            print("top image is ${top.frontImage}");
-
             final item = Outfit(
               id: outfitData['id'],
               items: [top, bottom],
             );
             outfits.add(item);
-          }
-        }
-
-        print("outfits length is ${outfits.length}");
-        for (var outfit in outfits) {
-          print("outfit id is ${outfit.id}");
-          for (var item in outfit.items) {
-            print("item id is ${item.id}");
           }
         }
 
@@ -144,6 +133,7 @@ class OutfitProvider extends ChangeNotifier {
     }
   }
 
+  // Add an item to an outfit
   Future<void> addToOutfit(String userId, int outfitId, String itemId) async {
     print("Adding item to outfit");
     try {
@@ -154,13 +144,11 @@ class OutfitProvider extends ChangeNotifier {
         'item_id': itemId,
         'outfit_id': outfitId,
       };
-      print("resquest data is $requestData");
       final response = await http.post(
         Uri.parse(url),
         body: json.encode(requestData),
         headers: {'Content-Type': 'application/json'},
       );
-      print("response is: ${response.body}");
 
       if (response.statusCode == 200) {
         print('Item added to outfit successfully');
@@ -173,6 +161,7 @@ class OutfitProvider extends ChangeNotifier {
     }
   }
 
+  // Create an outfit by adding one item to it
   Future<void> createOutfit(String userId, ClothingItem item) async {
     print("Creating outfit");
     try {
@@ -199,6 +188,7 @@ class OutfitProvider extends ChangeNotifier {
     }
   }
 
+  // Remove one item from the outfit 
   Future<void> removeFromOutfit(String userId, int outfitId, int itemId) async {
     print("Removing item ${itemId} from outfit ${outfitId}");
     try {
@@ -229,6 +219,7 @@ class OutfitProvider extends ChangeNotifier {
     }
   }
 
+  // Send the top and bottom to our rating system 
   Future<double> getRating(String top, String bottom) async {
     try {
       final url = 'http://127.0.0.1:5007/predictrating';

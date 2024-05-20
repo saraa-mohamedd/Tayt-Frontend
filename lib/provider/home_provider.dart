@@ -9,6 +9,8 @@ import 'package:tayt_app/provider/favorites_provider.dart';
 
 class HomeProvider extends ChangeNotifier {
   FavoritesProvider favoritesProvider = Get.put(FavoritesProvider());
+  
+  // Calls the backend to get recommendations for the user based on their likes
   Future<List<ClothingItem>> forYou(String userId) async {
     print("for you in action");
 
@@ -57,9 +59,8 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
+  // Get list of trending items
   Future<List<ClothingItem>> trending() async {
-    print("trending in action");
-
     List<ClothingItem> trendingItems = [];
 
     Random random = Random();
@@ -71,7 +72,6 @@ class HomeProvider extends ChangeNotifier {
 
     try {
       for (var number in numbers) {
-        //call fetchItem from favorites provider
         trendingItems.add(await favoritesProvider.fetchItem(number.toString()));
       }
     } catch (error) {

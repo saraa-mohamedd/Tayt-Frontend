@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create providers for the api calls
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => OutfitProvider()),
@@ -33,7 +34,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CollisionsProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider())
       ],
-      // create: (_) => OutfitProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Tayt',
